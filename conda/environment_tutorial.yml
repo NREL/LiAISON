@@ -1,9 +1,11 @@
 name: liaison_tutorial
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - pip=23.2.1
   - python=3.10
+  - premise=1.8.1
   - pip:
     - attrs==23.1.0
     - bottleneck==1.3.7
