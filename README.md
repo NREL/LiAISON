@@ -41,7 +41,6 @@ folder-LiAISON repository : **Dynamic-LCA-with-LiAISON**
 
 - If you have problems with installation of premise, please try 
 - ```conda install conda-forge::premise=1.8.1```
-- 
 #### If environment building does not work from yaml file
 
 - Type following commands
@@ -91,8 +90,7 @@ Tapajyoti Ghosh
 
 
 ## LiAISON Development, Methodology and Life Cycle Assessment application
-
-![Screenshot-2024-01-18-at-10-26-15-AM](https://i.ibb.co/PMxrGb8/](https://github.com/NREL/LiAISON/tree/dev/images/Screenshot-2024-01-18-at-10-26-15-AM.png?raw=true)
+![Screenshot-2024-01-18-at-10-26-15-AM](https://github.com/NREL/LiAISON/blob/dev/images/image2.png?raw=true)
 ## Objectives
 1. **Static life cycle assessment calculations** where the foreground inventory gets linked automatically to the background inventory.
 2. **Prospective life cycle assessment** using long-term, coherent scenarios of the energy-economy-land-climate system to quantify the effects of background system changes and foreground technology improvements for various technologies.
@@ -102,8 +100,8 @@ Tapajyoti Ghosh
 ## Benefits
 1. Helps simplify life cycle assessment by automating linking of foreground inventory with background life cycle inventory
 2. Large number of LCA calculations performed simultaneously with ”another” model.
-  -  Systems scale simulation
-  - Optimization
+    - Systems scale simulation
+    - Optimization
 3. Complex variations of foreground system for scenario analysis.
 4. Continuous variations of input data.
 5. Sensitivity analysis on individual system parameters.
@@ -112,7 +110,7 @@ Tapajyoti Ghosh
 8. Variation of background data (temporally, spatially or scenario-wise).
 
 ## Methodology
-![Screenshot-2024-01-18-at-11-02-05-AM](https://i.ibb.co/c23GrXq/Screenshot-2024-01-18-at-11-02-05-AM.png)LiAISON framework can be separated into three separate parts - 
+![Screenshot-2024-01-18-at-11-02-05-AM](https://github.com/NREL/LiAISON/blob/dev/images/image4.png?raw=true)LiAISON framework can be separated into three separate parts - 
 1. Reading the base life cycle inventory **(Life cycle inventory reader)**
 2. Updating the base life cycle inventory with present and future information from Integrated Assessment models.  **(Prospective life cycle inventory updater)**
 3. Performing life cycle assessment. **(Automated LCA calculator)**
@@ -128,8 +126,8 @@ Separating LiAISON into three separate parts provides several benefits.
 In prospective life cycle assessment, we update the base life cycle inventory with information from predictive models ( like Integrated Assessment Models) under future energy policies to reflect projected energy policy trajectories.
 It is useful for analyzing novel technologies whose large scale deployment will only take place in the future. Several future scenarios from different IAM models are available. Please check [premise.](https://github.com/polca/premise) 
 In this method, we update 4 important sectors of the economy according to several future scenarios. 
-![Screenshot-2024-01-18-at-11-18-51-AM](https://i.ibb.co/BZT3CB2/Screenshot-2024-01-18-at-11-18-51-AM.png)Rather than getting singular LCA results, prospective LCA results are **temporal**. 
-![Screenshot-2024-01-18-at-11-24-14-AM](https://i.ibb.co/zP9tdZc/Screenshot-2024-01-18-at-11-24-14-AM.png)Results from [paper.](https://pubs.acs.org/doi/full/10.1021/acs.est.2c04246) 
+![Screenshot-2024-01-18-at-11-18-51-AM](https://github.com/NREL/LiAISON/blob/dev/images/image5.png?raw=true)Rather than getting singular LCA results, prospective LCA results are **temporal**. 
+![Screenshot-2024-01-18-at-11-24-14-AM](https://github.com/NREL/LiAISON/blob/dev/images/image6.png?raw=true)Results from [paper.](https://pubs.acs.org/doi/full/10.1021/acs.est.2c04246) 
 
 ## Supplied configuration files
 Three configuration yaml files are provided in the *data folder*
@@ -246,7 +244,7 @@ scenario_parameters:
    - comments: as required
    - process_location : location of the foreground process under study
    - supplying_location : location of the processes supplying the technosphere flows to the process under study. The supplying location should match with the location name in ecoinvent3.8. If it does not, then the supplying process for this input flow will not be found and LiAISON will revert to RoW or GLO locations. 
-![Screenshot-2024-01-18-at-12-30-16-PM](https://i.ibb.co/r6M9yN2/Screenshot-2024-01-18-at-12-30-16-PM.png)
+![Screenshot-2024-01-18-at-12-30-16-PM](https://github.com/NREL/LiAISON/blob/dev/images/image8.png?raw=true)
 - In this picture, we see an example of a foreground inventory file. 
 - The name of the process under study is *example*. So we have *example* in both the rows. This process name should match the name provided in the configuration file *primary_process_under_study* parameter.
 - The production flow (output flow) of this *example* process is also called *example*. Thus under the flow column, we have *example* as a flow and its boolean value for the input column is *False*
@@ -254,19 +252,20 @@ scenario_parameters:
 - The only technosphere flow input to this *example* process is electricity. The flow is called *electricity from US grid*. Its an input flow. So the boolean value in the input column is *True*.  The supplying location for the electricity grid flow is also the *US*. So the supplying location is *US*. The supplying location for the product flow does not matter as it is an output. Its saved as US as a placeholder. 
 - Biosphere/pollutant/emission flows can be put as outflows in this file. These emissions are in-situ emissions of the *example* activity. 
 - In this scenario, we created a dummy activity called *example*, said it as an output flow of *example* whose value is 1 kilowatt hour and it takes in 1 kilowatt hour of electricity as input from the US electricity grid mix. Essentially we created a dummy activity to perform LCA of the US electricity grid mix. Performing LCA without creating dummy activities is possible. Will be explained in later examples. 
-![Screenshot-2024-01-18-at-12-54-38-PM](https://i.ibb.co/f90tjzW/Screenshot-2024-01-18-at-12-54-38-PM.png)
+![Screenshot-2024-01-18-at-12-54-38-PM](https://github.com/NREL/LiAISON/blob/dev/images/image11.png?raw=true)
 ### Editing the process bridge file
 
 - The process bridge file is used for linking the names of the **technosphere/input** flows in the foreground inventory dataset to the **processes in ecoinvent** supplying the required input flow as an output product. 
 - The columns in this file consist of *Common name*, *Ecoinvent name*, *Ecoinvent_code* and *type* of flow. - Common name is the one given by process, Ecoinvent name is the matched name from the ecoinvent activity, Ecoinvent code is the key code of the process from ecoinvent and the type of flow. 
 - For the provided example, we had only one technosphere/input flow. *electricity from US grid*. We need to match it to the proper ecoinvent flow. That is performed in the process_bridge_file.
 - Using the activity browser or ecoquery, we find the proper electricity supplying process from ecoinvent 3.8 data base. We find the the process is *market for electricity, high voltage*. We use this in the process bridge file as shown.
-![Screenshot-2024-01-18-at-12-35-59-PM](https://i.ibb.co/kqYDfM8/Screenshot-2024-01-18-at-12-35-59-PM.png)- It is **highly recommended** to fill up the ecoinvent_code column with the actual process id from ecoinvent. However, putting it as 0 will also work in most cases and the code will search for the process at the preferred supplying location (from the foreground inventory file). 
+![Screenshot-2024-01-18-at-12-35-59-PM](https://github.com/NREL/LiAISON/blob/dev/images/image9.png?raw=true)- It is **highly recommended** to fill up the ecoinvent_code column with the actual process id from ecoinvent. However, putting it as 0 will also work in most cases and the code will search for the process at the preferred supplying location (from the foreground inventory file). 
 
 ### Editing the emissions bridge file
 - The emissions bridge file is used for linking the names of the biosphere flows from the foreground inventory dataset to the emissions in the biosphere of brightway2 and ecoinvent. 
 - The columns in this file consist of *Common name*, *Ecoinvent name*, *Ecoinvent code*. Common name is the one given by process, Ecoinvent name is the matched name from the ecoinvent biosphere emission, Ecoinvent code is the key code of the emission from ecoinvent biosphere.
-![Screenshot-2024-01-18-at-12-47-07-PM](https://i.ibb.co/8bYqdWH/Screenshot-2024-01-18-at-12-47-07-PM.png)
+
+![Screenshot-2024-01-18-at-12-47-07-PM](https://github.com/NREL/LiAISON/blob/dev/images/image10.png?raw=true)
 
 ### Running LiAISON
 - Edit the run.sh file with relevant directory information
