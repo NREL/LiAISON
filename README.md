@@ -1,4 +1,4 @@
-# Lifecyle Analysis Integration into Scalable Opensource Numerical models (LiAISON): modular code to add LCA to your project
+# Lifecyle Analysis Integration into Scalable Opensource Numerical models (LiAISON)
 
 Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs.est.2c04246. 
 
@@ -9,6 +9,7 @@ Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs
 2. Prospective life cycle assessment using long-term, coherent scenarios of the energy-economy-land-climate system to quantify the effects of background system changes and foreground technology improvements for various technologies.
 3. Regional life cycle assessment calculations.
 4. Monte carlo sensitivity analysis of foreground inventory.
+5. Coded life cycle assessment framework to add LCA to your project.
 
 
 
@@ -20,7 +21,7 @@ Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs
 
 ## How to install this package?
 ### Root Folder 
-folder-LiAISON repository : **Dynamic-LCA-with-LiAISON**
+folder-LiAISON repository : */LiAISON*
 
 
 ### Setup

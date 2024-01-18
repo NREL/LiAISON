@@ -1,0 +1,260 @@
+Common_name,Ecoinvent_name,Ecoinvent_code,type
+"nitrogen, from air separation","air separation, cryogenic",b55af830951a9c677d170aea498425bf,technosphere
+acetylene,market for acetylene,caa782d5ffc74dfd557aa1e7d96b27fe,technosphere
+Activated carbon,"market for activated carbon, granular",0,technosphere
+aluminum,"aluminium production, primary, cast alloy slab from continuous casting",0,technosphere
+Aluminum,"aluminium production, primary, ingot",0,technosphere
+ammonia,"ammonia, from haber-bosch",0,technosphere
+"ammonia, anhydrous, liquid","market for ammonia, anhydrous, liquid",326ea6de47b30ef860e60440114cbc91,technosphere
+anionic resin,market for anionic resin,5546735367435636699501ffe38eb797,technosphere
+"argon, liquid","market for argon, liquid",40d0d5bfe4cfcbbbdff497450285a946,technosphere
+Barium carbonate,market for barium carbonate,0,technosphere
+benzene,market for benzene,00f6517dda64b8808583a17c0a89f29c,technosphere
+benzyl alcohol production,market for benzyl alcohol,0,technosphere
+bilge oil,market for bilge oil,f4859b18b3f1279afa171141d31d8115,technosphere
+"boric acid, anhydrous, powder","market for boric acid, anhydrous, powder",ef9192ffaee5091d4dc4290682b3335a,technosphere
+boric oxide production,market for boric oxide,0,technosphere
+"building construction, hall, steel construction","building construction, hall, steel construction",0,technosphere
+"building construction, multi-storey","building construction, multi-storey",0,technosphere
+Carbon black (furnace black; general purpose),market for carbon black,0,technosphere
+"carbon dioxide compression, transport and storage","carbon dioxide compression, transport and storage",0,technosphere
+"carbon dioxide, liquid","market for carbon dioxide, liquid",6c30b87bdaf5e27e0398c2c8e5280a27,technosphere
+Carbon monoxide [Inorganic emissions to air],"Carbon monoxide, non-fossil",0,technosphere
+"carboxymethyl cellulose production, powder","market for carboxymethyl cellulose, powder",0,technosphere
+cast iron,market for cast iron,6a7811cf5d456c6d0906edc3c404b586,technosphere
+cast iron production,cast iron production,0,technosphere
+cationic resin,market for cationic resin,6f14ce3e1921d9aad385e17b20355009,technosphere
+"cement, Portland","market for cement, Portland",6b588c313daaa58b280e70d223205015,technosphere
+Cerium oxide,"market for cerium concentrate, 60% cerium oxide",0,technosphere
+"chemical, inorganic","market for chemical, inorganic",f0d44bf0e3c929ab4c21adef45d5ca2a,technosphere
+"chemical, organic","market for chemical, organic",9757270c6c2078fdd4c0fa43c7c49ee9,technosphere
+"chlorine, liquid","market for chlorine, liquid",1ab0f90a11c5d7bb08e67af7a0ab39cd,technosphere
+"chromium oxide production, flakes","market for chromium oxide, flakes",0,technosphere
+chromium production,chromium production,0,technosphere
+"coal, in ground",market for hard coal,0,technosphere
+Cobalt hydroxide Co(OH)2,market for cobalt,0,technosphere
+cobalt production,market for cobalt,0,technosphere
+"concentrated solar power plant, solar tower, 20 MW","market for concentrated solar power plant, solar tower, 20 MW",0af48c0ac75b5c35a42bd4c5b3f05aac,technosphere
+concrete,"market for concrete, 20MPa",0,technosphere
+"concrete, normal","market for concrete, normal",1238afbff3e1ae4613b1e4480376a9c2,technosphere
+"construction work, heat and power co-generation unit, 160kW electrical","construction work, heat and power co-generation unit, 160kW electrical",0,technosphere
+Copper,"copper production, primary",0,technosphere
+copper oxide production,market for copper oxide,0,technosphere
+"diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",7aa9ceef123487fb5e0d9cc96d0367d1,technosphere
+"direct air capture system, solvent-based, 1 MtCO2","direct air capture system, solvent-based, 1 MtCO2",0,technosphere
+"dust collector, electrostatic precipitator, for industrial use","market for dust collector, electrostatic precipitator, for industrial use",f7fba5a971294aab9ccb380310cb22de,technosphere
+electricity from US grid,"market group for electricity, high voltage",0,technosphere
+Electricity production_Biopower_ReEDS,Electricity production_Biopower_ReEDS,0,technosphere
+Electricity production_Coal_ReEDS,Electricity production_Coal_ReEDS,0,technosphere
+Electricity production_Coal-Integrated_Gas_Combustion_Cycle_ReEDS,Electricity production_Coal-Integrated_Gas_Combustion_Cycle_ReEDS,0,technosphere
+Electricity production_Concentrated_solar_power_ReEDS,Electricity production_Concentrated_solar_power_ReEDS,0,technosphere
+Electricity production_Dispatchable_hydro_ReEDS,Electricity production_Dispatchable_hydro_ReEDS,0,technosphere
+Electricity production_Gas_combined_cycle_ReEDS,Electricity production_Gas_combined_cycle_ReEDS,0,technosphere
+Electricity production_Gas_combustion_turbine_ReEDS,Electricity production_Gas_combustion_turbine_ReEDS,0,technosphere
+Electricity production_Geothermal_ReEDS,Electricity production_Geothermal_ReEDS,0,technosphere
+Electricity production_Landfill_gas_ReEDS,Electricity production_Landfill_gas_ReEDS,0,technosphere
+Electricity production_Nondispatchable_hydro_ReEDS,Electricity production_Nondispatchable_hydro_ReEDS,0,technosphere
+Electricity production_Nuclear_ReEDS,Electricity production_Nuclear_ReEDS,0,technosphere
+Electricity production_Offshore_wind_ReEDS,Electricity production_Offshore_wind_ReEDS,0,technosphere
+Electricity production_Oil_gas_steam_ReEDS,Electricity production_Oil_gas_steam_ReEDS,0,technosphere
+Electricity production_Onshore_wind_ReEDS,Electricity production_Onshore_wind_ReEDS,0,technosphere
+Electricity production_Pumped_hydro_storage_ReEDS,Electricity production_Pumped_hydro_storage_ReEDS,0,technosphere
+Electricity production_Solar_PV_ReEDS,Electricity production_Solar_PV_ReEDS,0,technosphere
+"electricity production, at BIGCC power plant, pre, pipeline 200km, storage 1000m","electricity production, at BIGCC power plant, pre, pipeline 200km, storage 1000m",0,technosphere
+"electricity production, at hard coal-fired IGCC power plant, pre, pipeline 200km, storage 1000m","electricity production, at hard coal-fired IGCC power plant, pre, pipeline 200km, storage 1000m",0,technosphere
+"electricity production, at hard coal-fired power plant, post, pipeline 200km, storage 1000m","electricity production, at hard coal-fired power plant, post, pipeline 200km, storage 1000m",0,technosphere
+"electricity production, at hard coal-fired power plant, post, pipeline 200km, storage 1000m","electricity production, at hard coal-fired power plant, post, pipeline 200km, storage 1000m",0,technosphere
+"electricity production, at natural gas-fired combined cycle power plant, post, pipeline 200km, storage 1000m","electricity production, at natural gas-fired combined cycle power plant, post, pipeline 200km, storage 1000m",0,technosphere
+"electricity production, deep geothermal","electricity production, deep geothermal",0,technosphere
+"electricity production, hard coal","electricity production, hard coal",0,technosphere
+"electricity production, hydro, reservoir, alpine region","electricity production, hydro, reservoir, alpine region",0,technosphere
+"electricity production, natural gas, combined cycle power plant","electricity production, natural gas, combined cycle power plant",0,technosphere
+"electricity production, natural gas, combined cycle power plant","electricity production, natural gas, combined cycle power plant",0,technosphere
+"electricity production, natural gas, conventional power plant","electricity production, natural gas, conventional power plant",0,technosphere
+"electricity production, natural gas, conventional power plant","electricity production, natural gas, conventional power plant",0,technosphere
+"electricity production, photovoltaic, 570kWp open ground installation, multi-Si","electricity production, photovoltaic, 570kWp open ground installation, multi-Si",0,technosphere
+"electricity production, photovoltaic, 570kWp open ground installation, multi-Si","electricity production, photovoltaic, 570kWp open ground installation, multi-Si",0,technosphere
+"electricity production, solar thermal parabolic trough, 50 MW","electricity production, solar thermal parabolic trough, 50 MW",0,technosphere
+"electricity production, wind, 1-3MW turbine, onshore","electricity production, wind, 1-3MW turbine, onshore",0,technosphere
+"electricity production, wind, 1-3MW turbine, onshore","electricity production, wind, 1-3MW turbine, onshore",0,technosphere
+"electricity production,at natural gas-fired combined cycle power plant","electricity production,at natural gas-fired combined cycle power plant",0,technosphere
+"electricity production,at natural gas-fired combined cycle power plant, post, pipeline 200km, storage 1000m","electricity production,at natural gas-fired combined cycle power plant, post, pipeline 200km, storage 1000m",0,technosphere
+"electricity, high voltage","market for electricity, high voltage",958162f956644e4b18c182839281a39d,technosphere
+"electricity, high voltage from ecoinvent","market group for electricity, high voltage",0,technosphere
+Electrolysis cell,electrolysis cell production,0,technosphere
+"electrolysis plant, balance","electrolysis plant, construction",0,technosphere
+electronic parts,"market for electronics, for control units",0,technosphere
+Ethylene glycol,ethylene glycol production,0c4c9dddd3c952d71ba93b0d40a818b6,technosphere
+"Europe without Switzerland: heat production, natural gas, at industrial furnace low-NOx >100kW","heat production, natural gas, at industrial furnace low-NOx >100kW",0,technosphere
+"flat glass, coated","market for flat glass, coated",206535f59d73199e4f636d361cc8f952,technosphere
+fly ash and scrubber sludge,market for fly ash and scrubber sludge,df8b4af718ba9413a2f9a4cc00af5d16,technosphere
+"From unspecified (regionalized, DE) [Transformation]","Transformation, from unspecified",0,technosphere
+"furnace, wood chips, with silo, 5000kW","market for furnace, wood chips, with silo, 5000kW",4ed3ea42d41b8ad75fc1f4352080c458,technosphere
+Gadolinium oxide,"market for samarium europium gadolinium concentrate, 94% rare earth oxide",0,technosphere
+"gas power plant, 100MW electrical","market for gas power plant, 100MW electrical",5f3e50d65014590d3466f05c13000505,technosphere
+"gas power plant, 300MW electrical","market for gas power plant, 300MW electrical",9745a9c42b8d05a321bf50475e68db12,technosphere
+"gas power plant, combined cycle, 400MW electrical","market for gas power plant, combined cycle, 400MW electrical",bb25747d73b80f724cbec678708156fc,technosphere
+"gasoline production, synthetic, from methanol, hydrogen from coal gasification, with CCS, energy allocation, at fuelling station","gasoline production, synthetic, from methanol, hydrogen from coal gasification, with CCS, energy allocation, at fuelling station",0,technosphere
+"gasoline production, synthetic, from methanol, hydrogen from coal gasification, with CCS, energy allocation, at fuelling station","gasoline production, synthetic, from methanol, hydrogen from coal gasification, with CCS, energy allocation, at fuelling station",0,technosphere
+"gasoline production, synthetic, from methanol, hydrogen from electrolysis, CO2 from DAC, energy allocation, at fuelling station","gasoline production, synthetic, from methanol, hydrogen from electrolysis, CO2 from DAC, energy allocation, at fuelling station",0,technosphere
+"geothermal power plant, 5.5MWel","market for geothermal power plant, 5.5MWel",9e4d8ca08e2944617753b14e542d49ae,technosphere
+Glass cermet,glass cermet production,0,technosphere
+hard coal,market for hard coal,31e7d8a0938ac1aeaaecb85d5e11b2d7,technosphere
+hard coal ash,market for hard coal ash,17146dd21624ee7abd556d6b1d48e1bc,technosphere
+hard coal power plant,market for hard coal power plant,16927ce5d3f134f8cecfc6720f7e4402,technosphere
+"hazardous waste, for incineration","market for hazardous waste, for incineration",3456e7fc0ce6690edd534aad56586a56,technosphere
+"heat and power co-generation unit, organic Rankine cycle, 1000kW electrical","market for heat and power co-generation unit, organic Rankine cycle, 1000kW electrical",5230dc8ec171eea7f36f4592166a13e8,technosphere
+"heat production, biomethane, at boiler condensing modulating <100kW","heat production, biomethane, at boiler condensing modulating <100kW",0,technosphere
+"heat production, light fuel oil, at boiler 100kW condensing, non-modulating","heat production, light fuel oil, at boiler 100kW condensing, non-modulating",0,technosphere
+"heat production, natural gas, at industrial furnace low-NOx >100kW","heat production, natural gas, at industrial furnace low-NOx >100kW",0,technosphere
+"heat, district or industrial, natural gas","heat production, natural gas, at industrial furnace >100kW",1a78ca13d4b59418ca8791efa9a0db09,technosphere
+heavy fuel oil,market for heavy fuel oil,3660bffb340f9843d4a2ed41b5d34ef8,technosphere
+high alloyed steel,"market for steel, chromium steel 18/8, hot rolled",0,technosphere
+HT-co-electrolysis stack 150 kW,"electolysis stack production, high temperature",0,technosphere
+"hydrogen, from proton exchange water electrolysis","PEWE electrolysis plant, operation",0,technosphere
+"hydrogen, from solid oxide electrolysis","electrolysis plant, operation",0,technosphere
+"hydrogen, from steam methane reforming","steam methane reforming plant, operation",0,technosphere
+"hydrogen, liquid","market for hydrogen, liquid",9fed50977b761e7d6e212c93f8d4ab40,technosphere
+"hydropower plant, reservoir, alpine region","market for hydropower plant, reservoir, alpine region",78c8c84790c93c36a8bfcd25de9bdd1e,technosphere
+"hydropower plant, reservoir, non-alpine regions","market for hydropower plant, reservoir, non-alpine regions",f94080a86adb28fe84eac888354cfd2e,technosphere
+"hydropower plant, run-of-river","market for hydropower plant, run-of-river",3534dd304ffa611dc6d0147617abaa0d,technosphere
+"Industrial area (regionalized, DE) [Occupation]","Occupation, industrial area",0,technosphere
+"inverter production, 500kW","inverter production, 500kW",0,technosphere
+Iridium,market for platinum group metal concentrate,0,technosphere
+"iron, ore","market for iron ore, crude ore, 63% Fe",0,technosphere
+"iron, scrap","market for iron scrap, unsorted",0,technosphere
+Iron(III) oxide-hydroxide FeO(OH),market for ferrite,0,technosphere
+Lanthanum,market for lanthanum oxide,0,technosphere
+Lanthanum oxide,market for lanthanum oxide,0,technosphere
+light fuel oil,market for light fuel oil,abc822915165926cdc031d54cff4e636,technosphere
+lignite,market for lignite,029b62701bc80b2be6a74f4e86912b87,technosphere
+lignite ash,market for lignite ash,9f710cf43760b6775cc064a585a68ad0,technosphere
+lignite power plant,market for lignite power plant,ae12c89d77616a88068c45b2cee740f3,technosphere
+Lime (CaO; quicklime lumpy),"market for quicklime, in pieces, loose",0,technosphere
+"limestone, crushed, washed","market for limestone, crushed, washed",bcd5dd97b63e6534fad7c7a1a267c1ba,technosphere
+"limestone, in ground","market for limestone, unprocessed",0,technosphere
+low alloyed steel,"market for steel, low-alloyed",0,technosphere
+low level radioactive waste,market for low level radioactive waste,f16ebe0cf00906d23646f15369313fe6,technosphere
+low level radioactive waste for final repository,market for low level radioactive waste for final repository,2558088b18f9cf8789cad106dbddf16c,technosphere
+lubricating oil,market for lubricating oil,15c993b65a45868e9f93a05998f2aca0,technosphere
+manganese dioxide production,market for manganese dioxide,0,technosphere
+manganese production,manganese production,0,technosphere
+"market for aluminium, wrought alloy","market for aluminium, wrought alloy",0,technosphere
+"market for aluminum oxide, metallurgical","market for aluminium oxide, metallurgical",0,technosphere
+market for bitumen seal,market for bitumen seal,0,technosphere
+"market for chemical, organic","market for chemical, organic",0,technosphere
+"market for concrete, normal","market for concrete, normal",0,technosphere
+"market for copper, cathode","market for copper, cathode",0,technosphere
+"market for diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",0,technosphere
+"market for drawing of pipe, steel","market for drawing of pipe, steel",0,technosphere
+"market for ethanol, without water, in 99.7% solution state, from ethylene","market for ethanol, without water, in 99.7% solution state, from ethylene",0,technosphere
+market for fatty acid,market for fatty acid,0,technosphere
+market for glass fibre,market for glass fibre,0,technosphere
+"market for limestone, crushed, for mill","market for limestone, crushed, for mill",0,technosphere
+market for natural gas,"market for natural gas, high pressure",0,technosphere
+"market for natural gas, high pressure","market for natural gas, high pressure",0,technosphere
+"market for onshore well, oil/gas","market for onshore well, oil/gas",0,technosphere
+"market for petrol, 5% ethanol by volume from biomass","market for petrol, 5% ethanol by volume from biomass",0,technosphere
+"market for petrol, low-sulfur","market for petrol, low-sulfur",0,technosphere
+"market for polyethylene, low density, granulate","market for polyethylene, low density, granulate",0,technosphere
+"market for polypropylene, granulate","market for polypropylene, granulate",0,technosphere
+"market for polyurethane, flexible foam ","market for polyurethane, flexible foam ",0,technosphere
+"market for polyvinylchloride, bulk polymerised","market for polyvinylchloride, bulk polymerised",0,technosphere
+market for potassium hydroxide,market for potassium hydroxide,0,technosphere
+"market for refractory, basic, packed","market for refractory, basic, packed",0,technosphere
+market for reinforcing steel,market for reinforcing steel,0,technosphere
+market for sand,market for sand,0,technosphere
+"market for steel, chromium steel 18/8, hot rolled","market for steel, chromium steel 18/8, hot rolled",0,technosphere
+"market for steel, low-alloyed","market for steel, low-alloyed",0,technosphere
+"market for steel, low-alloyed ","market for steel, low-alloyed ",0,technosphere
+"market for steel, unalloyed","market for steel, unalloyed",0,technosphere
+market for tap water,market for tap water,0,technosphere
+"market for titanium, primary","market for titanium, primary",0,technosphere
+"market for transport, freight, lorry >32 metric ton, EURO3","market for transport, freight, lorry >32 metric ton, EURO3",0,technosphere
+"market for transport, freight, lorry, unspecified","market for transport, freight, lorry, unspecified",0,technosphere
+market for zirconium oxide,market for zirconium oxide,0,technosphere
+"market group for electricity, high voltage","market group for electricity, high voltage",0,technosphere
+"market group for electricity, low voltage","market group for electricity, low voltage",0,technosphere
+"market group for electricity, medium voltage","market group for electricity, medium voltage",0,technosphere
+methyl ethyl ketone production,market for methyl ethyl ketone,0,technosphere
+municipal solid waste,market for municipal solid waste,3735848df52fa430113ad35a6b4c6f40,technosphere
+"natural gas, high pressure","market for natural gas, high pressure",dffa435c35556272edfd942e418419ab,technosphere
+Nickel mix,"market for nickel, 99.5%",0,technosphere
+Nitric acid (98%),"market for nitric acid, without water, in 50% solution state",0,technosphere
+Nitrogen oxides [Inorganic emissions to air],Nitrogen oxides,0,technosphere
+"nitrogen, liquid","market for nitrogen, liquid",5d74c2999d80fefeb4f5d9f2d32e9876,technosphere
+NMVOC (unspecified) [Group NMVOC to air],"NMVOC, non-methane volatile organic compounds, unspecified origin",0,technosphere
+"NOx retained, by selective catalytic reduction","market for NOx retained, by selective catalytic reduction",0b818bb692a5c0d5561ff917007a54f0,technosphere
+"nuclear fuel element, for pressure water reactor, UO2 4.2% & MOX","market for nuclear fuel element, for pressure water reactor, UO2 4.2% & MOX",dc636974e8476a3fc417c7d7b975bb7e,technosphere
+"nuclear power plant, pressure water reactor, 1000MW","nuclear power plant construction, pressure water reactor, 1000MW",2bcf440702bf165a285690f10f34bff9,technosphere
+oil,market for light fuel oil,0,technosphere
+"oil power plant, 500MW","market for oil power plant, 500MW",6b9c4878c434143544741c5d26da6404,technosphere
+oxygen,Oxygen,0,technosphere
+"oxygen, liquid","market for oxygen, liquid",28edec4887a70f7578bfe63eefab9ac8,technosphere
+"paper, woodfree, coated","market for paper, woodfree, coated",495280d87b7c21534d1ce3543c94fcdc,technosphere
+petroleum coke,market for petroleum coke,acb646b235b8afc96f4e8ad0dc34732c,technosphere
+"PEWE electrolysis plant, balance","PEWE electrolysis plant, construction",0,technosphere
+PEWE electrolysis stack 1 MW,PEWE electrolysis stack production,0,technosphere
+"photovoltaic plant, 570kWp, multi-Si, on open ground","market for photovoltaic plant, 570kWp, multi-Si, on open ground",55cad7ceed2789b14718117bc79555d2,technosphere
+"photovoltaic slanted-roof installation, 3kWp, multi-Si, panel, mounted, on roof","market for photovoltaic slanted-roof installation, 3kWp, multi-Si, panel, mounted, on roof",b024979105f1dfc7316c2a1790ea8f8e,technosphere
+pitch,market for pitch,17286c0408b74009d1374e83857750df,technosphere
+"plant, for steam methane reforming","steam methane reforming plant, construction",0,technosphere
+plastic,market for thermoforming of plastic sheets,0,technosphere
+Platinum,market for platinum,0,technosphere
+ReEDS_US_Grid_Mix electricity high voltage,ReEDS_US_Grid_Mix,0,technosphere
+reinforcing steel,market for reinforcing steel,20f7b0fa3b90280b9052a864c205573a,technosphere
+residue from cooling tower,market for residue from cooling tower,881c71bd1da12fe707a80c51582c0759,technosphere
+"sheet rolling, chromium steel","sheet rolling, chromium steel",0,technosphere
+silica gel,market for activated silica,0,technosphere
+Silica sand (excavation and processing),market for silica sand,0,technosphere
+"sodium chloride, powder","market for sodium chloride, powder",c214e021aafe76f9a2be125eeac41ace,technosphere
+"sodium hypochlorite, without water, in 15% solution state","market for sodium hypochlorite, without water, in 15% solution state",53ccacf9d8bddf0b038d4fabe67173d0,technosphere
+"SOx retained, in hard coal flue gas desulfurisation","market for SOx retained, in hard coal flue gas desulfurisation",2c18d494962ca20cf2f97019d0042f3e,technosphere
+"SOx retained, in lignite flue gas desulfurisation","market for SOx retained, in lignite flue gas desulfurisation",988d44c8a61177b5d37a481be42e9221,technosphere
+spent nuclear fuel,market for spent nuclear fuel,6d843a5846962048c931940d5833870d,technosphere
+steam,"market for steam, in chemical industry",0,technosphere
+"steel production, chromium steel 18/8, hot rolled","steel production, chromium steel 18/8, hot rolled",0,technosphere
+"steel production, converter, chromium steel 18/8","steel production, converter, chromium steel 18/8",0,technosphere
+"steel, low-alloyed, hot rolled","market for steel, low-alloyed, hot rolled",9b20aabdab5590c519bb3d717c77acf2,technosphere
+Strontium carbonate,market for strontium carbonate,0,technosphere
+sulfuric acid,market for sulfuric acid,0,technosphere
+tap water,market for tap water,56c875b407502ee835ab986da2fd5094,technosphere
+tetrafluoroethylene,market for tetrafluoroethylene,0,technosphere
+Titanium,market for titanium,0,technosphere
+"To industrial area (regionalized, DE) [Transformation]","Transformation, to industrial area",0,technosphere
+"transport, freight train","market for transport, freight train",0,technosphere
+"transport, freight, lorry 16-32 metric ton, EURO5","market for transport, freight, lorry 16-32 metric ton, EURO5",0,technosphere
+"transport, freight, lorry 7.5-16 metric ton, EURO3","market for transport, freight, lorry 7.5-16 metric ton, EURO3",bd29e939a7d8eee66e32234ec953094c,technosphere
+"transport, freight, sea, transoceanic ship","market for transport, freight, sea, container ship",0,technosphere
+"transport, passenger car, large size, diesel, EURO 5","market for transport, passenger car, large size, diesel, EURO 5",0,technosphere
+"treatment of aluminium scrap, post-consumer, prepared for recycling, at remelter","treatment of aluminium scrap, post-consumer, prepared for recycling, at remelter",0,technosphere
+"treatment of direct air capture system, solvent-based, 1 MtCO2","treatment of direct air capture system, solvent-based, 1 MtCO2",0,technosphere
+"treatment of inert waste, inert material landfill","treatment of inert waste, inert material landfill",0,technosphere
+"treatment of limestone residue, inert material landfill","treatment of limestone residue, inert material landfill",0,technosphere
+"treatment of scrap copper, municipal incineration","treatment of scrap copper, municipal incineration",0,technosphere
+"treatment of spent solvent mixture, hazardous waste incineration","treatment of spent solvent mixture, hazardous waste incineration",0,technosphere
+"treatment of waste bitumen, sanitary landfill","treatment of waste bitumen, sanitary landfill",0,technosphere
+"treatment of waste brick, collection for final disposal","treatment of waste brick, collection for final disposal",0,technosphere
+"treatment of waste concrete, inert material landfill","treatment of waste concrete, inert material landfill",0,technosphere
+"treatment of waste plastic, mixture, municipal incineration","treatment of waste plastic, mixture, municipal incineration",f053df5b0ed6122fea49560f76db60d7,technosphere
+"treatment of waste polyethylene, municipal incineration","treatment of waste polyethylene, municipal incineration",f5a9bbaa81092d7b9ca13ec540eaa3c5,technosphere
+"treatment of waste polypropylene, municipal incineration","treatment of waste polypropylene, municipal incineration",8fa895f3c50a79119f7725f0fb7f3160,technosphere
+"treatment of waste polyurethane, municipal incineration","treatment of waste polyurethane, municipal incineration",a05b562e5654506a2686868b25e0a0fa,technosphere
+"treatment of waste polyvinylchloride, municipal incineration","treatment of waste polyvinylchloride, municipal incineration",dbc0314d8a8565671f057b8aacbde9fe,technosphere
+"treatment of waste reinforcement steel, recycling","treatment of waste reinforcement steel, recycling",0,technosphere
+"treatment of wastewater, unpolluted, from residence, capacity 1.1E10l/year","treatment of wastewater, unpolluted, from residence, capacity 1.1E10l/year",0,technosphere
+truck transportation,truck transportation,0,technosphere
+vinyl acetate production,vinyl acetate production,0,technosphere
+waste mineral oil,market for waste mineral oil,2596232e969a929c42ac37ffdb779837,technosphere
+"wastewater, average","market for wastewater, average",0cae5efb87b2b46ae957ba6d7313657e,technosphere
+"wastewater, from residence","market for wastewater, from residence",9704869cbeb8a079a475df4261b8e0bb,technosphere
+"Water production and supply, deioninzed","water production, deionised",0,technosphere
+"water, completely softened","market for water, completely softened",4e765897ee8143f44ad53dc0b79e2667,technosphere
+"water, decarbonised","market for water, decarbonised",b402b65ffd0d1c7df3b2cbaee24e1916,technosphere
+"water, deionised","market for water, deionised",2034a332fc2d0e3622c7df406ab23266,technosphere
+"wind turbine network connection, 4.5MW, onshore","market for wind turbine network connection, 4.5MW, onshore",806eaec254f5e1cc782084823f43acc9,technosphere
+"wind turbine, 4.5MW, onshore","market for wind turbine, 4.5MW, onshore",74164956b8bd20143e5c30ae83f1f9ac,technosphere
+"wood ash mixture, pure","market for wood ash mixture, pure",9f19a2482e808d195f57e2d72da77551,technosphere
+"wood chips, wet, measured as dry mass","market for wood chips, wet, measured as dry mass",eacf3a0c36f86d66e99233c74f27e701,technosphere
+Yttrium oxide,"market for rare earth oxide concentrate, 70% REO",0,technosphere
+zinc oxide production,market for zinc oxide,0,technosphere
