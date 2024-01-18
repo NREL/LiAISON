@@ -220,6 +220,10 @@ scenario_parameters:
    - updated_database: modified database name with IAM prospective information.
    - updated_project_name: modified project name with modified database ith IAM prospective information.
 
+#### Encryption key for running LiAISON
+- An encryption key is required for running LiAISON. LiAISON requires PREMISE which requires decrypting IAM data.
+- Request (by email) an encryption key from the developers.
+
 #### Important notes for reducing run time and sharing databases. 
 - Reading the base ecoinvent 3.8 into brightway2 ( LiAISON LCA Core engine) takes time. 
 - Once read in, the base project can be saved and used for future LCA calculations without reading it every time. 
