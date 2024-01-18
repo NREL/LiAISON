@@ -5,12 +5,12 @@ data_directories:
   output: output/
 flags:
   correct uncertainty: false
+  mc_foreground: false
   lca: true
   lca_activity_modification: false
-  mc_foreground: false
+  run_prospective_lca_updater: true
+  run_lci_reader: true
   regional_sensitivity: false
-  run_database_editor: true
-  run_database_reader: false
 input_filenames:
   creation_inventory: example.csv
   emission_bridge: emission_name_bridge.csv
