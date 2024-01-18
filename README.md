@@ -286,6 +286,116 @@ scenario_parameters:
 - After running, csv result files are written in the *data/output/* file. 
 - */plotting* folder contains a visualizer.py file to create plots based on the result files in the */data/output* folder 
 
+
+## Example 2:
+
+### Configuration file: example2.yaml
+- An LCA example where a foreground inventory for polymer electrolyte membrane electrolysis for production of 1 kg of hydrogen with 3 activities is built inside ecoinvent 3.8. We do not perform prospective LCA.
+```
+data_directories:
+  ecoinvent_data: ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
+  liaisondata: inputs/
+  output: output/
+flags:
+  correct uncertainty: false
+  mc_foreground: false
+  lca: true
+  lca_activity_modification: false
+  run_prospective_lca_updater: false
+  run_lci_reader: false
+  regional_sensitivity: false
+input_filenames:
+  emission_bridge: emission_name_bridge.csv
+  creation_inventory: N/A
+  foreground_inventory: example2.csv
+  modification_inventory: N/A
+  location_bridge: location_bridge.csv
+  process_bridge: process_name_bridge.csv
+output_filenames:
+  results_filename: lcia_results
+scenario_parameters:
+  base_database: ecoinvent3.8
+  base_project: base_project_ecoinvent38
+  functional_unit: 1
+  initial_year: 2020
+  lca_project_name: lca_project_ecoinvent
+  location: US
+  mc_runs: 1
+  model: image
+  model_key: #askfromdeveloper
+  primary_process_to_study: PEWE electrolysis plant, operation
+  process: hydrogen
+  updated_database: ecoinvent3.8
+  updated_project_name: ecoinvent_3.8
+  ```
+
+- *run_lci_reader*: false because we already have stored project with base ecoinvent3.8 database
+- *run_prospective_lca_updater*: false we do not need prospective LCA and performing calculations in base ecoinvent 3.8
+### Foreground inventory:
+![Screenshot-2024-01-18-at-12-47-07-PM](https://github.com/NREL/LiAISON/blob/dev/images/foreground1.png?raw=true)
+- The inventory for PEME process consists of 3 separate activities:
+  - stack production
+  - plant production
+  - operation
+- These three foreground activities needs to be connected according to the figure to produce the complete foreground system. 
+- Each of these activities have their own outputs which are inputs to other foreground systems. stack --> plant --> operation
+- We provided all supplying locations as US. However, if not found they will display error messages. 
+- The **unit for the flows has to be the same unit** as ecoinvent. 
+- Our primary process to study is *PEWE electrolysis plant, operation* because this activity produces hydrogen. We perform LCA for 1kg of hydrogen production. 
+
+### Editing the process bridge file
+- All technosphere flows should be matched with proper ecoinvent provider activities in this file. 
+- Flows such as *PEWE electrolysis stack 1 MW* is both an output (production) and an input (technosphere) in the foreground inventory. As its listed as input, it has to be included in the process_bridge file. 
+
+### Editing emissions bridge file
+- The PEME process has an oxygen emission output. That is included in the emission_bridge file. 
+
+### Running LiAISON
+- Edit the run.sh file with relevant directory information
+   - *DATADIR*: This is the path to the data folder of the liaison repository. 
+   - *CODEDIR*: This is the path to the code directory within the LiASON root folder. 
+   - *yaml*: The name of the config yaml file being used for the run. 
+- **Type the following commands in the terminal**
+  - `chmod +x run.sh`
+  - `./run.sh`
+ - the *chmod* command is just required for the first time/run. 
+
+### Results
+- After running, csv result files are written in the *data/output/* file. 
+- */plotting* folder contains a visualizer.py file to create plots based on the result files in the */data/output* folder 
+
+
+## Messages while running LiAISON and how to interpret them
+- **Complete Success** - This message means the process and the location provided in the foreground inventory dataset was found inside the ecoinvent inventory and properly linked. 
+  - Example: *Complete Success - Provided location US for market group for electricity, low voltage was found. Chosen location was US . Chosen process was market group for electricity, low voltage*
+- **Minor Success** - This message means the process and the location provided in the foreground inventory dataset was found **not** inside the ecoinvent inventory
+  - Rather than skipping the flow, LiAISON searches for two other locations for the requested process, **RoW**and **GLO**. 
+  - If found minor success is displayed
+  - Example - *Minor Success - Provided location US for low alloyed steel was not found. Shifting to market for steel, low-alloyed GLO*
+
+- **Failed** - This means that this activity was not found at all in the ecoinvent inventory. 
+  - Example: *Not found nitrogen, from air separation US b55af830951a9c677d170aea498425bf*
+
+
 ## Trouble shoot
-Failed - Not found electricity from US grid US 0
+
+### Existence of multiple processes of a given name and location
+- There  might be instances where there are several processes with the same name and location inside ecoinvent. 
+- If the user does not provide a code/id for the process in the process_bridge file, LiAISON will search for all these processes and after finding, will include the first one by default. However, due to list order randomization, different processes may be chosen different times resulting in random LCA results.
+- To prevent this it is best to provide the code for the exact process to link to in the process_bridge file. 
+- LiAISON will display the troublesome process and the options it found for that process for easier debugging. 
+- Example: *Multiple processes exist for -*
+
+### Having more than one production flow in your foreground_inventory dataset will result in error
+- *Issue!!!:Production flows for an activity more than 1!!*
+
+### Not adding technosphere flow in the process_bridge file will result in code failure with this message. Similar error message for missing emission/pollutant in the emission_bridge file
+- *Did not find this process/location in the process bridge*
+- *Emission match not found from Emission Bridge*
+
+### Mismatch of units between foreground inventory and ecoinvent will results in error. 
+- *UNIT ERROR*
+- *Correct unit should be*
+- *Unit Error occured please check*
+- *Emission unit Error occured please check*
 
