@@ -92,7 +92,7 @@ Tapajyoti Ghosh
 
 ## LiAISON Development, Methodology and Life Cycle Assessment application
 
-![Screenshot-2024-01-18-at-10-26-15-AM](https://i.ibb.co/PMxrGb8/Screenshot-2024-01-18-at-10-26-15-AM.png)
+![Screenshot-2024-01-18-at-10-26-15-AM](https://i.ibb.co/PMxrGb8/](https://github.com/NREL/LiAISON/tree/dev/images/Screenshot-2024-01-18-at-10-26-15-AM.png?raw=true)
 ## Objectives
 1. **Static life cycle assessment calculations** where the foreground inventory gets linked automatically to the background inventory.
 2. **Prospective life cycle assessment** using long-term, coherent scenarios of the energy-economy-land-climate system to quantify the effects of background system changes and foreground technology improvements for various technologies.
