@@ -1,0 +1,3 @@
+process,flow,value,unit,input,year,comments,type,process_location,supplying_location
+example,example,1,kilowatt hour,FALSE,2020,none,production,US,
+example,electricity from US grid,1,kilowatt hour,TRUE,2020,none,technosphere,US,US
