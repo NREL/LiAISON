@@ -365,6 +365,51 @@ scenario_parameters:
 - */plotting* folder contains a visualizer.py file to create plots based on the result files in the */data/output* folder 
 
 
+## Example 3:
+We perform prospective LCA of hydrogen production using the PEME electrolytic method. The LCA is done for year 2040 and future energy/climate scenario is chose as SSP2 RCP26. This information is provided through the name of the project and database in the configuration yaml file for this run - example3.yaml. 
+
+### Configuration file:
+```
+data_directories:
+  ecoinvent_data: ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
+  liaisondata: inputs/
+  output: output/
+flags:
+  correct uncertainty: false
+  mc_foreground: false
+  lca: true
+  lca_activity_modification: false
+  run_prospective_lca_updater: true
+  run_lci_reader: false
+  regional_sensitivity: false
+input_filenames:
+  emission_bridge: emission_name_bridge.csv
+  creation_inventory: N/A
+  foreground_inventory: example2.csv
+  modification_inventory: N/A
+  location_bridge: location_bridge.csv
+  process_bridge: process_name_bridge.csv
+output_filenames:
+  results_filename: lcia_results
+scenario_parameters:
+  base_database: ecoinvent3.8
+  base_project: base_project_ecoinvent38
+  functional_unit: 1
+  initial_year: 2040
+  lca_project_name: lca_project_ecoinvent
+  location: US
+  mc_runs: 1
+  model: image
+  model_key: #askfromdeveloper
+  primary_process_to_study: PEWE electrolysis plant, operation
+  process: hydrogen
+  updated_database: ecoinvent_2040_SSP2-RCP26
+  updated_project_name: ecoinvent_2040_SSP2-RCP26_image
+  ```
+- The updated database and updated project name **has to follow the provided format** as because year and time information is extracted out by splitting the names. 
+- run_prospective_lca_updater is set to *True*.
+- Run LiAISON using the run.sh file and change the yaml variable to example3. 
+
 ## Messages while running LiAISON and how to interpret them
 - **Complete Success** - This message means the process and the location provided in the foreground inventory dataset was found inside the ecoinvent inventory and properly linked. 
   - Example: *Complete Success - Provided location US for market group for electricity, low voltage was found. Chosen location was US . Chosen process was market group for electricity, low voltage*
