@@ -149,13 +149,13 @@ flags:
   mc_foreground: false
   lca: true
   lca_activity_modification: false
-  run_prospective_lca_updater: false
-  run_lci_reader: true
+  run_prospective_lca_updater: false #Change this to true for performing prospective life cycle assessment
+  run_lci_reader: true #Change this to true for reading base ecoinvent 3.8 from ecospold files
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
   creation_inventory: example.csv
-  foreground_inventory: example1.csv
+  foreground_inventory: example1.csv #Change this for providing the name of the foreground inventory datasets
   modification_inventory: modification_inventory.csv
   location_bridge: location_bridge.csv
   process_bridge: process_name_bridge.csv
