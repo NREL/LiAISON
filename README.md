@@ -149,8 +149,9 @@ flags:
   mc_foreground: false
   lca: true
   lca_activity_modification: false
-  run_prospective_lca_updater: false #Change this to true for performing prospective life cycle assessment
-  run_lci_reader: true #Change this to true for reading base ecoinvent 3.8 from ecospold files
+  update_base_database_with_future_information: false
+  read_base_lci_database: false
+  use_base_database_for_lca: true
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
@@ -190,9 +191,11 @@ scenario_parameters:
      - mc_foreground: Turn on to perform monte carlo of the foreground inventory
      - lca: Turn on to perform life cycle assessment calculations
      - lca_activity_modification: Turn on to modify an activity inside the base life cycle inventory if required. Relevant for LiASON-ReEDS
-     - run_prospective_lca_updater: flag for running the database editor which edits the base ecoinvent inventory database and updates it with new information from IAM models and future climate/energy scenarios for prospective lca. Also stores the database in a project. 
-     - run_lci_reader: flag for running the database reader which reads the base ecoinvent data and stores it in a project. 
+     - update_base_database_with_future_information: flag for running the database editor which edits the base ecoinvent inventory database and updates it with new information from IAM models and future climate/energy scenarios for prospective lca. Also stores the database in a project. 
+     - read_base_lci_database: flag for running the database reader which reads the base ecoinvent data and stores it in a project. 
+     - use_base_database_for_lca: use the base lca database (ecoinvent 3.8) for lca
      - regional_sensitivity: flag for changing regions and performing sensitivity on regions without changing the input excel file. 
+
 
  - **input_filenames**:
 
@@ -230,7 +233,7 @@ scenario_parameters:
 - LiAISON does this automatically. 
 - For the **first time when LiAISON reads ecoinvent, turn on the database reader.** 
 ```
-  run_lci_reader: True
+  read_base_lci_database: True
 ```
 - For next runs, this can be turned off (False) and the code will run faster because it will no longer read in and save the ecoinvent 3.8 database from scratch.
 - If you ran *test_run.sh*, then ecoinvent 3.8 is already read and the reader can be turned to *False* also. 
@@ -300,9 +303,9 @@ flags:
   correct uncertainty: false
   mc_foreground: false
   lca: true
-  lca_activity_modification: false
-  run_prospective_lca_updater: false
-  run_lci_reader: false
+  update_base_database_with_future_information: false
+  read_base_lci_database: false
+  use_base_database_for_lca: true
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
@@ -378,9 +381,9 @@ flags:
   correct uncertainty: false
   mc_foreground: false
   lca: true
-  lca_activity_modification: false
-  run_prospective_lca_updater: true
-  run_lci_reader: false
+  update_base_database_with_future_information: true
+  read_base_lci_database: false
+  use_base_database_for_lca: false
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
