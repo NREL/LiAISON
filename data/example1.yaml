@@ -29,7 +29,7 @@ scenario_parameters:
   location: US
   mc_runs: 1
   model: image
-  model_key: #askfromdeveloper
+  model_key: tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=
   primary_process_to_study: example
   process: example
   updated_database: ecoinvent3.8
