@@ -7,8 +7,9 @@ flags:
   mc_foreground: false
   lca: true
   lca_activity_modification: false
-  run_prospective_lca_updater: false
-  run_lci_reader: false
+  update_base_database_with_future_information: false
+  read_base_lci_database: false
+  use_base_database_for_lca: true
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
