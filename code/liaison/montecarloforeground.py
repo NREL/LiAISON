@@ -2,84 +2,92 @@ import sys
 import pandas as pd
 from numpy import random
 import numpy as np
-#Monte Carlo of Foregound
-def mc_foreground(yr,mc_runs,mc_foreground_flag,inventory_filename,output_dir):
-    
-    file = pd.read_csv(inventory_filename)
-    print('Updating uncertainty',flush = True)    
-    
+from pprint import pprint
+from typing import Dict
+
+def update_uncertainty(file: pd.DataFrame, yr: float, mc_runs: int) -> Dict[str, np.ndarray]:
+    """
+    Update uncertainty for each input parameter in the given DataFrame for a specific year.
+
+    Parameters:
+    - file (pd.DataFrame): DataFrame containing input parameters.
+    - yr (float): Year for which uncertainty needs to be updated.
+    - mc_runs (int): Number of Monte Carlo runs.
+
+    Returns:
+    - Dict[str, np.ndarray]: Dictionary mapping parameter names to arrays of updated values.
+    """
     unc_dictionary = {}
 
-    for index,row in file.iterrows(): 
+    scaling_factors = {
+        2100.0: 1,
+        2090.0: 0.5,
+        2080.0: 1/3,
+        2070.0: 1/4,
+        2060.0: 1/5,
+        2050.0: 1/6,
+        2040.0: 1/7,
+        2030.0: 1/8,
+    }
 
-            r = 0
+    for index, row in file.iterrows():
+        if row['input']:
+            scale_factor = scaling_factors.get(yr, 1/9)
+            new_val = random.normal(loc=row['value'], scale=row['value'] * scale_factor, size=mc_runs)
+            unc_dictionary[row['process'] + row['flow']] = new_val
 
-            if row['input'] == True:
+    pprint(f'Updated uncertainty dictionary for year {yr}:')
+    pprint(unc_dictionary)
 
+    return unc_dictionary
 
-                    if yr == 2100.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.08, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value']), size  = mc_runs)
-                    elif yr == 2090.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.08, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/2, size  = mc_runs)
-                    elif yr == 2080.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.07, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/3, size  = mc_runs)
+def recreate_input_file(file: pd.DataFrame, unc_dictionary: Dict[str, np.ndarray], mc_runs: int, yr: float, output_dir: str) -> None:
+    """
+    Recreate input files with updated values based on the Monte Carlo runs.
 
-                    elif yr == 2070.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.06, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/4, size  = mc_runs)
+    Parameters:
+    - file (pd.DataFrame): DataFrame containing input parameters.
+    - unc_dictionary (Dict[str, np.ndarray]): Dictionary mapping parameter names to arrays of updated values.
+    - mc_runs (int): Number of Monte Carlo runs.
+    - yr (float): Year for which uncertainty has been updated.
+    - output_dir (str): Directory where output files will be saved.
 
-                    elif yr == 2060.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.05, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/5, size  = mc_runs)
+    Returns:
+    - None
+    """
+    for r in range(mc_runs):
+        if mc_foreground_flag:
+            for index, row in file.iterrows():
+                if row['input']:
+                    file.at[index, 'value'] = unc_dictionary[row['process'] + row['flow']][r]
 
-                    elif yr == 2050.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.04, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/6, size  = mc_runs)
+            name = f'{output_dir}/foreground_uncertainty_lci{r}_{yr}.csv'
+            pprint(f'Recreated input file {name} with uncertainty for run {r} and year {yr}:')
+            pprint(file)
 
-                    elif yr == 2040.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.03, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/7, size  = mc_runs)
+            file.to_csv(name, index=False)
 
-                    elif yr == 2030.0:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.02, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/8, size  = mc_runs)
-                           
-                    else:
-                             #new_val = random.lognormal(mean = np.log(row['value']), sigma = 0.01, size  = mc_runs)
-                             new_val = random.normal(loc = (row['value']), scale = (row['value'])/9, size  = mc_runs)
-            
-  
-                    unc_dictionary[row['process'] + row['flow']] = new_val
+def mc_foreground(yr: float, mc_runs: int, mc_foreground_flag: bool, inventory_filename: str, output_dir: str) -> None:
+    """
+    Perform Monte Carlo simulation for foreground uncertainty and recreate input files.
 
-     
+    Parameters:
+    - yr (float): Year for which uncertainty needs to be updated.
+    - mc_runs (int): Number of Monte Carlo runs.
+    - mc_foreground_flag (bool): Flag indicating whether to perform Monte Carlo for foreground uncertainty.
+    - inventory_filename (str): Path to the input inventory CSV file.
+    - output_dir (str): Directory where output files will be saved.
+
+    Returns:
+    - None
+    """
+    file = pd.read_csv(inventory_filename)
+    print('Updating uncertainty', flush=True)
+
+    unc_dictionary = update_uncertainty(file, yr, mc_runs)
 
     file = pd.read_csv(inventory_filename)
+    recreate_input_file(file, unc_dictionary, mc_runs, yr, output_dir)
 
-    for r in range(0,mc_runs):
-    
-
-        if mc_foreground_flag:
-
-             print(inventory_filename,flush = True)
-             file = pd.read_csv(inventory_filename)
-             print(yr,flush = True)
-
-             for index,row in file.iterrows():
-
-                     if row['input'] == True:
-
-                         temp = row['value']
-                         file.at[index,'value'] = unc_dictionary[row['process'] + row['flow']][r]
-         
-             name = output_dir+'/foreground_uncertainty_lci'+str(r)+'_'+str(yr)+'.csv'
-             print('Recreated input file ' + name, flush = True)
-             file.to_csv(name,index = False)
-             r = r + 1        
-
-            
-         
-    
-    
+# Example usage:
+# mc_foreground(2050.0, 10, True, 'your_inventory.csv', 'your_output_directory')
