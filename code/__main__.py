@@ -89,8 +89,9 @@ data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
 
 
-run_database_reader = flags.get('run_lci_reader')
-run_database_editor = flags.get('run_prospective_lca_updater')
+run_database_reader = flags.get('read_base_lci_database')
+run_database_editor = flags.get('update_base_database_with_future_information')
+run_lca_on_base_database = flags.get('use_base_database_for_lca')
 uncertainty_corrections = flags.get('correct uncertainty')
 mc_foreground_flag = flags.get('mc_foreground')
 lca_flag=flags.get('lca')
@@ -122,10 +123,12 @@ if run_database_editor:
            )           
 #Copies the base project if updater is not required for LCA calculations)
 #Stores the base database in a new project name for lca calculations. 
-else:
+#If false LCA is done on updated database. 
+if run_lca_on_base_database:
     updated_database = base_database
     updated_project_name = base_project
-
+else:
+    pass
 
 #Create results directory
 try:
