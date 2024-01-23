@@ -8,8 +8,9 @@ flags:
   mc_foreground: false
   lca: true
   lca_activity_modification: false
-  run_prospective_lca_updater: true
-  run_lci_reader: true
+  update_base_database_with_future_information: true
+  read_base_lci_database: true
+  use_base_database_for_lca: false
   regional_sensitivity: false
 input_filenames:
   creation_inventory: example.csv
