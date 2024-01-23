@@ -38,7 +38,7 @@ cobalt production,market for cobalt,0,technosphere
 concrete,"market for concrete, 20MPa",0,technosphere
 "concrete, normal","market for concrete, normal",1238afbff3e1ae4613b1e4480376a9c2,technosphere
 "construction work, heat and power co-generation unit, 160kW electrical","construction work, heat and power co-generation unit, 160kW electrical",0,technosphere
-Copper,"copper production, primary",0,technosphere
+Copper,"market for copper, anode",0,technosphere
 copper oxide production,market for copper oxide,0,technosphere
 "diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",7aa9ceef123487fb5e0d9cc96d0367d1,technosphere
 "direct air capture system, solvent-based, 1 MtCO2","direct air capture system, solvent-based, 1 MtCO2",0,technosphere
@@ -120,7 +120,7 @@ HT-co-electrolysis stack 150 kW,"electolysis stack production, high temperature"
 "hydropower plant, run-of-river","market for hydropower plant, run-of-river",3534dd304ffa611dc6d0147617abaa0d,technosphere
 "Industrial area (regionalized, DE) [Occupation]","Occupation, industrial area",0,technosphere
 "inverter production, 500kW","inverter production, 500kW",0,technosphere
-Iridium,market for platinum group metal concentrate,0,technosphere
+Iridium,market for platinum,0,technosphere
 "iron, ore","market for iron ore, crude ore, 63% Fe",0,technosphere
 "iron, scrap","market for iron scrap, unsorted",0,technosphere
 Iron(III) oxide-hydroxide FeO(OH),market for ferrite,0,technosphere
