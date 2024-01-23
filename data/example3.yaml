@@ -7,8 +7,9 @@ flags:
   mc_foreground: false
   lca: true
   lca_activity_modification: false
-  run_prospective_lca_updater: true
-  run_lci_reader: false
+  update_base_database_with_future_information: true
+  read_base_lci_database: false
+  use_base_database_for_lca: false
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
@@ -28,7 +29,7 @@ scenario_parameters:
   location: US
   mc_runs: 1
   model: image
-  model_key: #askfromdeveloper
+  model_key: tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=
   primary_process_to_study: PEWE electrolysis plant, operation
   process: hydrogen
   updated_database: ecoinvent_2040_SSP2-RCP26
