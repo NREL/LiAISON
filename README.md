@@ -57,7 +57,7 @@ folder-LiAISON repository : */LiAISON*
   
 
 ### Extracting Ecoinvent
-- Download **ecoinvent version 3.8 allocation cutoff by substitution** from the website. The filename is ```ecoinvent 3.8_cutoff_ecoSpold02.7z``` and is around 61MB in size.
+- Download **ecoinvent version 3.8 Allocation cut-off by classification** from the website. The filename is ```ecoinvent 3.8_cutoff_ecoSpold02.7z``` and is around 61MB in size.
 - Extract required ecoinvent database from ```ecoinvent 3.8_cutoff_ecoSpold02.7z``` into a folder in */data/inputs/ecoinvent.*
 - Rename the extracted folder name to *ecoinvent_3.8_cutoff_ecoSpold02.7z*. Add an underscore between ecoinvent and 3.8.
 
