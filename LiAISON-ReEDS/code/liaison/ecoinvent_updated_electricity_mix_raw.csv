@@ -1,0 +1,97 @@
+elec_type,elec_amount kwh,elec_loc,elec_mix ratio,database,total_flow
+"market group for electricity, medium voltage",1.0,USA,1.0,ecoinvent_updated,1.0
+"market group for electricity, high voltage",1.0052,USA,1.0052,ecoinvent_updated,1.0052
+"market group for electricity, medium voltage",0.0033000000000000004,USA,0.0033000000000000004,ecoinvent_updated,0.0033000000000000004
+"market for sulfur hexafluoride, liquid",5.4e-08,RoW,5.4e-08,ecoinvent_updated,5.4e-08
+"transmission network construction, electricity, medium voltage",1.8628e-08,RoW,1.8628e-08,ecoinvent_updated,1.8628e-08
+"market group for electricity, high voltage",1.0,USA,1.0,ecoinvent_updated,1.0
+"market group for electricity, high voltage",0.023999999999999997,USA,0.023999999999999997,ecoinvent_updated,0.023999999999999997
+"electricity production, at BIGCC power plant, no CCS",0.001525109199431655,USA,0.001525109199431655,ecoinvent_updated,0.001525109199431655
+"electricity production, at wood burning power plant 20 MW, truck 25km, no CCS",0.01504373460325047,USA,0.01504373460325047,ecoinvent_updated,0.01504373460325047
+"electricity production, at power plant/hard coal, IGCC, no CCS",0.008319325591550724,USA,0.008319325591550724,ecoinvent_updated,0.008319325591550724
+"electricity production, at power plant/lignite, IGCC, no CCS",0.008319325591550724,USA,0.008319325591550724,ecoinvent_updated,0.008319325591550724
+"electricity production, hard coal",0.0008602795650728412,US-NPCC,0.0008602795650728412,ecoinvent_updated,0.0008602795650728412
+"electricity production, hard coal",0.014821052168013084,US-MRO,0.014821052168013084,ecoinvent_updated,0.014821052168013084
+"electricity production, hard coal",0.014485906574739069,US-TRE,0.014485906574739069,ecoinvent_updated,0.014485906574739069
+"electricity production, hard coal",0.050397627402084096,US-RFC,0.050397627402084096,ecoinvent_updated,0.050397627402084096
+"electricity production, lignite",0.05539107911485828,US-RFC,0.05539107911485828,ecoinvent_updated,0.05539107911485828
+"electricity production, hard coal",0.04405445298185184,US-SERC,0.04405445298185184,ecoinvent_updated,0.04405445298185184
+"electricity production, hard coal",0.020597525857800187,US-WECC,0.020597525857800187,ecoinvent_updated,0.020597525857800187
+"electricity production, lignite",0.015921156696584598,US-TRE,0.015921156696584598,ecoinvent_updated,0.015921156696584598
+"electricity production, lignite",0.048419833147750176,US-SERC,0.048419833147750176,ecoinvent_updated,0.048419833147750176
+"electricity production, lignite",0.0009453717254430616,US-NPCC,0.0009453717254430616,ecoinvent_updated,0.0009453717254430616
+"electricity production, lignite",0.02263832175877353,US-WECC,0.02263832175877353,ecoinvent_updated,0.02263832175877353
+"electricity production, lignite",0.016289816849186015,US-MRO,0.016289816849186015,ecoinvent_updated,0.016289816849186015
+"electricity production, natural gas, combined cycle power plant",0.0460636580216823,US-RFC,0.0460636580216823,ecoinvent_updated,0.0460636580216823
+"electricity production, natural gas, combined cycle power plant",0.00103456197134544,US-ASCC,0.00103456197134544,ecoinvent_updated,0.00103456197134544
+"electricity production, natural gas, combined cycle power plant",0.05968140059822678,US-WECC,0.05968140059822678,ecoinvent_updated,0.05968140059822678
+"electricity production, natural gas, combined cycle power plant",0.03414567511376156,US-NPCC,0.03414567511376156,ecoinvent_updated,0.03414567511376156
+"electricity production, natural gas, combined cycle power plant",0.0006147521135515466,US-MRO,0.0006147521135515466,ecoinvent_updated,0.0006147521135515466
+"electricity production, natural gas, combined cycle power plant",0.05104922071169491,US-TRE,0.05104922071169491,ecoinvent_updated,0.05104922071169491
+"electricity production, natural gas, combined cycle power plant",0.07539648244395339,US-SERC,0.07539648244395339,ecoinvent_updated,0.07539648244395339
+"electricity production, natural gas, conventional power plant",0.022344989181965313,US-TRE,0.022344989181965313,ecoinvent_updated,0.022344989181965313
+"electricity production, natural gas, conventional power plant",0.002679168483668153,US-MRO,0.002679168483668153,ecoinvent_updated,0.002679168483668153
+"electricity production, natural gas, conventional power plant",0.014946161137512385,US-NPCC,0.014946161137512385,ecoinvent_updated,0.014946161137512385
+"electricity production, natural gas, conventional power plant",0.03300220824842357,US-SERC,0.03300220824842357,ecoinvent_updated,0.03300220824842357
+"electricity production, natural gas, conventional power plant",0.00045291397386401167,US-ASCC,0.00045291397386401167,ecoinvent_updated,0.00045291397386401167
+"electricity production, natural gas, conventional power plant",0.026123676361810923,US-WECC,0.026123676361810923,ecoinvent_updated,0.026123676361810923
+"electricity production, natural gas, conventional power plant",0.020162863396569163,US-RFC,0.020162863396569163,ecoinvent_updated,0.020162863396569163
+"electricity production, deep geothermal",0.0003443491089679248,US-HICC,0.0003443491089679248,ecoinvent_updated,0.0003443491089679248
+"electricity production, deep geothermal",0.020188620940334044,US-WECC,0.020188620940334044,ecoinvent_updated,0.020188620940334044
+"electricity production, hydro, reservoir, alpine region",0.0004933637070594589,US-MRO,0.0004933637070594589,ecoinvent_updated,0.0004933637070594589
+"electricity production, hydro, run-of-river",0.0019736602302662387,US-MRO,0.0019736602302662387,ecoinvent_updated,0.0019736602302662387
+"electricity production, hydro, reservoir, alpine region",0.007595846778154152,US-WECC,0.007595846778154152,ecoinvent_updated,0.007595846778154152
+"electricity production, hydro, reservoir, non-alpine region",0.0003215035485130807,US-SERC,0.0003215035485130807,ecoinvent_updated,0.0003215035485130807
+"electricity production, hydro, reservoir, alpine region",0.0011596240729792858,US-SERC,0.0011596240729792858,ecoinvent_updated,0.0011596240729792858
+"electricity production, hydro, run-of-river",0.005025657179319534,US-NPCC,0.005025657179319534,ecoinvent_updated,0.005025657179319534
+"electricity production, hydro, run-of-river",9.318471828405168e-05,US-TRE,9.318471828405168e-05,ecoinvent_updated,9.318471828405168e-05
+"electricity production, hydro, reservoir, alpine region",0.00027679418973263083,US-RFC,0.00027679418973263083,ecoinvent_updated,0.00027679418973263083
+"electricity production, hydro, reservoir, alpine region",0.0012563425038296645,US-NPCC,0.0012563425038296645,ecoinvent_updated,0.0012563425038296645
+"electricity production, hydro, run-of-river",0.0002513223440160971,US-ASCC,0.0002513223440160971,ecoinvent_updated,0.0002513223440160971
+"electricity production, hydro, run-of-river",0.0011071608053749191,US-RFC,0.0011071608053749191,ecoinvent_updated,0.0011071608053749191
+"electricity production, hydro, reservoir, alpine region",6.281712519148324e-05,US-ASCC,6.281712519148324e-05,ecoinvent_updated,6.281712519148324e-05
+"electricity production, hydro, run-of-river",0.004638308837638794,US-SERC,0.004638308837638794,ecoinvent_updated,0.004638308837638794
+"electricity production, hydro, run-of-river",0.030383351217116494,US-WECC,0.030383351217116494,ecoinvent_updated,0.030383351217116494
+"electricity production, oil",0.00022933650922057246,US-RFC,0.00022933650922057246,ecoinvent_updated,0.00022933650922057246
+"electricity production, oil",7.429376168711482e-05,US-ASCC,7.429376168711482e-05,ecoinvent_updated,7.429376168711482e-05
+"electricity production, oil",2.1243555869459376e-05,US-MRO,2.1243555869459376e-05,ecoinvent_updated,2.1243555869459376e-05
+"electricity production, oil",0.0003936513060009212,US-SERC,0.0003936513060009212,ecoinvent_updated,0.0003936513060009212
+"electricity production, oil",0.0005504545692141683,US-HICC,0.0005504545692141683,ecoinvent_updated,0.0005504545692141683
+"electricity production, oil",7.015654983960962e-05,US-WECC,7.015654983960962e-05,ecoinvent_updated,7.015654983960962e-05
+"electricity production, oil",1.0797829502708633e-05,US-TRE,1.0797829502708633e-05,ecoinvent_updated,1.0797829502708633e-05
+"electricity production, oil",6.0913842520714996e-05,US-NPCC,6.0913842520714996e-05,ecoinvent_updated,6.0913842520714996e-05
+"electricity production, oil",0.00038107846938852623,US-RFC,0.00038107846938852623,ecoinvent_updated,0.00038107846938852623
+"electricity production, oil",0.00012345070170058194,US-ASCC,0.00012345070170058194,ecoinvent_updated,0.00012345070170058194
+"electricity production, oil",3.5299489743768294e-05,US-MRO,3.5299489743768294e-05,ecoinvent_updated,3.5299489743768294e-05
+"electricity production, oil",0.0006541131966883915,US-SERC,0.0006541131966883915,ecoinvent_updated,0.0006541131966883915
+"electricity production, oil",0.0009146663364545488,US-HICC,0.0009146663364545488,ecoinvent_updated,0.0009146663364545488
+"electricity production, oil",0.00011657607731678175,US-WECC,0.00011657607731678175,ecoinvent_updated,0.00011657607731678175
+"electricity production, oil",1.794228207970543e-05,US-TRE,1.794228207970543e-05,ecoinvent_updated,1.794228207970543e-05
+"electricity production, oil",0.00010121787390616433,US-NPCC,0.00010121787390616433,ecoinvent_updated,0.00010121787390616433
+"electricity production, solar tower power plant, 20 MW",0.0002036558120062089,US-WECC,0.0002036558120062089,ecoinvent_updated,0.0002036558120062089
+"electricity production, solar thermal parabolic trough, 50 MW",0.0005163468957977784,US-WECC,0.0005163468957977784,ecoinvent_updated,0.0005163468957977784
+"electricity production, solar thermal parabolic trough, 50 MW",3.016044952089824e-05,US-SERC,3.016044952089824e-05,ecoinvent_updated,3.016044952089824e-05
+"electricity production, photovoltaic, commercial",0.05941780451784966,US,0.05941780451784966,ecoinvent_updated,0.05941780451784966
+"electricity production, wind, 1-3MW turbine, offshore",0.0007569268318851065,RoW,0.0007569268318851065,ecoinvent_updated,0.0007569268318851065
+"electricity production, wind, <1MW turbine, onshore",0.0013616889474069886,US-RFC,0.0013616889474069886,ecoinvent_updated,0.0013616889474069886
+"electricity production, wind, <1MW turbine, onshore",0.0026479537899248475,US-MRO,0.0026479537899248475,ecoinvent_updated,0.0026479537899248475
+"electricity production, wind, 1-3MW turbine, onshore",0.031165293618020257,US-TRE,0.031165293618020257,ecoinvent_updated,0.031165293618020257
+"electricity production, wind, >3MW turbine, onshore",0.0002716170341933537,US-MRO,0.0002716170341933537,ecoinvent_updated,0.0002716170341933537
+"electricity production, wind, 1-3MW turbine, onshore",0.0003656944492336145,US-HICC,0.0003656944492336145,ecoinvent_updated,0.0003656944492336145
+"electricity production, wind, >3MW turbine, onshore",0.0002684464073350655,US-TRE,0.0002684464073350655,ecoinvent_updated,0.0002684464073350655
+"electricity production, wind, 1-3MW turbine, onshore",0.031587099913961726,US-MRO,0.031587099913961726,ecoinvent_updated,0.031587099913961726
+"electricity production, wind, <1MW turbine, onshore",0.0026125936719338157,US-TRE,0.0026125936719338157,ecoinvent_updated,0.0026125936719338157
+"electricity production, wind, 1-3MW turbine, onshore",0.016243412176276163,US-RFC,0.016243412176276163,ecoinvent_updated,0.016243412176276163
+"electricity production, wind, 1-3MW turbine, onshore",0.004132927743719577,US-NPCC,0.004132927743719577,ecoinvent_updated,0.004132927743719577
+"electricity production, wind, >3MW turbine, onshore",0.0001395075817646797,US-RFC,0.0001395075817646797,ecoinvent_updated,0.0001395075817646797
+"electricity production, wind, <1MW turbine, onshore",0.0003464642753616832,US-NPCC,0.0003464642753616832,ecoinvent_updated,0.0003464642753616832
+"electricity production, wind, 1-3MW turbine, onshore",0.0012499397576979604,US-SERC,0.0012499397576979604,ecoinvent_updated,0.0012499397576979604
+"electricity production, wind, 1-3MW turbine, onshore",0.03847132942284929,US-WECC,0.03847132942284929,ecoinvent_updated,0.03847132942284929
+"electricity production, wind, <1MW turbine, onshore",0.003225584390498503,US-WECC,0.003225584390498503,ecoinvent_updated,0.003225584390498503
+"electricity production, wind, >3MW turbine, onshore",0.0003308020688813996,US-WECC,0.0003308020688813996,ecoinvent_updated,0.0003308020688813996
+"market group for electricity, low voltage",1.0,USA,1.0,ecoinvent_updated,1.0
+"market for sulfur hexafluoride, liquid",2.99e-09,RoW,2.99e-09,ecoinvent_updated,2.99e-09
+"distribution network construction, electricity, low voltage",8.74e-08,RoW,8.74e-08,ecoinvent_updated,8.74e-08
+"electricity production, photovoltaic, residential",0.01777961059670246,US,0.01777961059670246,ecoinvent_updated,0.01777961059670246
+"market group for electricity, medium voltage",1.0052043465153349,USA,1.0052043465153349,ecoinvent_updated,1.0052043465153349
+"market group for electricity, low voltage",0.023999999999999997,USA,0.023999999999999997,ecoinvent_updated,0.023999999999999997

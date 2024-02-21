@@ -1,0 +1,33 @@
+data_directories:
+  ecoinvent_data: /projects/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
+  liaisondata: inputs/
+  output: output/
+  reeds_data: reeds_data/
+flags:
+  correct uncertainty: false
+  lca: true
+  lca_activity_modification: false
+  mc_foreground: false
+  regional_sensitivity: false
+  run_database_editor: false
+  run_database_reader: false
+input_filenames:
+  creation_inventory: No_IRA2050_reeds_data.csv
+  emission_bridge: emission_name_bridge.csv
+  foreground_inventory: example.csv
+  location_bridge: location_bridge.csv
+  modification_inventory: market_updated_reeds_inventory.csv
+  process_bridge: process_name_bridge.csv
+output_filenames:
+  results_filename: lcia_results
+scenario_parameters:
+  base_database: premise_base
+  base_project: premise_base
+  initial_year: 2020
+  lca_project_name: lca_project_No_IRA2050
+  location: US
+  mc_runs: 1
+  primary_process_to_study: market group for electricity, high voltage new test
+  process: electricity
+  updated_database: premise_base
+  updated_project_name: No_IRA2050
