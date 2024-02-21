@@ -160,7 +160,7 @@ def main() -> None:
     results_filename = outputs.get('results_filename')
     output_dir = os.path.join(args.datapath, data_dirs.get('output'))
     data_dir = os.path.join(args.datapath, data_path)
-    ecoinvent_file='/kfs2/shared-projects/liaison/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/'
+
     # Flags
     run_database_reader_flag = flags.get('read_base_lci_database')
     run_database_editor_flag = flags.get('update_base_database_with_future_information')
