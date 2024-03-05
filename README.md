@@ -61,7 +61,8 @@ folder-LiAISON repository : */LiAISON*
   - ```conda install conda-forge::premise=1.8.1``` or ```pip install premise==1.8.1```
   - ```conda install conda-forge::openpyxl=3.1.2``` or ```pip install openpyxl=3.1.2```
   - ```conda install cmutel::bw2analyzer=0.10``` or ```pip install bw2analyzer=0.10```
-  - ```pip install bw2io=0.8.7```
+  - ```pip install bw2io==0.8.7```
+  - ```pip install wurst==0.3.5```
 
 
 ### Extracting Ecoinvent
