@@ -112,6 +112,7 @@ if run_database_reader:
            base_project = base_project,
            bw = bw           
            )
+    
 #Running database editor for modifying base databases with IMAGE information and future scenario    
 if run_database_editor:
     print('Running db editor', flush = True)

@@ -63,21 +63,18 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
     #IMAGE DATA from posterity and updating the ecoinvent databases. 
     #it stores the updated databases in dictionary files
  
-        reset_project(base_database,base_project,updated_project_name,bw)   
-
+        #reset_project(base_database,base_project,updated_project_name,bw)   
+        bw.projects.set_current(base_project)
         time0 = time.time()
-        key = updated_database
-        year = updated_database[10:14]
-        version = base_database[9:]          
-       
-        
+        key=updated_database
+        #Name of old database and new database is same in liaison-reeds
         time1 = time.time()
         ndb = NewDatabase(
             scenarios=[
                 {"model":"image", "pathway":"SSP2-Base", "year":2020}
             ],
             source_db=base_database, # <-- name of the database in the BW2 project. Must be a string.
-            source_version=version, # <-- version of ecoinvent. Can be "3.5", "3.6", "3.7" or "3.7.1". Must be a string.
+            source_version="3.8", # <-- version of ecoinvent. Can be "3.5", "3.6", "3.7" or "3.7.1". Must be a string.
             key='tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=' # <-- decryption key
             # to be requested from the library maintainers if you want ot use default scenarios included in `premise`
         )
@@ -174,11 +171,8 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
             None
             """
             print(project_new," Project entered for ReEDS LCI development",flush=True)
-            print('\n')
             print(database_new,flush=True)
-            print("Staring editing LCI using ReEDS", flush=True)
-            print('\n')
-            
+            print("Staring editing LCI using ReEDS", flush=True)     
             reset_project(base_database,base_project,project_new,bw)
             
             reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   

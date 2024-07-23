@@ -92,7 +92,7 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
         Name of the project
     """
 
-    project_name = project+updated_project_name+number
+    project_name = project+"_"+number
     try:
       print('Trying to delete project',project_name)
       bw.projects.delete_project(project_name,delete_dir = True)
