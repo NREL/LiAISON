@@ -26,6 +26,11 @@ def search_index_creator(ei_cf_36_db):
         
         dic = {}
         dic2 = {}
+
+        code2 = []
+        name2 = []
+        unit2 = []
+        loc2 = []
         for i in ei_cf_36_db:
             
             try:
@@ -37,6 +42,10 @@ def search_index_creator(ei_cf_36_db):
             
             
             dic[i['name']+'@'+i['location']][i['code']] = i
+            code2.append(i['code'])
+            name2.append(i['name'])
+            unit2.append(i['unit'])
+            loc2.append(i['location'])
 
 
         '''    
@@ -48,6 +57,15 @@ def search_index_creator(ei_cf_36_db):
         pickle.dump(problems,filehandler)
         filehandler.close()
         '''
+
+        df = pd.DataFrame()
+        df['Ecoinvent_name'] = name2
+        df['Ecoinvent_code'] = code2
+        df['unit'] = unit2
+        df['location'] = loc2
+
+
+        df.to_csv('Ecoinvent_name_data.csv', index = False)
         
         return dic,dic2
 
@@ -78,7 +96,7 @@ def search_index_reader(p_name,p_loc,database_dict):
         except:
             return None
             
-def search_index_debugger(database_dict,p_code):
+def search_index_debugger(database_dict,p_code,**kwargs):
     
         """
         This function debugs the search process for multiple process names and locations
@@ -109,11 +127,15 @@ def search_index_debugger(database_dict,p_code):
                     print(act,flush = True)
                     print(database_dict[act],flush = True)
                     
-                    temp_choice.append(act)
+
+                    if kwargs['unit'] == database_dict[act]['unit']:
+                        temp_choice.append(act)
+                        print('chosen unit ', kwargs['unit'])                  
+                    
                 print('\n *****',flush = True)    
-                print("Choose the first row by default to resolve the issue temporarily",flush = True)
+                print("Choose the correct unit by default to resolve the issue temporarily",flush = True)
                 chosen_act = temp_choice[0]
-                return database_dict[act]
+                return database_dict[chosen_act]
    
         else:
 
@@ -176,7 +198,8 @@ def merge(inp,process_name_bridge,location_name_bridge):
             inp['code'] = inp['code'].fillna('0')
             process_name[['Common_name','Ecoinvent_code']] = process_name[['Common_name','Ecoinvent_code']].astype('str')
             inp[['flow','code']] = inp[['flow','code']].astype('str')
-            process_bridge = inp.merge(process_name, left_on = ['flow','code'], right_on = ['Common_name','Ecoinvent_code']).dropna()
+            #process_bridge = inp.merge(process_name, left_on = ['flow','code'], right_on = ['Common_name','Ecoinvent_code']).dropna()
+            process_bridge = inp.merge(process_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
             
             location_bridge = inp.merge(location_name, left_on = ['supplying_location'], right_on = ['location_common']).dropna()
 
@@ -387,7 +410,7 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
                     unit_error_flag = 0
                     try :
                         activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],location_bridge['location_ecoinvent'][0],database_dict)
-                        activity = search_index_debugger(activity_dic,str(process_bridge['Ecoinvent_code'][0]).strip())    
+                        activity = search_index_debugger(activity_dic,str(process_bridge['Ecoinvent_code'][0]).strip(),unit=row['unit'])    
 
                         if activity['unit'] != row['unit']:
                             print('Warning --- UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
@@ -397,53 +420,67 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
                         process_dict[key].save() 
                         print('Complete Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                     
-                    
                     except:
-                        try:
-                            #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
-                            #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
-                            activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RNA',database_dict)
-                            activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
-                            if activity['unit'] != row['unit']:
-                                print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
-                                unit_error_flag = 1                          
-                            
-                            process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
-                            process_dict[key].save() 
-                            print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
-
-                            
-                        except:
                             try:
-                                #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
-                                #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
-                                activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'GLO',database_dict)
-                                activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
+                                #This exception is to make sure that if flows are not found the defaults of USA are chosen for building the database
+                                #The reason why three locations are used are because processes(like electricity) do not have RoW location but USA is present.
+                                activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'USA',database_dict)
+                                activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
                                 if activity['unit'] != row['unit']:
-                                    print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
+                                    print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                     unit_error_flag = 1  
                                 
                                 process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                                 process_dict[key].save() 
-                                print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                                print('Complete Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'],flush = True)
 
+                    
                             except:
                                 try:
                                     #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
                                     #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
-                                    activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
-                                    activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
+                                    activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RNA',database_dict)
+                                    activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
                                     if activity['unit'] != row['unit']:
-                                        print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
-                                        unit_error_flag = 1  
+                                        print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
+                                        unit_error_flag = 1                          
                                     
                                     process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                                     process_dict[key].save() 
-                                    print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                                    print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
-                                except:                                   
-                                         print('Warning --- Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
-        
+                                    
+                                except:
+                                    try:
+                                        #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
+                                        #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
+                                        activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'GLO',database_dict)
+                                        activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                        if activity['unit'] != row['unit']:
+                                            print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
+                                            unit_error_flag = 1  
+                                        
+                                        process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
+                                        process_dict[key].save() 
+                                        print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+
+                                    except:
+                                        try:
+                                            #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
+                                            #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
+                                            activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
+                                            activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                            if activity['unit'] != row['unit']:
+                                                print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                                unit_error_flag = 1  
+                                            
+                                            process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
+                                            process_dict[key].save() 
+                                            print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+
+                                        except:                                   
+                                             print('Warning --- Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+            
                     if unit_error_flag == 1:
                         print('Warning --- Correct unit should be '+activity['unit'])
                         sys.exit('Warning --- Unit Error occured please check')

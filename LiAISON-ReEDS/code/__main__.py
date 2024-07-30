@@ -81,7 +81,7 @@ ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
 
 ## Fix this
-ecoinvent_file = "/projects/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/"
+#ecoinvent_file = "/projects/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/"
                                   
 results_filename = outputs.get('results_filename')
 output_dir = os.path.join(args.datapath,
@@ -89,7 +89,7 @@ output_dir = os.path.join(args.datapath,
 data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
 ## Fix this
-creation_inventory_filename = os.path.join("/projects/liaison/hipster_data/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
+#creation_inventory_filename = os.path.join("/projects/liaison/hipster_data/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
 
 run_database_reader = flags.get('run_database_reader')
 run_database_editor = flags.get('run_database_editor')

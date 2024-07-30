@@ -75,7 +75,8 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
             ],
             source_db=base_database, # <-- name of the database in the BW2 project. Must be a string.
             source_version="3.8", # <-- version of ecoinvent. Can be "3.5", "3.6", "3.7" or "3.7.1". Must be a string.
-            key='tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=' # <-- decryption key
+            key='tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=',
+            use_multiprocessing = False # <-- decryption key
             # to be requested from the library maintainers if you want ot use default scenarios included in `premise`
         )
         print(time.time() - time1, flush = True)

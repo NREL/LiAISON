@@ -1,100 +1,100 @@
 Common_name,Ecoinvent_name,Ecoinvent_code,type_of_flow
-"carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m","carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m",612209921832420d870874f5c8c5f10f,technosphere
-desulfurisation of lignite flue gas,desulfurisation of lignite flue gas,22052c55001700a6ea6fa268802784ff,technosphere
-"market for ammonia, anhydrous, liquid","market for ammonia, anhydrous, liquid",326ea6de47b30ef860e60440114cbc91,technosphere
-"market for biomass, used as fuel","market for biomass, used as fuel",e99aef08142f46afa3d735706a2be76b,technosphere
-"market for chemical, organic","market for chemical, organic",9757270c6c2078fdd4c0fa43c7c49ee9,technosphere
-"market for chlorine, liquid","market for chlorine, liquid",1ab0f90a11c5d7bb08e67af7a0ab39cd,technosphere
-market for lubricating oil,market for lubricating oil,15c993b65a45868e9f93a05998f2aca0,technosphere
-"market for water, decarbonised","market for water, decarbonised",b402b65ffd0d1c7df3b2cbaee24e1916,technosphere
-"sodium chloride production, powder","sodium chloride production, powder",cc1b17bf300cc7495029148fc40f5f5f,technosphere
-"transport, freight, lorry, unspecified, long haul","transport, freight, lorry, unspecified, long haul",973a63723e504a7daa9eafa8befd1b62,technosphere
-"treatment of municipal solid waste, incineration","treatment of municipal solid waste, incineration",c1c00253bef8f5f6decb3abfeead8f43,technosphere
-"treatment of waste mineral oil, hazardous waste incineration","treatment of waste mineral oil, hazardous waste incineration",b7ed48fd65a4e4c28be59ca5ddff2a2c,technosphere
-"treatment of wastewater, average, capacity 1.1E10l/year","treatment of wastewater, average, capacity 1.1E10l/year",74386f98b641e058fe02285e6c839b09,technosphere
-"treatment of wastewater, average, capacity 1.1E10l/year","treatment of wastewater, average, capacity 1.1E10l/year",c024f12b44633d9fe8c30c83a345cbba,technosphere
-"treatment of wood ash mixture, pure, landfarming","treatment of wood ash mixture, pure, landfarming",a018667f81b0e5987b48d05ffc0c7bd8,technosphere
-"treatment of wood ash mixture, pure, municipal incineration","treatment of wood ash mixture, pure, municipal incineration",d8aa822a0df4a7e3e15f95281cde3ed2,technosphere
-"treatment of wood ash mixture, pure, sanitary landfill","treatment of wood ash mixture, pure, sanitary landfill",8c5166bb2d8ddd8689f661e6acbc941b,technosphere
-wood combustion power plant 20 MW,wood combustion power plant 20 MW,2d67369f7ab0430eaa145db7247e864f,technosphere
-"carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m","carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m",ef5dc4373e124faf91435fd03d00138f,technosphere
-"carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m","carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m",ea67b10113f147eebff58c9feb926166,technosphere
-"market for NOx retained, by selective catalytic reduction","market for NOx retained, by selective catalytic reduction",0b818bb692a5c0d5561ff917007a54f0,technosphere
-"market for SOx retained, in hard coal flue gas desulfurisation","market for SOx retained, in hard coal flue gas desulfurisation",2c18d494962ca20cf2f97019d0042f3e,technosphere
-market for hard coal,market for hard coal,31e7d8a0938ac1aeaaecb85d5e11b2d7,technosphere
-market for hard coal power plant,market for hard coal power plant,684cf2760e4f443bad893b0795ad40b6,technosphere
-market for lignite,lignite mine operation,208fe80e8cf7c17a98363b0ab854c055,technosphere
-market for lignite power plant,market for lignite power plant,ae12c89d77616a88068c45b2cee740f3,technosphere
-"market for transport, freight train","market for transport, freight train",d5a4242e08006f3b45c12ee3f14b0bc4,technosphere
-"market for water, completely softened","market for water, completely softened",4e765897ee8143f44ad53dc0b79e2667,technosphere
-market group for light fuel oil,market group for light fuel oil,3d71d5881cfa719114cddca6f5b1d5f5,technosphere
-"treatment of hard coal ash, residual material landfill","treatment of hard coal ash, residual material landfill",d0b45824cc43633457a55fe3c94f29d5,technosphere
-"treatment of lignite ash, opencast refill","treatment of lignite ash, opencast refill",b635cce73bcd6e0f683dd3f3905d1d7a,technosphere
-"treatment of residue from cooling tower, sanitary landfill","treatment of residue from cooling tower, sanitary landfill",05679a39a8ac3421c2e798a497141edf,technosphere
-"heat production, natural gas, at industrial furnace >100kW","heat production, natural gas, at industrial furnace >100kW",1a78ca13d4b59418ca8791efa9a0db09,technosphere
-"market for concentrated solar power plant, solar tower, 20 MW","market for concentrated solar power plant, solar tower, 20 MW",0af48c0ac75b5c35a42bd4c5b3f05aac,technosphere
-"market for water, deionised","market for water, deionised",2034a332fc2d0e3622c7df406ab23266,technosphere
-"market for hydropower plant, reservoir, non-alpine regions","market for hydropower plant, reservoir, non-alpine regions",f94080a86adb28fe84eac888354cfd2e,technosphere
-market for waste mineral oil,market for waste mineral oil,2596232e969a929c42ac37ffdb779837,technosphere
-"market for gas power plant, combined cycle, 400MW electrical","market for gas power plant, combined cycle, 400MW electrical",bb25747d73b80f724cbec678708156fc,technosphere
-"market for natural gas, high pressure","market for natural gas, high pressure",dffa435c35556272edfd942e418419ab,technosphere
-market for residue from cooling tower,market for residue from cooling tower,881c71bd1da12fe707a80c51582c0759,technosphere
-"carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m","carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m",8ef1fe3e0f48427897d040da41b93da5,technosphere
-"market for gas power plant, combined cycle, 400MW electrical","market for gas power plant, combined cycle, 400MW electrical",9d420018a25d496aa3a160b226b49422,technosphere
-"market for hydrochloric acid, without water, in 30% solution state","market for hydrochloric acid, without water, in 30% solution state",eb98d932d77cdb68c958200e11eedc76,technosphere
-"market for sodium hydroxide, without water, in 50% solution state","market for sodium hydroxide, without water, in 50% solution state",5b64503ebe2c3c8ae655f54a747b59f8,technosphere
-"market group for natural gas, high pressure","market group for natural gas, high pressure",8b883e9f5a9ca1152f67cf7a848b4b07,technosphere
-"market for gas power plant, 100MW electrical","market for gas power plant, 100MW electrical",5f3e50d65014590d3466f05c13000505,technosphere
-"market for gas power plant, 300MW electrical","market for gas power plant, 300MW electrical",9745a9c42b8d05a321bf50475e68db12,technosphere
-market for benzene,market for benzene,00f6517dda64b8808583a17c0a89f29c,technosphere
-"market for geothermal power plant, 5.5MWel","market for geothermal power plant, 5.5MWel",9e4d8ca08e2944617753b14e542d49ae,technosphere
-market for biogas,market for biogas,2f1b9485102234b60e5a2728aa749ce8,technosphere
-"market for heat and power co-generation unit, 160kW electrical, common components for heat+electricity","market for heat and power co-generation unit, 160kW electrical, common components for heat+electricity",3fa997f639e0681b7b936809d3480422,technosphere
-"market for heat and power co-generation unit, 160kW electrical, components for electricity only","market for heat and power co-generation unit, 160kW electrical, components for electricity only",8b50a1251925aa1854ee5828a9ad741a,technosphere
-"market for heat and power co-generation unit, 160kW electrical, components for heat only","market for heat and power co-generation unit, 160kW electrical, components for heat only",6a08633388480133e30b71f3f0a6e424,technosphere
-"market for hydropower plant, run-of-river","market for hydropower plant, run-of-river",3534dd304ffa611dc6d0147617abaa0d,technosphere
-market for acetylene,market for acetylene,caa782d5ffc74dfd557aa1e7d96b27fe,technosphere
-market for anionic resin,market for anionic resin,5546735367435636699501ffe38eb797,technosphere
-"market for argon, liquid","market for argon, liquid",40d0d5bfe4cfcbbbdff497450285a946,technosphere
-"market for boric acid, anhydrous, powder","market for boric acid, anhydrous, powder",ef9192ffaee5091d4dc4290682b3335a,technosphere
-"market for carbon dioxide, liquid","market for carbon dioxide, liquid",6c30b87bdaf5e27e0398c2c8e5280a27,technosphere
-market for cast iron,market for cast iron,6a7811cf5d456c6d0906edc3c404b586,technosphere
-market for cationic resin,market for cationic resin,6f14ce3e1921d9aad385e17b20355009,technosphere
-"market for cement, Portland","market for cement, Portland",ee2b665e11664da2b73af57a72dc6b0b,technosphere
-"market for chemical, inorganic","market for chemical, inorganic",f0d44bf0e3c929ab4c21adef45d5ca2a,technosphere
-"market for concrete, normal","market for concrete, normal",1238afbff3e1ae4613b1e4480376a9c2,technosphere
-"market for diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",a9041454040e4eabb4dc2da267bad134,technosphere
-"market for flat glass, coated","market for flat glass, coated",206535f59d73199e4f636d361cc8f952,technosphere
-market for fly ash and scrubber sludge,market for fly ash and scrubber sludge,df8b4af718ba9413a2f9a4cc00af5d16,technosphere
-"market for hazardous waste, for incineration","market for hazardous waste, for incineration",3456e7fc0ce6690edd534aad56586a56,technosphere
-"market for hydrogen, liquid","market for hydrogen, liquid",9fed50977b761e7d6e212c93f8d4ab40,technosphere
-market for low level radioactive waste,market for low level radioactive waste,f16ebe0cf00906d23646f15369313fe6,technosphere
-market for low level radioactive waste for final repository,market for low level radioactive waste for final repository,2558088b18f9cf8789cad106dbddf16c,technosphere
-"market for nitrogen, liquid","market for nitrogen, liquid",5d74c2999d80fefeb4f5d9f2d32e9876,technosphere
-"market for nuclear fuel element, for pressure water reactor, UO2 4.2% & MOX","market for nuclear fuel element, for pressure water reactor, UO2 4.2% & MOX",dc636974e8476a3fc417c7d7b975bb7e,technosphere
-"market for oxygen, liquid","market for oxygen, liquid",28edec4887a70f7578bfe63eefab9ac8,technosphere
-"market for paper, woodfree, coated","market for paper, woodfree, coated",495280d87b7c21534d1ce3543c94fcdc,technosphere
-market for pitch,market for pitch,17286c0408b74009d1374e83857750df,technosphere
-market for reinforcing steel,market for reinforcing steel,20f7b0fa3b90280b9052a864c205573a,technosphere
-"market for sodium hypochlorite, without water, in 15% solution state","market for sodium hypochlorite, without water, in 15% solution state",53ccacf9d8bddf0b038d4fabe67173d0,technosphere
-market for spent nuclear fuel,market for spent nuclear fuel,6d843a5846962048c931940d5833870d,technosphere
-"market for steel, low-alloyed, hot rolled","market for steel, low-alloyed, hot rolled",9b20aabdab5590c519bb3d717c77acf2,technosphere
-"nuclear power plant construction, pressure water reactor, 1000MW","nuclear power plant construction, pressure water reactor, 1000MW",2bcf440702bf165a285690f10f34bff9,technosphere
-market for waste mineral oil,market for waste mineral oil,5d3258538ce284631e62bf9f61726081,technosphere
-"market for wind power plant, 2MW, offshore, fixed parts","market for wind power plant, 2MW, offshore, fixed parts",e02ef498459d00bcce3b75d98cd523e4,technosphere
-"market for wind power plant, 2MW, offshore, moving parts","market for wind power plant, 2MW, offshore, moving parts",fa427b76621d3abbeb81d999a30162b5,technosphere
-market for bilge oil,market for bilge oil,f4859b18b3f1279afa171141d31d8115,technosphere
-market for heavy fuel oil,market for heavy fuel oil,3660bffb340f9843d4a2ed41b5d34ef8,technosphere
-market for lignite ash,market for lignite ash,9f710cf43760b6775cc064a585a68ad0,technosphere
-"market for limestone, crushed, washed","market for limestone, crushed, washed",bcd5dd97b63e6534fad7c7a1a267c1ba,technosphere
-market for municipal solid waste,market for municipal solid waste,3735848df52fa430113ad35a6b4c6f40,technosphere
-"market for oil power plant, 500MW","market for oil power plant, 500MW",6b9c4878c434143544741c5d26da6404,technosphere
-"market for wind turbine network connection, 4.5MW, onshore","market for wind turbine network connection, 4.5MW, onshore",806eaec254f5e1cc782084823f43acc9,technosphere
-"market for wind turbine, 4.5MW, onshore","market for wind turbine, 4.5MW, onshore",74164956b8bd20143e5c30ae83f1f9ac,technosphere
-"market for photovoltaic plant, 570kWp, multi-Si, on open ground","market for photovoltaic plant, 570kWp, multi-Si, on open ground",55cad7ceed2789b14718117bc79555d2,technosphere
-"market for photovoltaic slanted-roof installation, 3kWp, single-Si, panel, mounted, on roof","market for photovoltaic slanted-roof installation, 3kWp, single-Si, panel, mounted, on roof",8e3e1a4d8eda7d47de12d4737f0329e4,technosphere
-market for tap water,market for tap water,56c875b407502ee835ab986da2fd5094,technosphere
-"market for wastewater, from residence","market for wastewater, from residence",9704869cbeb8a079a475df4261b8e0bb,technosphere
+"carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m","carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m",0,technosphere
+desulfurisation of lignite flue gas,desulfurisation of lignite flue gas,0,technosphere
+"market for ammonia, anhydrous, liquid","market for ammonia, anhydrous, liquid",0,technosphere
+"market for biomass, used as fuel","market for biomass, used as fuel",0,technosphere
+"market for chemical, organic","market for chemical, organic",0,technosphere
+"market for chlorine, liquid","market for chlorine, liquid",0,technosphere
+market for lubricating oil,market for lubricating oil,0,technosphere
+"market for water, decarbonised","market for water, decarbonised",0,technosphere
+"sodium chloride production, powder","sodium chloride production, powder",0,technosphere
+"transport, freight, lorry, unspecified, long haul","transport, freight, lorry, unspecified, long haul",0,technosphere
+"treatment of municipal solid waste, incineration","treatment of municipal solid waste, incineration",0,technosphere
+"treatment of waste mineral oil, hazardous waste incineration","treatment of waste mineral oil, hazardous waste incineration",0,technosphere
+"treatment of wastewater, average, capacity 1.1E10l/year","treatment of wastewater, average, capacity 1.1E10l/year",0,technosphere
+"treatment of wastewater, average, capacity 1.1E10l/year","treatment of wastewater, average, capacity 1.1E10l/year",0,technosphere
+"treatment of wood ash mixture, pure, landfarming","treatment of wood ash mixture, pure, landfarming",0,technosphere
+"treatment of wood ash mixture, pure, municipal incineration","treatment of wood ash mixture, pure, municipal incineration",0,technosphere
+"treatment of wood ash mixture, pure, sanitary landfill","treatment of wood ash mixture, pure, sanitary landfill",0,technosphere
+wood combustion power plant 20 MW,wood combustion power plant 20 MW,0,technosphere
+"carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m","carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m",0,technosphere
+"carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m","carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m",0,technosphere
+"market for NOx retained, by selective catalytic reduction","market for NOx retained, by selective catalytic reduction",0,technosphere
+"market for SOx retained, in hard coal flue gas desulfurisation","market for SOx retained, in hard coal flue gas desulfurisation",0,technosphere
+market for hard coal,market for hard coal,0,technosphere
+market for hard coal power plant,market for hard coal power plant,0,technosphere
+market for lignite,lignite mine operation,0,technosphere
+market for lignite power plant,market for lignite power plant,0,technosphere
+"market for transport, freight train","market for transport, freight train",0,technosphere
+"market for water, completely softened","market for water, completely softened",0,technosphere
+market group for light fuel oil,market group for light fuel oil,0,technosphere
+"treatment of hard coal ash, residual material landfill","treatment of hard coal ash, residual material landfill",0,technosphere
+"treatment of lignite ash, opencast refill","treatment of lignite ash, opencast refill",0,technosphere
+"treatment of residue from cooling tower, sanitary landfill","treatment of residue from cooling tower, sanitary landfill",0,technosphere
+"heat production, natural gas, at industrial furnace >100kW","heat production, natural gas, at industrial furnace >100kW",0,technosphere
+"market for concentrated solar power plant, solar tower, 20 MW","market for concentrated solar power plant, solar tower, 20 MW",0,technosphere
+"market for water, deionised","market for water, deionised",0,technosphere
+"market for hydropower plant, reservoir, non-alpine regions","market for hydropower plant, reservoir, non-alpine regions",0,technosphere
+market for waste mineral oil,market for waste mineral oil,0,technosphere
+"market for gas power plant, combined cycle, 400MW electrical","market for gas power plant, combined cycle, 400MW electrical",0,technosphere
+"market for natural gas, high pressure","market for natural gas, high pressure",0,technosphere
+market for residue from cooling tower,market for residue from cooling tower,0,technosphere
+"carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m","carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m",0,technosphere
+"market for gas power plant, combined cycle, 400MW electrical","market for gas power plant, combined cycle, 400MW electrical",0,technosphere
+"market for hydrochloric acid, without water, in 30% solution state","market for hydrochloric acid, without water, in 30% solution state",0,technosphere
+"market for sodium hydroxide, without water, in 50% solution state","market for sodium hydroxide, without water, in 50% solution state",0,technosphere
+"market group for natural gas, high pressure","market group for natural gas, high pressure",0,technosphere
+"market for gas power plant, 100MW electrical","market for gas power plant, 100MW electrical",0,technosphere
+"market for gas power plant, 300MW electrical","market for gas power plant, 300MW electrical",0,technosphere
+market for benzene,market for benzene,0,technosphere
+"market for geothermal power plant, 5.5MWel","market for geothermal power plant, 5.5MWel",0,technosphere
+market for biogas,market for biogas,0,technosphere
+"market for heat and power co-generation unit, 160kW electrical, common components for heat+electricity","market for heat and power co-generation unit, 160kW electrical, common components for heat+electricity",0,technosphere
+"market for heat and power co-generation unit, 160kW electrical, components for electricity only","market for heat and power co-generation unit, 160kW electrical, components for electricity only",0,technosphere
+"market for heat and power co-generation unit, 160kW electrical, components for heat only","market for heat and power co-generation unit, 160kW electrical, components for heat only",0,technosphere
+"market for hydropower plant, run-of-river","market for hydropower plant, run-of-river",0,technosphere
+market for acetylene,market for acetylene,0,technosphere
+market for anionic resin,market for anionic resin,0,technosphere
+"market for argon, liquid","market for argon, liquid",0,technosphere
+"market for boric acid, anhydrous, powder","market for boric acid, anhydrous, powder",0,technosphere
+"market for carbon dioxide, liquid","market for carbon dioxide, liquid",0,technosphere
+market for cast iron,market for cast iron,0,technosphere
+market for cationic resin,market for cationic resin,0,technosphere
+"market for cement, Portland","market for cement, Portland",0,technosphere
+"market for chemical, inorganic","market for chemical, inorganic",0,technosphere
+"market for concrete, normal","market for concrete, normal",0,technosphere
+"market for diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",0,technosphere
+"market for flat glass, coated","market for flat glass, coated",0,technosphere
+market for fly ash and scrubber sludge,market for fly ash and scrubber sludge,0,technosphere
+"market for hazardous waste, for incineration","market for hazardous waste, for incineration",0,technosphere
+"market for hydrogen, liquid","market for hydrogen, liquid",0,technosphere
+market for low level radioactive waste,market for low level radioactive waste,0,technosphere
+market for low level radioactive waste for final repository,market for low level radioactive waste for final repository,0,technosphere
+"market for nitrogen, liquid","market for nitrogen, liquid",0,technosphere
+"market for nuclear fuel element, for pressure water reactor, UO2 4.2% & MOX","market for nuclear fuel element, for pressure water reactor, UO2 4.2% & MOX",0,technosphere
+"market for oxygen, liquid","market for oxygen, liquid",0,technosphere
+"market for paper, woodfree, coated","market for paper, woodfree, coated",0,technosphere
+market for pitch,market for pitch,0,technosphere
+market for reinforcing steel,market for reinforcing steel,0,technosphere
+"market for sodium hypochlorite, without water, in 15% solution state","market for sodium hypochlorite, without water, in 15% solution state",0,technosphere
+market for spent nuclear fuel,market for spent nuclear fuel,0,technosphere
+"market for steel, low-alloyed, hot rolled","market for steel, low-alloyed, hot rolled",0,technosphere
+"nuclear power plant construction, pressure water reactor, 1000MW","nuclear power plant construction, pressure water reactor, 1000MW",0,technosphere
+market for waste mineral oil,market for waste mineral oil,0,technosphere
+"market for wind power plant, 2MW, offshore, fixed parts","market for wind power plant, 2MW, offshore, fixed parts",0,technosphere
+"market for wind power plant, 2MW, offshore, moving parts","market for wind power plant, 2MW, offshore, moving parts",0,technosphere
+market for bilge oil,market for bilge oil,0,technosphere
+market for heavy fuel oil,market for heavy fuel oil,0,technosphere
+market for lignite ash,market for lignite ash,0,technosphere
+"market for limestone, crushed, washed","market for limestone, crushed, washed",0,technosphere
+market for municipal solid waste,market for municipal solid waste,0,technosphere
+"market for oil power plant, 500MW","market for oil power plant, 500MW",0,technosphere
+"market for wind turbine network connection, 4.5MW, onshore","market for wind turbine network connection, 4.5MW, onshore",0,technosphere
+"market for wind turbine, 4.5MW, onshore","market for wind turbine, 4.5MW, onshore",0,technosphere
+"market for photovoltaic plant, 570kWp, multi-Si, on open ground","market for photovoltaic plant, 570kWp, multi-Si, on open ground",0,technosphere
+"market for photovoltaic slanted-roof installation, 3kWp, single-Si, panel, mounted, on roof","market for photovoltaic slanted-roof installation, 3kWp, single-Si, panel, mounted, on roof",0,technosphere
+market for tap water,market for tap water,0,technosphere
+"market for wastewater, from residence","market for wastewater, from residence",0,technosphere
 "electricity, high voltage from ecoinvent",ReEDS_US_Grid_Mix,0,technosphere
 Electricity production_Bioenergy_CCS_ReEDS,Electricity production_Bioenergy_CCS_ReEDS,0,technosphere
 Electricity production_Biopower_ReEDS,Electricity production_Biopower_ReEDS,0,technosphere
@@ -114,46 +114,46 @@ Electricity production_Onshore_wind_ReEDS,Electricity production_Onshore_wind_Re
 Electricity production_Solar_PV_ReEDS,Electricity production_Solar_PV_ReEDS,0,technosphere
 Electricity production_Coal-Integrated_Gas_Combustion_Cycle_ReEDS,Electricity production_Coal-Integrated_Gas_Combustion_Cycle_ReEDS,0,technosphere
 Electricity production_Coal_ReEDS,Electricity production_Coal_ReEDS,0,technosphere
-"market for SOx retained, in lignite flue gas desulfurisation","market for SOx retained, in lignite flue gas desulfurisation",988d44c8a61177b5d37a481be42e9221,technosphere
-market for hard coal ash,market for hard coal ash,17146dd21624ee7abd556d6b1d48e1bc,technosphere
-market for hard coal power plant,market for hard coal power plant,16927ce5d3f134f8cecfc6720f7e4402,technosphere
-market for light fuel oil,market for light fuel oil,abc822915165926cdc031d54cff4e636,technosphere
-market for lignite,market for lignite,029b62701bc80b2be6a74f4e86912b87,technosphere
-market for petroleum coke,market for petroleum coke,acb646b235b8afc96f4e8ad0dc34732c,technosphere
-"aluminium, ingot, primary, import from Rest of Europe","aluminium, ingot, primary, import from Rest of Europe",105a8bedebbbcf8056f89dc294a48f2e,technosphere
-hard coal IGCC power plant 450MW,hard coal IGCC power plant 450MW,a369cdf95ce64882aa077b81e856acc7,technosphere
-"heat production, heavy fuel oil, at industrial furnace 1MW","heat production, heavy fuel oil, at industrial furnace 1MW",6338d648ed10f78481409ed5c3aa2d9a,technosphere
-lignite IGCC power plant 450MW,lignite IGCC power plant 450MW,633b1be2ca644f61946d35bfa7e237ce,technosphere
-"lime production, milled, loose","lime production, milled, loose",a61a1f1cc18395ae96c698b465c054a8,technosphere
-"market for aluminium, cast alloy","market for aluminium, cast alloy",7ace0fd5a6e4e227aa3b0c4d8fbdc9ba,technosphere
-market for calcium chloride,market for calcium chloride,92a3bb87d87e228d5fac17943f7678a6,technosphere
-"market for copper, anode","market for copper, anode",0bd6b72dde460c10392407c682393c71,technosphere
-market for lead,market for lead,0c4cc4e510143d874aff0f62edf4572a,technosphere
-market for monoethanolamine,market for monoethanolamine,446bcacdd5a30c9afde166b42a7735bf,technosphere
-market for polyvinylfluoride,market for polyvinylfluoride,d570a5b246e310bd8518a988456ca7b3,technosphere
-"market for steel, low-alloyed","market for steel, low-alloyed",ec50713a5b064d489b5a382ff8c03766,technosphere
-market for stone wool,market for stone wool,f3d1b2c4092ac63989bf35ca9ad0882f,technosphere
-"market for stone wool, packed","market for stone wool, packed",525632d789fee6bc5f2b71bf8ec206a5,technosphere
-market for sulfuric acid,market for sulfuric acid,a39fae0ac7b85f6d8f42258b0bc6f62f,technosphere
-"polyethylene production, low density, granulate","polyethylene production, low density, granulate",f82311a3f4f8e470124ab25e3610eb4a,technosphere
-"polypropylene production, granulate","polypropylene production, granulate",e016ed68e911fb24b4034c4235ce74f3,technosphere
-"polystyrene production, high impact","polystyrene production, high impact",6208176fb51a05c31e530a19ab632311,technosphere
-primary zinc production from concentrate,primary zinc production from concentrate,174ccec43f88dcb3994fb2f049b81128,technosphere
-"steel production, chromium steel 18/8, hot rolled","steel production, chromium steel 18/8, hot rolled",11ad314fa1bf43fa823c3cd69c2c4f1b,technosphere
-"steel production, converter, low-alloyed","steel production, converter, low-alloyed",0096289faf9f45fe8a58bf342ec5d708,technosphere
-"steel production, converter, unalloyed","steel production, converter, unalloyed",3022272701914259b265afc5905145e6,technosphere
-"steel production, electric, chromium steel 18/8","steel production, electric, chromium steel 18/8",c0527f9955104920b33f4209efb5f855,technosphere
-"treatment of aluminium scrap, new, at refiner","treatment of aluminium scrap, new, at refiner",54c6bc66d4236406d24a64cddfc95b6c,technosphere
-"treatment of aluminium scrap, post-consumer, prepared for recycling, at refiner","treatment of aluminium scrap, post-consumer, prepared for recycling, at refiner",94cda7da940ae9d55cd25cf35dd07d9c,technosphere
-"treatment of average incineration residue, residual material landfill","treatment of average incineration residue, residual material landfill",15a42c72818a7aba1250b14e1baba146,technosphere
-"treatment of hazardous waste, hazardous waste incineration","treatment of hazardous waste, hazardous waste incineration",a57d72107fb2fa2d139d14ea9324bc46,technosphere
-"treatment of inert waste, sanitary landfill","treatment of inert waste, sanitary landfill",92bf1e4ffaefa423db9fc5bda0a755b3,technosphere
-"treatment of scrap steel, inert material landfill","treatment of scrap steel, inert material landfill",d6e7b82b5e097b24a507727bb8e98b64,technosphere
-"treatment of spent solvent mixture, hazardous waste incineration","treatment of spent solvent mixture, hazardous waste incineration",4b8940389eff0c5c64c3ac3a0198c019,technosphere
-"treatment of waste emulsion paint, municipal incineration","treatment of waste emulsion paint, municipal incineration",4e12452c10c7d5a52548d94512820b55,technosphere
-"treatment of waste plastic, mixture, municipal incineration","treatment of waste plastic, mixture, municipal incineration",f053df5b0ed6122fea49560f76db60d7,technosphere
-"treatment of waste textile, soiled, municipal incineration","treatment of waste textile, soiled, municipal incineration",c1eb41a0cd7981761d7e795aaa8f3dc1,technosphere
-"treatment of waste wood, untreated, sanitary landfill","treatment of waste wood, untreated, sanitary landfill",79d35254a94786ff0c75110114693655,technosphere
+"market for SOx retained, in lignite flue gas desulfurisation","market for SOx retained, in lignite flue gas desulfurisation",0,technosphere
+market for hard coal ash,market for hard coal ash,0,technosphere
+market for hard coal power plant,market for hard coal power plant,0,technosphere
+market for light fuel oil,market for light fuel oil,0,technosphere
+market for lignite,market for lignite,0,technosphere
+market for petroleum coke,market for petroleum coke,0,technosphere
+"aluminium, ingot, primary, import from Rest of Europe","aluminium, ingot, primary, import from Rest of Europe",0,technosphere
+hard coal IGCC power plant 450MW,hard coal IGCC power plant 450MW,0,technosphere
+"heat production, heavy fuel oil, at industrial furnace 1MW","heat production, heavy fuel oil, at industrial furnace 1MW",0,technosphere
+lignite IGCC power plant 450MW,lignite IGCC power plant 450MW,0,technosphere
+"lime production, milled, loose","lime production, milled, loose",0,technosphere
+"market for aluminium, cast alloy","market for aluminium, cast alloy",0,technosphere
+market for calcium chloride,market for calcium chloride,0,technosphere
+"market for copper, anode","market for copper, anode",0,technosphere
+market for lead,market for lead,0,technosphere
+market for monoethanolamine,market for monoethanolamine,0,technosphere
+market for polyvinylfluoride,market for polyvinylfluoride,0,technosphere
+"market for steel, low-alloyed","market for steel, low-alloyed",0,technosphere
+market for stone wool,market for stone wool,0,technosphere
+"market for stone wool, packed","market for stone wool, packed",0,technosphere
+market for sulfuric acid,market for sulfuric acid,0,technosphere
+"polyethylene production, low density, granulate","polyethylene production, low density, granulate",0,technosphere
+"polypropylene production, granulate","polypropylene production, granulate",0,technosphere
+"polystyrene production, high impact","polystyrene production, high impact",0,technosphere
+primary zinc production from concentrate,primary zinc production from concentrate,0,technosphere
+"steel production, chromium steel 18/8, hot rolled","steel production, chromium steel 18/8, hot rolled",0,technosphere
+"steel production, converter, low-alloyed","steel production, converter, low-alloyed",0,technosphere
+"steel production, converter, unalloyed","steel production, converter, unalloyed",0,technosphere
+"steel production, electric, chromium steel 18/8","steel production, electric, chromium steel 18/8",0,technosphere
+"treatment of aluminium scrap, new, at refiner","treatment of aluminium scrap, new, at refiner",0,technosphere
+"treatment of aluminium scrap, post-consumer, prepared for recycling, at refiner","treatment of aluminium scrap, post-consumer, prepared for recycling, at refiner",0,technosphere
+"treatment of average incineration residue, residual material landfill","treatment of average incineration residue, residual material landfill",0,technosphere
+"treatment of hazardous waste, hazardous waste incineration","treatment of hazardous waste, hazardous waste incineration",0,technosphere
+"treatment of inert waste, sanitary landfill","treatment of inert waste, sanitary landfill",0,technosphere
+"treatment of scrap steel, inert material landfill","treatment of scrap steel, inert material landfill",0,technosphere
+"treatment of spent solvent mixture, hazardous waste incineration","treatment of spent solvent mixture, hazardous waste incineration",0,technosphere
+"treatment of waste emulsion paint, municipal incineration","treatment of waste emulsion paint, municipal incineration",0,technosphere
+"treatment of waste plastic, mixture, municipal incineration","treatment of waste plastic, mixture, municipal incineration",0,technosphere
+"treatment of waste textile, soiled, municipal incineration","treatment of waste textile, soiled, municipal incineration",0,technosphere
+"treatment of waste wood, untreated, sanitary landfill","treatment of waste wood, untreated, sanitary landfill",0,technosphere
 ReEDS_US_Grid_Mix,ReEDS_US_Grid_Mix,0,technosphere
 "market group for electricity, high voltage new test","market group for electricity, high voltage new test",0,technosphere
 Electricity production_Rooftop_Solar_PV_ReEDS,Electricity production_Rooftop_Solar_PV_ReEDS,0,technosphere

@@ -1,8 +1,8 @@
 
-ENVPATH="/Users/tghosh/Desktop/Dynamic-LCA-with-LiAISON/env"
-CODEDIR="/Users/tghosh/Desktop/hipster/code/"
-DATADIR="/Users/tghosh/Desktop/hipster/data"
-yaml="midcase2020_small"
+ENVPATH="/Users/tghosh/Desktop/env/env"
+CODEDIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/code/"
+DATADIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/data"
+yaml="Mid_Case_NoNascent2050"
 
 SECONDS=0
 mkdir $ENVPATH
