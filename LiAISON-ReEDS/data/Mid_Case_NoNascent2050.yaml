@@ -1,5 +1,5 @@
 data_directories:
-  ecoinvent_data: /projects/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
+  ecoinvent_data: inputs/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
   liaisondata: inputs/
   output: output/
   reeds_data: reeds_data/
@@ -10,14 +10,14 @@ flags:
   mc_foreground: false
   premise_editor: false
   regional_sensitivity: false
-  run_database_editor: false
+  run_database_editor: true
   run_database_reader: false
 input_filenames:
   creation_inventory: Mid_Case_NoNascent2050_reeds_data.csv
   emission_bridge: emission_name_bridge.csv
   foreground_inventory: example.csv
   location_bridge: location_bridge.csv
-  modification_inventory: market_updated_reeds_inventory.csv
+  modification_inventory: modification_inventory.csv
   process_bridge: process_name_bridge.csv
 output_filenames:
   results_filename: lcia_results
@@ -28,6 +28,7 @@ scenario_parameters:
   lca_project_name: lca_project_Mid_Case_NoNascent2050
   location: US
   mc_runs: 1
+  functional_unit: 1
   primary_process_to_study: market group for electricity, high voltage new test
   process: electricity
   updated_database: premise_base_ecoinvent_2020
