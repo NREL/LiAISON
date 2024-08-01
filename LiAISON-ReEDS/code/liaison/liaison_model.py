@@ -123,7 +123,7 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     correct_bigcc_copper_use(bw,updated_database)
     return project_name
 
-def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_foreground_flag,lca_flag,lca_activity_modification,regional_sensitivity_flag,region,data_dir,primary_process,process_under_study,location_under_study,updated_database,mc_runs,inventory_filename,modification_inventory_filename,process_name_bridge,emission_name_bridge,location_name_bridge,output_dir,bw):
+def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_foreground_flag,lca_flag,lca_activity_modification,regional_sensitivity_flag,region,data_dir,primary_process,process_under_study,location_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,process_name_bridge,emission_name_bridge,location_name_bridge,output_dir,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -195,7 +195,7 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
     scenario = updated_database[15:]
     number = str(secrets.token_hex(8))
 
-    def lca_runner(db,r,mc_runs,mc_foreground_flag,lca_flag):
+    def lca_runner(db,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit):
 
 
             lcia_result = {}
@@ -231,8 +231,8 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
             dictionary = brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
             print('Activity created and saved success',flush=True)
             if lca_flag: 
-                result_dir1,n_lcias1 = lcia_traci_run(db,dictionary[process_under_study+'@'+location_under_study],1,mc_foreground_flag,mc_runs,bw)
-                result_dir2,n_lcias2 = lcia_recipe_run(db,dictionary[process_under_study+'@'+location_under_study],1,mc_foreground_flag,mc_runs,bw)
+                result_dir1,n_lcias1 = lcia_traci_run(db,dictionary[process_under_study+'@'+location_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
+                result_dir2,n_lcias2 = lcia_recipe_run(db,dictionary[process_under_study+'@'+location_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 #result_dir3,n_lcias3 = lcia_premise_gwp_run(db,dictionary[process_under_study],1,mc_foreground_flag,mc_runs,bw)
                 result_dir3 = {}
                 n_lcias3 = 0
@@ -342,7 +342,7 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
       
     if mc_foreground_flag:
          
-        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag)
+        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
     
 
     elif regional_sensitivity_flag:
@@ -354,13 +354,13 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
         run_filename = os.path.join(data_dir,'sensitivity_regional'+updated_database+str(yr)+'.csv')
         file.to_csv(run_filename,index = False)  
         r = ''    
-        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag)
+        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
 
     else:
         
         run_filename = inventory_filename
         r = ''
-        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag)
+        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
             
     try:
         bw.projects.delete_project(bw.projects.current, delete_dir=True) 

@@ -50,6 +50,7 @@ location_under_study = scenario_params.get('location')
 updated_database = scenario_params.get('updated_database')
 updated_project_name = scenario_params.get('updated_project_name')
 mc_runs = int(scenario_params.get('mc_runs'))
+functional_unit = float(scenario_params.get('functional_unit'))
 base_database = scenario_params.get('base_database')
 base_project = scenario_params.get('base_project')
 region = scenario_params.get('region')
@@ -80,8 +81,10 @@ location_name_bridge = os.path.join(args.datapath,
 ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
 
-## Fix this
-#ecoinvent_file = "/projects/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/"
+
+# ## Fix this
+# ecoinvent_file = "/projects/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/"
+
                                   
 results_filename = outputs.get('results_filename')
 output_dir = os.path.join(args.datapath,
@@ -90,6 +93,7 @@ data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
 ## Fix this
 #creation_inventory_filename = os.path.join("/projects/liaison/hipster_data/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
+
 
 run_database_reader = flags.get('run_database_reader')
 run_database_editor = flags.get('run_database_editor')
@@ -168,6 +172,7 @@ if lca_flag:
              location_under_study=location_under_study,
              updated_database=updated_database, 
              mc_runs=mc_runs,
+             functional_unit=functional_unit,
              inventory_filename = foreground_inventory_filename,
              modification_inventory_filename = modification_inventory_filename,
              process_name_bridge = process_name_bridge,
