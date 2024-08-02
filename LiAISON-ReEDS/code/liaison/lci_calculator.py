@@ -71,8 +71,12 @@ def search_index_reader(p_name,p_loc,database_dict):
         None
         """
 
+
         key = p_name+'@'+p_loc
-        return database_dict[key]
+        try:
+            return database_dict[key]
+        except:
+            return None
             
 def search_index_debugger(database_dict,p_code):
     
@@ -192,7 +196,6 @@ def emissions_index_creator(bw):
        y = i.as_dict()
        df_em[y['code']] = i
 
-
     return df_em
 
 def find_emission(emission_bridge,emissions_dict):
@@ -267,16 +270,24 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
 
             process_info = row['process']
             location_info = row['process_location']
-
-
-            try:
-                    activity_dic = search_index_reader(db,process_info,location_info,database_dict)
-                    activity = search_index_debugger(activity_dic,process_info)
+            activity_dic = search_index_reader(process_info,location_info,database_dict)
+            
+            if activity_dic!= None:
+                if len(activity_dic) == 1:
+                    print('One activity found. Check passed')
+                else:
+                    print('Multiple activity found')
+                p_code = list(activity_dic.keys())
+                for pc in p_code:
+                    activity = search_index_debugger(activity_dic,pc.strip())
                     if activity != None:
                         print('Deleting ' + process_info,flush = True)
                         activity.delete()
-            except:
+                    else:
+                        print('Issue!!!: Existing activity not deleted', flush = True)
+            else:
                 pass
+
             print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
             process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
             process_dict[process_info+'@'+location_info].save()
@@ -295,7 +306,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
             if len(inp) == 1:
                 print('Production flows check passed!!')
             elif len(inp) > 1:
-                print('############Production flows for an activity more than 1!!##############')
+                print('Issue!!!:Production flows for an activity more than 1!!##############')
             else:
                 print('No production flows!!')
 
@@ -334,7 +345,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                 
                 if process_bridge.empty or location_bridge.empty:
                     print(row['flow'] + ' ' + row['supplying_location'],flush = True)
-                    print('Warning: Failed: Did not find this process/location in the process bridge or location bridge file\n',flush = True)
+                    print('Did not find this process/location in the process bridge or location bridge file\n',flush = True)
                     #Some matches may not happen
                     #These will become cutoff flows
                 else:
@@ -354,7 +365,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                         
                         process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                         process_dict[key].save() 
-                        print('Complete Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
+                        print('Complete Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                     
                     
                     except:
@@ -369,7 +380,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                             
                             process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                             process_dict[key].save() 
-                            print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                            print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                             
                         except:
@@ -384,7 +395,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                 
                                 process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                                 process_dict[key].save() 
-                                print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                                print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                             except:
                                 try:
@@ -393,7 +404,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                     activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
                                     activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                                     if activity['unit'] != row['unit']:
-                                        print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
+                                        print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                         unit_error_flag = 1  
                                     
                                     process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
@@ -401,7 +412,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                     print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                                 except:                                   
-                                         print('Warning: Failed: Failed - Not found '+process_bridge['Ecoinvent_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+                                         print('Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
 
 
                     if flag == 'activity found':
@@ -413,7 +424,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
             
                     if unit_error_flag == 1:
                         print('Correct unit should be '+activity['unit'])
-                        sys.exit('Warning: Failed: Unit Error occured please check')
+                        sys.exit('Unit Error occured please check')
         
 
         
@@ -440,10 +451,11 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                     emission = find_emission(emission_bridge,emissions_dict)
                     
                     if emission == None:
-                        print('Warning: Failed Emission not found ' + row['flow'],flush = True)                
+                        print('Emission not found ' + row['flow'],flush = True)                
                     else:
+                        print('Emission found')
                         if emission['unit'] != row['unit']:
-                            print('Warning: Failed Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
+                            print('Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
                             unit_error_flag = 1   
                         else:                                       
                             process_dict[key].new_exchange(input=emission.key,amount=row['value'], name = emission['name'],unit=emission['unit'],type='biosphere').save()
