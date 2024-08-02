@@ -1,3 +1,0 @@
-process,flow,value,unit,input,year,comments,type,process_location,supplying_location
-"market group for electricity, high voltage","electricity, high voltage",1,kilowatt hour,FALSE,2020,none,production,US,US
-"market group for electricity, high voltage",ReEDS_US_Grid_Mix electricity high voltage,1,kilowatt hour,TRUE,2020,none,technosphere,US,US

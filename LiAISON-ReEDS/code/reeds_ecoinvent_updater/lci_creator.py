@@ -47,25 +47,6 @@ def search_index_creator(ei_cf_36_db):
             unit2.append(i['unit'])
             loc2.append(i['location'])
 
-
-        '''    
-        filehandler = open(db+".obj","wb")
-        pickle.dump(dic,filehandler)
-        filehandler.close()
-        
-        filehandler = open("problems.obj","wb")
-        pickle.dump(problems,filehandler)
-        filehandler.close()
-        '''
-
-        df = pd.DataFrame()
-        df['Ecoinvent_name'] = name2
-        df['Ecoinvent_code'] = code2
-        df['unit'] = unit2
-        df['location'] = loc2
-
-
-        df.to_csv('Ecoinvent_name_data.csv', index = False)
         
         return dic,dic2
 
@@ -198,10 +179,12 @@ def merge(inp,process_name_bridge,location_name_bridge):
             inp['code'] = inp['code'].fillna('0')
             process_name[['Common_name','Ecoinvent_code']] = process_name[['Common_name','Ecoinvent_code']].astype('str')
             inp[['flow','code']] = inp[['flow','code']].astype('str')
-            #process_bridge = inp.merge(process_name, left_on = ['flow','code'], right_on = ['Common_name','Ecoinvent_code']).dropna()
-            process_bridge = inp.merge(process_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
+            process_bridge = inp.merge(process_name, left_on = ['flow','code'], right_on = ['Common_name','Ecoinvent_code']).dropna()
+            #process_bridge = inp.merge(process_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
             
-            location_bridge = inp.merge(location_name, left_on = ['supplying_location'], right_on = ['location_common']).dropna()
+            #location_bridge = inp.merge(location_name, left_on = ['supplying_location'], right_on = ['location_common']).dropna()
+            location_bridge = inp.reset_index()
+            location_bridge['location_ecoinvent'] = location_bridge['supplying_location']
 
             return process_bridge,location_bridge      
 

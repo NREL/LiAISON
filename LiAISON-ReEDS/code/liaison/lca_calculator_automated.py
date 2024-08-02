@@ -334,7 +334,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                 
                 if process_bridge.empty or location_bridge.empty:
                     print(row['flow'] + ' ' + row['supplying_location'],flush = True)
-                    print('Did not find this process/location in the process bridge or location bridge file\n',flush = True)
+                    print('Warning: Failed: Did not find this process/location in the process bridge or location bridge file\n',flush = True)
                     #Some matches may not happen
                     #These will become cutoff flows
                 else:
@@ -401,7 +401,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                     print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                                 except:                                   
-                                         print('Failed - Not found '+process_bridge['Ecoinvent_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+                                         print('Warning: Failed: Failed - Not found '+process_bridge['Ecoinvent_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
 
 
                     if flag == 'activity found':
@@ -413,7 +413,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
             
                     if unit_error_flag == 1:
                         print('Correct unit should be '+activity['unit'])
-                        sys.exit('Unit Error occured please check')
+                        sys.exit('Warning: Failed: Unit Error occured please check')
         
 
         
@@ -440,10 +440,10 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                     emission = find_emission(emission_bridge,emissions_dict)
                     
                     if emission == None:
-                        print('Emission not found ' + row['flow'],flush = True)                
+                        print('Warning: Failed Emission not found ' + row['flow'],flush = True)                
                     else:
                         if emission['unit'] != row['unit']:
-                            print('Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
+                            print('Warning: Failed Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
                             unit_error_flag = 1   
                         else:                                       
                             process_dict[key].new_exchange(input=emission.key,amount=row['value'], name = emission['name'],unit=emission['unit'],type='biosphere').save()
