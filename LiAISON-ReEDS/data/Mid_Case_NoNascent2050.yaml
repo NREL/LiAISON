@@ -6,12 +6,13 @@ data_directories:
 flags:
   correct uncertainty: false
   lca: true
-  lca_activity_modification: true
+  lca_activity_modification: false
   mc_foreground: false
   premise_editor: false
   regional_sensitivity: false
   run_database_editor: true
   run_database_reader: false
+  create_reeds_grid_mix: false
 input_filenames:
   creation_inventory: Mid_Case_100by20352040_reeds_data.csv
   emission_bridge: emission_name_bridge.csv

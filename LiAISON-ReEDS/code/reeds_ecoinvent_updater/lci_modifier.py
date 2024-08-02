@@ -35,17 +35,6 @@ def search_index_creator(ei_cf_36_db):
             
             dic[i['name']+'@'+i['location']][i['code']] = i
 
-
-
-        '''    
-        filehandler = open(db+".obj","wb")
-        pickle.dump(dic,filehandler)
-        filehandler.close()
-        
-        filehandler = open("problems.obj","wb")
-        pickle.dump(problems,filehandler)
-        filehandler.close()
-        '''
         
         return dic
 
@@ -73,7 +62,7 @@ def search_index_reader(p_name,p_loc,database_dict):
         key = p_name+'@'+p_loc
         return database_dict[key]
             
-def search_index_debugger(database_dict,p_code):
+def search_index_debugger(database_dict,p_code,**kwargs):
     
         """
         This function debugs the search process for multiple process names and locations
@@ -268,9 +257,11 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
 
 
             activity_dic = search_index_reader(process_info,location_info,database_dict)
+            
             #What if activity not found?? Add this check??
             if len(activity_dic) == 1:
                 print('One activity found. Check passed')
+                print(process_info,location_info)
             else:
                 print('Warning: Multiple activity found')
             p_code = list(activity_dic.keys())

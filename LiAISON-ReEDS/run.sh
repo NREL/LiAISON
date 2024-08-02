@@ -1,7 +1,7 @@
 
-ENVPATH="/Users/tghosh/Desktop/env/env"
+ENVPATH="/Users/tghosh/Desktop/env/env/"
 CODEDIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/code/"
-DATADIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/data"
+DATADIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/data/"
 yaml="Mid_Case_NoNascent2050"
 
 SECONDS=0

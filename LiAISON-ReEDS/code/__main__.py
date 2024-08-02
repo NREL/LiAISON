@@ -104,6 +104,7 @@ lca_activity_modification=flags.get('lca_activity_modification')
 regional_sensitivity_flag=flags.get('regional_sensitivity')
 create_new_database=flags.get('create_new_database')
 premise_editor= flags.get('premise_editor')
+reeds_grid_mix_creator = flags.get('create_reeds_grid_mix')
 
 print('All input data parameters read', flush = True)
 
@@ -126,6 +127,7 @@ if run_database_editor:
          location_name_bridge = location_name_bridge,
          initial_year=initial_year,
          results_filename=results_filename, 
+         reeds_grid_mix_creator = reeds_grid_mix_creator,
          lca_activity_modification=lca_activity_modification,
          create_new_database=create_new_database,
          data_dir=data_dir,

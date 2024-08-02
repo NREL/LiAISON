@@ -16,10 +16,10 @@ Electricity production_Oil_gas_steam_ReEDS,Electricity production_Oil_gas_steam_
 Electricity production_Onshore_wind_ReEDS,Electricity production_Onshore_wind_ReEDS,0,production,No Information
 Electricity production_Rooftop_Solar_PV_ReEDS,Electricity production_Rooftop_Solar_PV_ReEDS,0,production,No Information
 Electricity production_Solar_PV_ReEDS,Electricity production_Solar_PV_ReEDS,0,production,No Information
-"carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m","carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m",7a1154274a0c4267a2e16e9db16a5ca5,technosphere,USA
-"carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m","carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m",8940521ead3b413f8173b38c5c81fd4e,technosphere,WEU
-"carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m","carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m",c8d6312d63d646ff95da9f8f0efdd52f,technosphere,WEU
-"carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m","carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m",34db3f431e634f04847162ee20153cfc,technosphere,USA
+"carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m","carbon dioxide, captured at wood burning power plant 20 MW post, pipeline 200km, storage 1000m",be8b21f6b1a64d76b7af1aad682fb88e,technosphere,USA
+"carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m","carbon dioxide, captured from hard coal-fired power plant, post, pipeline 200km, storage 1000m",80091672d84849a8b7c8db8377a6ddf0,technosphere,WEU
+"carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m","carbon dioxide, captured from lignite, post, pipeline 200km, storage 1000m",0835af41d922488d8e3fabda020fa3f5,technosphere,WEU
+"carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m","carbon dioxide, captured from natural gas, post, 200km pipeline, storage 1000m",a7ad2a38ed2b418c825ad650d7cb152a,technosphere,USA
 desulfurisation of lignite flue gas,desulfurisation of lignite flue gas,22052c55001700a6ea6fa268802784ff,technosphere,GLO
 "heat production, natural gas, at industrial furnace >100kW","heat production, natural gas, at industrial furnace >100kW",1a78ca13d4b59418ca8791efa9a0db09,technosphere,RoW
 "market for NOx retained, by selective catalytic reduction","market for NOx retained, by selective catalytic reduction",0b818bb692a5c0d5561ff917007a54f0,technosphere,GLO
@@ -31,19 +31,19 @@ market for anionic resin,market for anionic resin,5546735367435636699501ffe38eb7
 market for benzene,market for benzene,00f6517dda64b8808583a17c0a89f29c,technosphere,GLO
 market for bilge oil,market for bilge oil,f4859b18b3f1279afa171141d31d8115,technosphere,RoW
 market for biogas,market for biogas,2f1b9485102234b60e5a2728aa749ce8,technosphere,RoW
-"market for biomass, used as fuel","market for biomass, used as fuel",b001f2962f394a3ca911fa0043ea041c,technosphere,USA
+"market for biomass, used as fuel","market for biomass, used as fuel",891b984a5db349faaf8cf129adcfe623,technosphere,USA
 "market for boric acid, anhydrous, powder","market for boric acid, anhydrous, powder",ef9192ffaee5091d4dc4290682b3335a,technosphere,GLO
 "market for carbon dioxide, liquid","market for carbon dioxide, liquid",6c30b87bdaf5e27e0398c2c8e5280a27,technosphere,RoW
 market for cast iron,market for cast iron,6a7811cf5d456c6d0906edc3c404b586,technosphere,GLO
 market for cationic resin,market for cationic resin,6f14ce3e1921d9aad385e17b20355009,technosphere,RoW
-"market for cement, Portland","market for cement, Portland",fa334e88c19a45fc9bafe1356c8e629a,technosphere,USA
+"market for cement, Portland","market for cement, Portland",4c1433ca1ff74b7d91be2aa39cfdc5f4,technosphere,USA
 "market for chemical, inorganic","market for chemical, inorganic",f0d44bf0e3c929ab4c21adef45d5ca2a,technosphere,GLO
 "market for chemical, organic","market for chemical, organic",9757270c6c2078fdd4c0fa43c7c49ee9,technosphere,GLO
 "market for chlorine, liquid","market for chlorine, liquid",ad546108a91dce8a71c701017b108357,technosphere,RER
 "market for chlorine, liquid","market for chlorine, liquid",1ab0f90a11c5d7bb08e67af7a0ab39cd,technosphere,RoW
 "market for concentrated solar power plant, solar tower, 20 MW","market for concentrated solar power plant, solar tower, 20 MW",0af48c0ac75b5c35a42bd4c5b3f05aac,technosphere,GLO
 "market for concrete, normal","market for concrete, normal",1238afbff3e1ae4613b1e4480376a9c2,technosphere,RNA
-"market for diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",717664c7ae8d4434b01b205c33606059,technosphere,USA
+"market for diesel, burned in diesel-electric generating set, 10MW","market for diesel, burned in diesel-electric generating set, 10MW",3574b4e82e7441ce9ae357bc3483d2a1,technosphere,USA
 "market for flat glass, coated","market for flat glass, coated",206535f59d73199e4f636d361cc8f952,technosphere,RoW
 market for fly ash and scrubber sludge,market for fly ash and scrubber sludge,df8b4af718ba9413a2f9a4cc00af5d16,technosphere,RoW
 "market for gas power plant, 100MW electrical","market for gas power plant, 100MW electrical",5f3e50d65014590d3466f05c13000505,technosphere,GLO
@@ -103,7 +103,7 @@ market group for light fuel oil,market group for light fuel oil,3d71d5881cfa7191
 "market group for natural gas, high pressure","market group for natural gas, high pressure",8b883e9f5a9ca1152f67cf7a848b4b07,technosphere,GLO
 "nuclear power plant construction, pressure water reactor, 1000MW","nuclear power plant construction, pressure water reactor, 1000MW",2bcf440702bf165a285690f10f34bff9,technosphere,US
 "sodium chloride production, powder","sodium chloride production, powder",cc1b17bf300cc7495029148fc40f5f5f,technosphere,RoW
-"transport, freight, lorry, unspecified, long haul","transport, freight, lorry, unspecified, long haul",30b76c02cebf4cee9d32ed598e90146e,technosphere,USA
+"transport, freight, lorry, unspecified, long haul","transport, freight, lorry, unspecified, long haul",d5b5e687437e43a89b70fd53d25c881f,technosphere,USA
 "treatment of hard coal ash, residual material landfill","treatment of hard coal ash, residual material landfill",d0b45824cc43633457a55fe3c94f29d5,technosphere,RoW
 "treatment of lignite ash, opencast refill","treatment of lignite ash, opencast refill",b635cce73bcd6e0f683dd3f3905d1d7a,technosphere,RoW
 "treatment of municipal solid waste, incineration","treatment of municipal solid waste, incineration",c1c00253bef8f5f6decb3abfeead8f43,technosphere,RoW
@@ -116,5 +116,5 @@ market group for light fuel oil,market group for light fuel oil,3d71d5881cfa7191
 "treatment of wood ash mixture, pure, municipal incineration","treatment of wood ash mixture, pure, municipal incineration",d8aa822a0df4a7e3e15f95281cde3ed2,technosphere,RoW
 "treatment of wood ash mixture, pure, sanitary landfill","treatment of wood ash mixture, pure, sanitary landfill",8c5166bb2d8ddd8689f661e6acbc941b,technosphere,RoW
 wood combustion power plant 20 MW,wood combustion power plant 20 MW,5c2bfb1c3abe4e9890aa02312b769f09,technosphere,RER
-ReEDS_US_Grid_Mix electricity high voltage,ReEDS_US_Grid_Mix,0,technosphere,US-US
 "electricity, high voltage from ecoinvent","market group for electricity, high voltage",0,technosphere,US
+ReEDS_US_Grid_Mix electricity high voltage,ReEDS_US_Grid_Mix,0,technosphere,USA

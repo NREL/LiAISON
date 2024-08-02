@@ -65,6 +65,9 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
  
         #reset_project(base_database,base_project,updated_project_name,bw)   
         bw.projects.set_current(base_project)
+
+        del bw.databases[updated_database]
+        print('Deleted database:, ',updated_database)
         time0 = time.time()
         key=updated_database
         #Name of old database and new database is same in liaison-reeds
@@ -101,7 +104,7 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
 
 
 
-def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,premise_editor,base_database,base_project,database_new,project_new,bw):
+def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,premise_editor,base_database,base_project,database_new,project_new,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -174,13 +177,23 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
             print(project_new," Project entered for ReEDS LCI development",flush=True)
             print(database_new,flush=True)
             print("Staring editing LCI using ReEDS", flush=True)     
-            reset_project(base_database,base_project,project_new,bw)
             
-            reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
-            print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
+            
+            
+            if reeds_grid_mix_creator:
+                print('Creating Reeds Grid mix inside ecoinvent')
+                reset_project(base_database,base_project,project_new,bw)
+                reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
+                print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
             
 
             if lca_activity_modification:
+
+                print('Editing existing Ecoinvent flows using lci modifier')
+                bw.projects.set_current(project_new)
+                print("Entered project " + project_new,flush = True)
+                print("Databases in this project are",flush = True)
+                print(bw.databases,flush = True) 
                 reeds_lci_modifier(db_new,modification_inventory_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)
                 print('Background Activity modified and saved success',flush=True)
 

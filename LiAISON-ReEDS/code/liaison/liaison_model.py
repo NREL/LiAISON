@@ -10,7 +10,7 @@ import os
 import time
 from liaison.montecarloforeground import mc_foreground
 from liaison.lci_calculator import brightway,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
-from liaison.lci_modifier import brightway_modifier
+
 
 
 
