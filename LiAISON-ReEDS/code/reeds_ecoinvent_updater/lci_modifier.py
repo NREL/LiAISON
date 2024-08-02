@@ -264,10 +264,11 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
             #Getting proper_ecoinvent names
             process_info = row['process']
             location_info = row['process_location']
-            print(process_info,location_info)
+            print('To be modified -',process_info," ",location_info)
 
 
             activity_dic = search_index_reader(process_info,location_info,database_dict)
+            #What if activity not found?? Add this check??
             if len(activity_dic) == 1:
                 print('One activity found. Check passed')
             else:
@@ -279,10 +280,6 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                 print('Activity Found!!',flush=True)
 
             process_dict[process_info+'@'+location_info] = activity
-
-            #print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
-            #process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
-            #process_dict[process_info+'@'+location_info].save()
 
         
         print('Removing Activity technosphere flow') 
@@ -320,6 +317,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                 if process_bridge.empty or location_bridge.empty:
                     print(row['flow'] + ' ' + row['supplying_location'],flush = True)
                     print('Warning Failed: Did not find this activity in the bridge file\n',flush = True)
+                    print('This flow needs to be added in the process bridge file. The ecoinvent name should be same as the US grid mix process name of electricity created from ReEDS')
                     #Some matches may not happen
                     #These will become cutoff flows
                 else:
@@ -385,6 +383,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
 
                                 except:                                   
                                          print('Warning Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+                                         print('This process should be same as the US grid mix process name of electricity created from ReEDS and its missing. Maybe it was not created. Please check')
 
             
                     if unit_error_flag == 1:
