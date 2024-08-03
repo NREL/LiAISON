@@ -5,14 +5,14 @@ data_directories:
   reeds_data: reeds_data/
 flags:
   correct uncertainty: false
-  lca: true
-  lca_activity_modification: false
   mc_foreground: false
-  premise_editor: false
   regional_sensitivity: false
-  run_database_editor: true
-  run_database_reader: false
-  create_reeds_grid_mix: false
+  database_reader: false
+  database_editor: true
+  premise_editor: false
+  create_reeds_grid_mix: true
+  modify_ecoinvent_grid_mix: true
+  lca: true
 input_filenames:
   creation_inventory: Mid_Case_100by20352040_reeds_data.csv
   emission_bridge: emission_name_bridge.csv

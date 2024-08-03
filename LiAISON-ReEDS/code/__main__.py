@@ -95,12 +95,12 @@ data_dir = os.path.join(args.datapath,
 #creation_inventory_filename = os.path.join("/projects/liaison/hipster_data/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
 
 
-run_database_reader = flags.get('run_database_reader')
-run_database_editor = flags.get('run_database_editor')
+run_database_reader = flags.get('database_reader')
+run_database_editor = flags.get('database_editor')
 uncertainty_corrections = flags.get('correct uncertainty')
 mc_foreground_flag = flags.get('mc_foreground')
 lca_flag=flags.get('lca')
-lca_activity_modification=flags.get('lca_activity_modification')
+lca_activity_modification=flags.get('modify_ecoinvent_grid_mix')
 regional_sensitivity_flag=flags.get('regional_sensitivity')
 create_new_database=flags.get('create_new_database')
 premise_editor= flags.get('premise_editor')
