@@ -116,5 +116,3 @@ market group for light fuel oil,market group for light fuel oil,3d71d5881cfa7191
 "treatment of wood ash mixture, pure, municipal incineration","treatment of wood ash mixture, pure, municipal incineration",d8aa822a0df4a7e3e15f95281cde3ed2,technosphere,RoW
 "treatment of wood ash mixture, pure, sanitary landfill","treatment of wood ash mixture, pure, sanitary landfill",8c5166bb2d8ddd8689f661e6acbc941b,technosphere,RoW
 wood combustion power plant 20 MW,wood combustion power plant 20 MW,5c2bfb1c3abe4e9890aa02312b769f09,technosphere,RER
-"electricity, high voltage from ecoinvent","market group for electricity, high voltage",0,technosphere,US
-ReEDS_US_Grid_Mix electricity high voltage,ReEDS_US_Grid_Mix,0,technosphere,USA
