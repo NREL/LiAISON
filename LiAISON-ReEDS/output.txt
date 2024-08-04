@@ -13425,3 +13425,31 @@ Electricity production_Bioenergy_CCS_ReEDS@p104
 
 
 Creating biosphere exchanges for Electricity production_Bioenergy_CCS_ReEDS at p109
+Electricity production_Bioenergy_CCS_ReEDS@p109
+2.5887339115142822  seconds needed for biosphere flows connection for process  Electricity production_Bioenergy_CCS_ReEDS@p109
+
+
+
+
+Creating biosphere exchanges for Electricity production_Bioenergy_CCS_ReEDS at p114
+Electricity production_Bioenergy_CCS_ReEDS@p114
+2.877434730529785  seconds needed for biosphere flows connection for process  Electricity production_Bioenergy_CCS_ReEDS@p114
+
+
+
+
+Creating biosphere exchanges for Electricity production_Bioenergy_CCS_ReEDS at p115
+Electricity production_Bioenergy_CCS_ReEDS@p115
+2.2692618370056152  seconds needed for biosphere flows connection for process  Electricity production_Bioenergy_CCS_ReEDS@p115
+
+
+
+
+Creating biosphere exchanges for Electricity production_Bioenergy_CCS_ReEDS at p122
+Electricity production_Bioenergy_CCS_ReEDS@p122
+2.3025951385498047  seconds needed for biosphere flows connection for process  Electricity production_Bioenergy_CCS_ReEDS@p122
+
+
+
+
+Creating biosphere exchanges for Electricity production_Bioenergy_CCS_ReEDS at p16
