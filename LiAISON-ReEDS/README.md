@@ -128,6 +128,7 @@ We connect the Regional Energy Deployment System (ReEDS), a capacity expansion m
   - ```pip install bw2io==0.8.7```
   - ```pip install bw2analyzer==0.10```
   - ```pip install wurst==0.3.4```
+  - ```pip install pandas==2.2.2```
   
 
 ## Extracting Ecoinvent
@@ -164,7 +165,7 @@ Create an environment folder for brightway2 environments in an address with enou
 process_name_bridge.csv need to be created properly with premise database which generated from previous step 2_1. Every user have to process this step at least once on their own, otherwise it causes problem when matching activities. From reeds_to_hipster_dev folder, 
 
 - Run ecoinvent_explorer.py to generate ecoinvent_updated_full_p1.8.1_v2.xlsx.
-- Run hipster_matcher US/state/region .py depending on your spatial resolution. Make sure to use the newly created ecoinvent_updated_full file is used in the code. Enter all year and scenario you will want to run to make sure process_name_bridge.csv to include all required process name. 
+- Run hipster_matcher US/state/region .py depending on your spatial resolution. Make sure to use the newly created ecoinvent_updated_full file is used in the code. Enter all year and scenario you will want to run to make sure process_name_bridge.csv to include all required process name (Code needs to be updated for this). 
 - Run process_Bridge.py to create process_name_bridge.csv.
 - Copy scenario files in reedsdata folder to LiAISON_ReEDS/data/inputs/reeds_data
 - Check modification_inventory.csv file is in LiAISON_ReEDS/data/inputs/reeds_data (cf. rows here modify the ecoinvent data itself)
