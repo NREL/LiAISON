@@ -39,14 +39,15 @@ def reset_project(base_database,base_project,project_new,bw):
     project_name = project_new
     try:
       bw.projects.delete_project(project_name,delete_dir = True)
-      print('Project deleted',flush=True)
+      print(project_name,' Project deleted',flush=True)
     except:
       print('Project does not exist',flush=True)
       pass
+    print('Setting base project as current for copying - ', base_project,flush=True)
     bw.projects.set_current(base_project)
     try:
         bw.projects.copy_project(project_name,switch = False)
-        print(base_project+'_project copied successfully',flush=True)
+        print(base_project+' project copied successfully',flush=True)
     except:
         bw.projects.purge_deleted_directories()
         bw.projects.copy_project(project_name,switch = False)
@@ -66,8 +67,12 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
         #reset_project(base_database,base_project,updated_project_name,bw)   
         bw.projects.set_current(base_project)
 
-        del bw.databases[updated_database]
-        print('Deleted database:, ',updated_database)
+        try:
+            del bw.databases[updated_database]
+            print('Deleted database:, ',updated_database)
+        except:
+            print('No database to delete')
+
         time0 = time.time()
         key=updated_database
         #Name of old database and new database is same in liaison-reeds
@@ -174,8 +179,6 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
             -------
             None
             """
-            print(project_new," Project entered for ReEDS LCI development",flush=True)
-            print(database_new,flush=True)
             print("Staring editing LCI using ReEDS", flush=True)     
             
             

@@ -24,6 +24,7 @@ def search_index_creator(ei_cf_36_db):
         p = []
         
         dic = {}
+        dic2 = {}
         for i in ei_cf_36_db:
             
             try:
@@ -31,12 +32,23 @@ def search_index_creator(ei_cf_36_db):
                 problems[i['name']+'@'+i['location']] = i
             except:
                  dic[i['name']+'@'+i['location']] = {}
+                 dic2[i['name']+'@'+i['location']] = i
             
             
             dic[i['name']+'@'+i['location']][i['code']] = i
 
+
+        '''    
+        filehandler = open(db+".obj","wb")
+        pickle.dump(dic,filehandler)
+        filehandler.close()
         
-        return dic
+        filehandler = open("problems.obj","wb")
+        pickle.dump(problems,filehandler)
+        filehandler.close()
+        '''
+        
+        return dic,dic2
 
         
 def search_index_reader(p_name,p_loc,database_dict):
@@ -62,7 +74,7 @@ def search_index_reader(p_name,p_loc,database_dict):
         key = p_name+'@'+p_loc
         return database_dict[key]
             
-def search_index_debugger(database_dict,p_code,**kwargs):
+def search_index_debugger(database_dict,p_code):
     
         """
         This function debugs the search process for multiple process names and locations
@@ -171,8 +183,8 @@ def uncertainty_adder(eco_d,activity,exchg_name):
                 exchg['scale'] = abs(np.log(exchg['amount']))/1000*(yr-2000)*5
                 print('uncertainty added:'+str(exchg['loc'])+" - "+str(exchg['scale']))
                 exchg.save()
-        
 
+        
 def emissions_index_creator(bw):        
     biosphere = bw.Database('biosphere3')
     df_em = {}
@@ -195,7 +207,9 @@ def find_emission(emission_bridge,emissions_dict):
             code = emission_bridge['Ecoinvent_code'][0]
             return emissions_dict[code]
 
-def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw):
+
+
+def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,location_name_bridge,bw):
 
         """
         This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
@@ -232,68 +246,75 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
         
         
         ei_cf_36_db = bw.Database(db)
-        database_dict = search_index_creator(ei_cf_36_db)
+        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
       
         #CELL
         #Preprocessing
         print('Reading from ' + run_filename,flush = True)
         inventory = pd.read_csv(run_filename)
-
-
-  
+        
+        
         #CELL
         #Step 1 is to create new processes or datasets    
         #The new processes and their information should be in the filtered product dataset
         processes = inventory[inventory['type'] == 'production']
         process_dict = {}
-        print("Modifying activity")
+        print("Creating New activity")
         for index,row in processes.iterrows():
             
             
             #Getting proper_ecoinvent names
+
             process_info = row['process']
             location_info = row['process_location']
-            print('To be modified -',process_info," ",location_info)
 
 
-            activity_dic = search_index_reader(process_info,location_info,database_dict)
-            
-            #What if activity not found?? Add this check??
-            if len(activity_dic) == 1:
-                print('One activity found. Check passed')
-                print(process_info,location_info)
-            else:
-                print('Warning: Multiple activity found')
-            p_code = list(activity_dic.keys())
-            activity = search_index_debugger(activity_dic,p_code[0].strip())
-            
-            if activity != None:
-                print('Activity Found!!',flush=True)
-
-            process_dict[process_info+'@'+location_info] = activity
+            try:
+                    activity_dic = search_index_reader(db,process_info,location_info,database_dict)
+                    activity = search_index_debugger(activity_dic,process_info)
+                    if activity != None:
+                        print('Deleting ' + process_info,flush = True)
+                        activity.delete()
+            except:
+                pass
+            print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
+            process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
+            process_dict[process_info+'@'+location_info].save()
 
         
-        print('Removing Activity all flows') 
+        print('Creating Activity output flow') 
 
         for key in process_dict:
-            print(key)
-            for exch in process_dict[key].exchanges():
-                    print(exch['name'],' deleted')
-                    exch.delete()
 
-            process_dict[key].save()
+            process_dict[key].exchanges().delete()
+            splited_key = key.split("@")
+            process_key_name = splited_key[0]
+            location_key_name = splited_key[1]
+            inv = inventory[(inventory['process'] == process_key_name) & (inventory['process_location'] == location_key_name)]
+            inp = inv[inv['type'] == 'production']
+            if len(inp) == 1:
+                print('Production flows check passed!!')
+            elif len(inp) > 1:
+                print('############Production flows for an activity more than 1!!##############')
+            else:
+                print('No production flows!!')
 
-        #To check if these processes are empty. Should not print anything
-        for key in process_dict:
-            for exch in process_dict[key].exchanges():
-                try:
-                    print(exch['name'],exch['location'])
-                except:
-                    print(exch['name'])
+
+            for index,row in inp.iterrows():
+
+                temp=pd.DataFrame([row])
+                #Check for no matches 
+                if temp.empty:
+                    print('No production flow found in inventory',flush = True)
+                    print(temp,flush = True)
+            
+                print(row['flow']+' Output flow created for ' + process_key_name + ' '+location_key_name,flush = True)
+                process_dict[key].new_exchange(input = process_dict[key].key, name = row['flow'], amount = row['value'], unit = row['unit'],type = 'production', location = process_dict[key]['location']).save()
+                process_dict[key].save()
 
 
         #Recreate the database dictionary so that the new created processes are listed in the inventory
-        database_dict = search_index_creator(ei_cf_36_db)
+        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
         
         #Step 3 is to define the flows that are inputs to the datasets
         #Only technosphere can be inputs 
@@ -313,12 +334,13 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                 
                 if process_bridge.empty or location_bridge.empty:
                     print(row['flow'] + ' ' + row['supplying_location'],flush = True)
-                    print('Warning Failed: Did not find this activity in the bridge file\n',flush = True)
-                    print('This flow needs to be added in the process bridge file. The ecoinvent name should be same as the US grid mix process name of electricity created from ReEDS')
+                    print('Did not find this process/location in the process bridge or location bridge file\n',flush = True)
                     #Some matches may not happen
                     #These will become cutoff flows
                 else:
 
+                    pcode = str(process_bridge['Ecoinvent_code'][0]).strip()
+                    flag = 'activity found'
                     unit_error_flag = 0
 
                     
@@ -327,12 +349,12 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                         activity = search_index_debugger(activity_dic,str(process_bridge['Ecoinvent_code'][0]).strip())    
 
                         if activity['unit'] != row['unit']:
-                            print('Warning Failed UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                            print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
                             unit_error_flag = 1                     
                         
                         process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                         process_dict[key].save() 
-                        print('Complete Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
+                        print('Complete Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                     
                     
                     except:
@@ -342,12 +364,12 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                             activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RNA',database_dict)
                             activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                             if activity['unit'] != row['unit']:
-                                print('Warning Failed UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
                                 unit_error_flag = 1                          
                             
                             process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                             process_dict[key].save() 
-                            print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                            print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                             
                         except:
@@ -357,12 +379,12 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                                 activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'GLO',database_dict)
                                 activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                                 if activity['unit'] != row['unit']:
-                                    print('Warning Failed UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                    print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
                                     unit_error_flag = 1  
                                 
                                 process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
                                 process_dict[key].save() 
-                                print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                                print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                             except:
                                 try:
@@ -371,7 +393,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                                     activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
                                     activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                                     if activity['unit'] != row['unit']:
-                                        print('Warning Failed Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                        print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
                                         unit_error_flag = 1  
                                     
                                     process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
@@ -379,13 +401,19 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                                     print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                                 except:                                   
-                                         print('Warning Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
-                                         print('This process should be same as the US grid mix process name of electricity created from ReEDS and its missing. Maybe it was not created. Please check')
+                                         print('Failed - Not found '+process_bridge['Ecoinvent_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
 
+
+                    if flag == 'activity found':
+                        #Not implemented
+                        mc_foreground = mc_foreground_flag
+                        if mc_foreground:
+                             uncertainty_adder(db,process_dict[key],activity['name'])
+                             continue
             
                     if unit_error_flag == 1:
                         print('Correct unit should be '+activity['unit'])
-                        sys.exit('Warning Failed Unit Error occured please check')
+                        sys.exit('Unit Error occured please check')
         
 
         
@@ -394,6 +422,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
         emissions_dict = emissions_index_creator(bw)        
         
         for key in process_dict:
+            
             splited_key = key.split("@")
             process_key_name = splited_key[0]
             location_key_name = splited_key[1]
@@ -406,15 +435,15 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                 emission_bridge = emission_merge(temp, emission_name_bridge) 
                 
                 if emission_bridge.empty:
-                    print(row['flow'] + ' Warning Failed Emission match not found from Emission Bridge!!')
-                
+                    print(row['flow'] + ' Emission match not found from Emission Bridge!!')
                 else:
                     emission = find_emission(emission_bridge,emissions_dict)
+                    
                     if emission == None:
-                        print('Warning Failed Emission not found ' + row['flow'],flush = True)                
+                        print('Emission not found ' + row['flow'],flush = True)                
                     else:
                         if emission['unit'] != row['unit']:
-                            print('Warning Failed Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
+                            print('Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
                             unit_error_flag = 1   
                         else:                                       
                             process_dict[key].new_exchange(input=emission.key,amount=row['value'], name = emission['name'],unit=emission['unit'],type='biosphere').save()
@@ -423,15 +452,200 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                     
                     if unit_error_flag == 1:
                             print('Correct unit should be '+emission['unit'])
-                            sys.exit('Warning Failed Emission unit Error occured please check')  
+                            sys.exit('Emission unit Error occured please check')        
 
 
-        #Printing the modified processes for sanity check
-        print('Printing the modified processes for sanity check')
-        for key in process_dict:
-            for exch in process_dict[key].exchanges():
-                try:
-                    print(exch['name'],exch['location'])
-                except:
-                    print(exch['name'])
+        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
+        return process_database_dict
         
+
+def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
+    
+        """
+        This function performs the LCA and LCIA calculations with the TRACI method.
+        
+        Parameters
+        ----------
+        db : pd.DataFrame
+           Dataframe for matching with ecoinvent bridge name databases
+        
+        primary_process : ecoinvent process
+           Ecoinvent process with the primary process under LCA study         
+                        
+        
+        functional unit : str
+           filename for location name bridging csv            
+           
+        Returns
+        -------
+        None
+        """
+
+        method_key = [[m for m in bw.methods if 'TRACI' in str(m) and 'acidification' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'ecotoxicity' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'eutrophication' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'global warming' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'carcinogenics' in str(m)][1],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'ozone depletion' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'photochemical oxidation' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'non-carcinogenics' in str(m)][0],
+              [m for m in bw.methods if 'TRACI' in str(m) and 'respiratory effects, average' in str(m)][0]]
+
+
+    
+        operation = primary_process
+      
+        
+        operation_functional_unit = {operation:functional_unit}
+        
+        operation_result = []
+        
+        from collections import defaultdict
+        LCA_sol_cal_dict = defaultdict(dict)
+        
+        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
+        
+
+        mc = mc_foreground_flag
+        if mc:
+         for key in LCA_sol_cal_dict.keys():
+            for method in method_key:
+                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
+                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
+                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
+        
+        else:
+         for key in LCA_sol_cal_dict.keys():
+            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
+            lca.lci()
+            
+            for method in method_key:
+                lca.switch_method(method)
+                lca.lcia()
+                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
+                #print('TOP ACTIVITIES\n\n')
+                #print(lca.top_activities())
+                #print('TOP EMISSIONS\n\n')
+                #print(lca.top_emissions())                 
+
+                
+        return LCA_sol_cal_dict,len(method_key)
+
+def lcia_recipe_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
+
+        method_key = [[m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'agricultural land occupation' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'climate change' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'fossil depletion' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater ecotoxicity' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater eutrophication' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'human toxicity' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ionising radiation' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine ecotoxicity' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine eutrophication' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'metal depletion' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'natural land transformation' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ozone depletion' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'particulate matter formation' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'photochemical oxidant formation' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial acidification' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial ecotoxicity' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'urban land occupation' in str(m)][0],
+                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'water depletion' in str(m)][0]]
+
+
+    
+        operation = primary_process
+        
+        operation_functional_unit = {operation:functional_unit}
+        
+        operation_result = []
+        
+        from collections import defaultdict
+        LCA_sol_cal_dict = defaultdict(dict)
+        
+        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
+        
+
+        mc = mc_foreground_flag
+        if mc:
+         for key in LCA_sol_cal_dict.keys():
+            for method in method_key:
+
+                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
+                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
+                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
+        
+        
+        else:
+         for key in LCA_sol_cal_dict.keys():
+            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
+            lca.lci()
+
+            
+            for method in method_key:
+                lca.switch_method(method)
+                lca.lcia()
+
+
+                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
+                #print('TOP ACTIVITIES\n\n')
+                #print(lca.top_activities())
+                #print('TOP EMISSIONS\n\n')
+                #print(lca.top_emissions())                  
+
+
+                
+        return LCA_sol_cal_dict,len(method_key)
+
+
+def lcia_premise_gwp_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
+
+        method_key = [[m for m in bw.methods if 'IPCC 2013' in str(m) and 'GTP 100a, incl. bio CO2' in str(m)][0],
+                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][0],
+                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][1],
+                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H and bio CO2' in str(m)][0]]
+    
+        operation = primary_process
+        
+        operation_functional_unit = {operation:functional_unit}
+        
+        operation_result = []
+        
+        from collections import defaultdict
+        LCA_sol_cal_dict = defaultdict(dict)
+        
+        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
+        
+
+        mc = mc_foreground_flag
+        if mc:
+         for key in LCA_sol_cal_dict.keys():
+            for method in method_key:
+                    print(method)
+                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
+                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
+                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
+        
+        
+        else:
+         for key in LCA_sol_cal_dict.keys():
+            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
+            lca.lci()
+            
+            for method in method_key:
+                lca.switch_method(method)
+                lca.lcia()
+                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
+                #print('TOP ACTIVITIES\n\n')
+                #print(lca.top_activities())
+                #print('TOP EMISSIONS\n\n')
+                #print(lca.top_emissions())                
+
+        save_db = False
+        if save_db == True:
+            ei_cf_36_db = bw.Database(db)    
+            ei_cf_36_db.backup()
+            print('backed up database')
+
+                
+        return LCA_sol_cal_dict,len(method_key)

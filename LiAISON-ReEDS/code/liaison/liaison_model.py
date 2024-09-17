@@ -320,7 +320,7 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
                      'method': method     
                     })    
                 
-                lcia_df.to_csv(output_dir+results_filename+str(r)+db+primary_process+'.csv',index = False)
+                lcia_df.to_csv(output_dir+results_filename+'.csv',index = False)
 
                 save_project = False
                 if save_project == True:
@@ -346,14 +346,15 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
     
 
     elif regional_sensitivity_flag:
-
+        print('Region ',region)
         file = pd.read_csv(inventory_filename)
         file['process_location'] = region
         file['supplying_location'] = region
         print('Regional Sensitivity analysis starts')
         run_filename = os.path.join(data_dir,'sensitivity_regional'+updated_database+str(yr)+'.csv')
         file.to_csv(run_filename,index = False)  
-        r = ''    
+        r = '' 
+        location_under_study = region   
         lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
 
     else:
