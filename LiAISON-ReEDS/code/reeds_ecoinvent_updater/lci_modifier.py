@@ -125,7 +125,7 @@ def emission_merge(inp, emission_name_bridge):
             """
             
             emission_name = pd.read_csv(emission_name_bridge)
-            emission_bridge = inp.merge(emission_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
+            emission_bridge = inp.merge(emission_name, left_on = ['flow','comments'], right_on = ['Common_name','Common_source']).dropna()
             return emission_bridge
 
  
@@ -273,24 +273,18 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
             process_dict[process_info+'@'+location_info] = activity
 
         
-        print('Removing Activity all flows') 
+        print('Removing Activity technosphere flow') 
 
         for key in process_dict:
-            print(key)
             for exch in process_dict[key].exchanges():
-                    print(exch['name'],' deleted')
+                if exch['type'] == 'technosphere':
                     exch.delete()
 
             process_dict[key].save()
 
-        #To check if these processes are empty. Should not print anything
         for key in process_dict:
             for exch in process_dict[key].exchanges():
-                try:
-                    print(exch['name'],exch['location'])
-                except:
-                    print(exch['name'])
-
+                print(exch)
 
         #Recreate the database dictionary so that the new created processes are listed in the inventory
         database_dict = search_index_creator(ei_cf_36_db)
@@ -424,14 +418,4 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                     if unit_error_flag == 1:
                             print('Correct unit should be '+emission['unit'])
                             sys.exit('Warning Failed Emission unit Error occured please check')  
-
-
-        #Printing the modified processes for sanity check
-        print('Printing the modified processes for sanity check')
-        for key in process_dict:
-            for exch in process_dict[key].exchanges():
-                try:
-                    print(exch['name'],exch['location'])
-                except:
-                    print(exch['name'])
         

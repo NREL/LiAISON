@@ -188,6 +188,7 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
                 reset_project(base_database,base_project,project_new,bw)
                 reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
                 print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
+                sys.exit(0)
             
 
             if lca_activity_modification:

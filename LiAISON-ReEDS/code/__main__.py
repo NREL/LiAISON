@@ -46,14 +46,14 @@ from liaison.liaison_model import main_run
 lca_project_name = scenario_params.get('lca_project_name')
 primary_process = scenario_params.get('process')
 process_under_study = scenario_params.get('primary_process_to_study')
-location_under_study = scenario_params.get('location_primary_process_to_study')
+location_under_study = scenario_params.get('location')
 updated_database = scenario_params.get('updated_database')
 updated_project_name = scenario_params.get('updated_project_name')
 mc_runs = int(scenario_params.get('mc_runs'))
 functional_unit = float(scenario_params.get('functional_unit'))
 base_database = scenario_params.get('base_database')
 base_project = scenario_params.get('base_project')
-region = scenario_params.get('regions_for_sensitivity_analysis')
+region = scenario_params.get('location')
 initial_year = scenario_params.get('initial_year')
 
 
@@ -83,7 +83,7 @@ ecoinvent_file = os.path.join(args.datapath,
 
 
 # ## Fix this
-ecoinvent_file = "/kfs2/shared-projects/liaison/Soomin/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/"
+ecoinvent_file = "/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/ecoinvent/ecoinvent 3.8_cutoff_ecoSpold02/datasets"
 
                                   
 results_filename = outputs.get('results_filename')
@@ -92,7 +92,7 @@ output_dir = os.path.join(args.datapath,
 data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
 ## Fix this
-creation_inventory_filename = os.path.join("/kfs2/shared-projects/liaison/Soomin/hipster_data/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
+creation_inventory_filename = os.path.join("/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
 
 
 run_database_reader = flags.get('database_reader')
@@ -156,32 +156,47 @@ if remove_old_results:
     except:
         pass
 
+import random
+processes_list = ["treatment of waste glass from unsorted public collection, sorting","photovoltaic plant construction, 570kWp, multi-Si, on open ground","treatment of waste glass sheet, sorting plant","glass wool mat production","insulation spiral-seam duct production, rockwool, DN 400, 30 mm","cement production, Portland","treatment of waste glass, unsanitary landfill, wet infiltration class (500mm)","flat glass production, uncoated"] 
+random_number = random.randint(0,7)
+process_in_ecoinvent_for_lca_from_celavi = processes_list[random_number]
+process_in_ecoinvent_for_lca_from_celavi = "flat glass production, uncoated"
+import pandas as pd
+location_list = ['CA','AZ','CO','TX','WA','FL','TN','MO']
+for l in location_list:
+    location_under_study = l
 
-if lca_flag:
+
     
-    main_run(lca_project=lca_project_name,
-             updated_project_name=updated_project_name,
-             initial_year=initial_year,
-             results_filename=results_filename, 
-             mc_foreground_flag=mc_foreground_flag,
-             lca_flag=lca_flag,
-             lca_activity_modification=lca_activity_modification,
-             regional_sensitivity_flag=regional_sensitivity_flag,
-             region=region,
-             data_dir=data_dir,
-             primary_process=primary_process,
-             process_under_study=process_under_study, 
-             location_under_study=location_under_study,
-             updated_database=updated_database, 
-             mc_runs=mc_runs,
-             functional_unit=functional_unit,
-             inventory_filename = foreground_inventory_filename,
-             modification_inventory_filename = modification_inventory_filename,
-             process_name_bridge = process_name_bridge,
-             emission_name_bridge = emission_name_bridge,
-             location_name_bridge = location_name_bridge,
-             output_dir= output_dir,
-             bw=bw)
+    foreground_inventory_filename = pd.DataFrame()
+    primary_process = process_in_ecoinvent_for_lca_from_celavi
+    process_under_study = process_in_ecoinvent_for_lca_from_celavi
 
-print(time.time()-tim0) 
-      
+    if lca_flag:
+        
+        main_run(lca_project=lca_project_name,
+                 updated_project_name=updated_project_name,
+                 initial_year=initial_year,
+                 results_filename=results_filename+l, 
+                 mc_foreground_flag=mc_foreground_flag,
+                 lca_flag=lca_flag,
+                 lca_activity_modification=lca_activity_modification,
+                 regional_sensitivity_flag=regional_sensitivity_flag,
+                 region=region,
+                 data_dir=data_dir,
+                 primary_process=primary_process,
+                 process_under_study=process_in_ecoinvent_for_lca_from_celavi, 
+                 location_under_study=location_under_study,
+                 updated_database=updated_database, 
+                 mc_runs=mc_runs,
+                 functional_unit=functional_unit,
+                 inventory_filename = foreground_inventory_filename,
+                 modification_inventory_filename = modification_inventory_filename,
+                 process_name_bridge = process_name_bridge,
+                 emission_name_bridge = emission_name_bridge,
+                 location_name_bridge = location_name_bridge,
+                 output_dir= output_dir,
+                 bw=bw)
+
+    print(time.time()-tim0) 
+          

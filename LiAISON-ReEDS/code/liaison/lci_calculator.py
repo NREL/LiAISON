@@ -36,20 +36,16 @@ def search_index_creator(ei_cf_36_db):
             
             
             dic[i['name']+'@'+i['location']][i['code']] = i
-
-            #if ('market group for electricity, high voltage' in i['name']) and ('US' in i['location']):
+            dic2[i['name']+'@'+i['location']] = i
+            
+            # if ('market for municipal solid waste' in i['name']):
             #    print(i['name'],i['location'],'TJ')
             #    print('')
 
-
-        '''    
-
-        '''
-        
         return dic,dic2
 
         
-def search_index_reader(p_name,p_loc,database_dict):
+def search_index_reader(p_name,p_loc,activity_dict):
     
         """
         This function returns the process based on key consisting of process name and location
@@ -72,52 +68,38 @@ def search_index_reader(p_name,p_loc,database_dict):
 
         key = p_name+'@'+p_loc
         try:
-            return database_dict[key]
+            return activity_dict[key]
         except:
             return None
-            
-def search_index_debugger(database_dict,p_code,**kwargs):
+
+'''
+def search_index_debugger(activity_dict,**kwargs):
     
-        """
-        This function debugs the search process for multiple process names and locations
+    """
+    This function debugs the search process for multiple process names and locations
+    
+    Parameters
+    ----------          
+    p_code: str
+        code for identification of proper process when duplicate process names and location exists. 
+         
+    database_dict : 
+        database dictionary ecoinvent search index with process information
         
-        Parameters
-        ----------          
-        p_code: str
-            code for identification of proper process when duplicate process names and location exists. 
-             
-        database_dict : 
-            database dictionary ecoinvent search index with process information
-            
-        Returns
-        -------
-        None
-        """
+    Returns
+    -------
+    None
+    """
+    #The dictionary length should always be 1
 
-        if (p_code == 0) or (p_code == "0"):
-              if len(database_dict) == 1:
-                for act in database_dict:
-                    return database_dict[act]
-                    break 
-              else:
-                print('\n  ******',flush = True)            
-                print('Multiple processes exist for - ',flush = True)
-                temp_choice = []
-                for act in database_dict:
-                    print(act,flush = True)
-                    print(database_dict[act],flush = True)
-                    
-                    temp_choice.append(act)
-                print('\n *****',flush = True)    
-                print("Choose the first row by default to resolve the issue temporarily",flush = True)
-                chosen_act = temp_choice[0]
-                return database_dict[act]
-   
-        else:
+    if len(activity_dict) == 1:
+        for key in activity_dict.keys():
+            return activity_dict[key]
+        
+    else:
+        print('Issue with dictionary length when process and location is chosen',flush=True)
 
-            if len(p_code) == 33:
-                p_code = p_code[1:]
-            return database_dict[p_code]
+
 
 def emission_merge(inp, emission_name_bridge):
     
@@ -137,10 +119,12 @@ def emission_merge(inp, emission_name_bridge):
             -------
             None
             """
-            
+
+
             emission_name = pd.read_csv(emission_name_bridge)
             emission_bridge = inp.merge(emission_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
             return emission_bridge
+
 
  
 def merge(inp,process_name_bridge,location_name_bridge):
@@ -165,14 +149,12 @@ def merge(inp,process_name_bridge,location_name_bridge):
             """
         
             process_name = pd.read_csv(process_name_bridge)
-        
             process_bridge = inp.merge(process_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
-            
             location_bridge = inp.reset_index()
             location_bridge['location_ecoinvent'] = location_bridge['supplying_location']
 
             return process_bridge,location_bridge    
-
+'''
 
 #Not incorporated
 def uncertainty_adder(eco_d,activity,exchg_name):
@@ -198,7 +180,6 @@ def emissions_index_creator(bw):
 def find_emission(emission_bridge,emissions_dict):
 
         if len(emission_bridge) == 1:
-            print('One emission match found. Check passed!!')  
             code = emission_bridge['Ecoinvent_code'][0]
             return emissions_dict[code]
 
@@ -207,9 +188,48 @@ def find_emission(emission_bridge,emissions_dict):
             code = emission_bridge['Ecoinvent_code'][0]
             return emissions_dict[code]
 
+def search_dictionary(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw):
+
+        """
+        This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
+        them to the background ecoinvent processes. Emissions are also linked to the processes and biosphere emissions.
+        
+        Parameters
+        ----------
+        db : str
+           ecoinvent database with scenario and year 
+           
+        run_filename : str
+           intermediate filename with process inventory
+           
+        mc_foreground_flag : boolean
+           flag to perform monte carlo simulation
+        
+        process_name_bridge : str
+           filename for process name bridging csv             
+        
+        location_name_bridge : str
+           filename for location name bridging csv   
+    
+        eemission_name_bridge : str
+           filename for emission name bridging csv
+        
+        bw : module
+           brightway2 module        
+           
+        Returns
+        -------
+        None
+        
+        """
+        
+        
+        ei_cf_36_db = bw.Database(db)
+        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
+        return database_dict
 
 
-def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,location_name_bridge,bw):
+def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw):
 
         """
         This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
@@ -250,21 +270,19 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
       
         #CELL
         #Preprocessing
-        print('Reading from ' + run_filename,flush = True)
-        inventory = pd.read_csv(run_filename)
-        
+        inventory = run_filename
         
         #CELL
         #Step 1 is to create new processes or datasets    
         #The new processes and their information should be in the filtered product dataset
         processes = inventory[inventory['type'] == 'production']
         process_dict = {}
+        location_name_bridge=pd.DataFrame()
         print("Creating New activity")
         for index,row in processes.iterrows():
             
             
             #Getting proper_ecoinvent names
-
             process_info = row['process']
             location_info = row['process_location']
             activity_dic = search_index_reader(process_info,location_info,database_dict)
@@ -351,12 +369,12 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                 else:
 
                     if len(process_bridge) > 1 or len(location_bridge) >1:
-                        print('Warning ---  - Multiple activities matched from process and location bridge file. Please check!!!!')
+                        print('Warning ---  - Multiple activities matched from process and location bridge file. Please check!!!!',flush=True)
 
                     unit_error_flag = 0
                     try :
                         activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],location_bridge['location_ecoinvent'][0],database_dict)
-                        activity = search_index_debugger(activity_dic,str(process_bridge['Ecoinvent_code'][0]).strip(),unit=row['unit'])    
+                        activity = search_index_debugger(activity_dic)    
 
                         if activity['unit'] != row['unit']:
                             print('Warning --- UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
@@ -371,7 +389,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                 #This exception is to make sure that if flows are not found the defaults of USA are chosen for building the database
                                 #The reason why three locations are used are because processes(like electricity) do not have RoW location but USA is present.
                                 activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'USA',database_dict)
-                                activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                activity = search_index_debugger(activity_dic)    
                                 if activity['unit'] != row['unit']:
                                     print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                     unit_error_flag = 1  
@@ -386,7 +404,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                         #This exception is to make sure that if flows are not found the defaults of US are chosen for building the database
                                         #The reason why three locations are used are because processes(like electricity) do not have RoW location but USA is present.
                                         activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'US',database_dict)
-                                        activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                        activity = search_index_debugger(activity_dic)    
                                         if activity['unit'] != row['unit']:
                                             print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                             unit_error_flag = 1  
@@ -400,8 +418,8 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                             try:
                                                 #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
                                                 #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
-                                                activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RNA',database_dict)
-                                                activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                                activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
+                                                activity = search_index_debugger(activity_dic)  
                                                 if activity['unit'] != row['unit']:
                                                     print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
                                                     unit_error_flag = 1                          
@@ -416,7 +434,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                                     #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
                                                     #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
                                                     activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'GLO',database_dict)
-                                                    activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                                    activity = search_index_debugger(activity_dic)    
                                                     if activity['unit'] != row['unit']:
                                                         print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Ecoinvent_name'][0])
                                                         unit_error_flag = 1  
@@ -429,8 +447,8 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                                     try:
                                                         #This exception is to make sure that if flows are not found the defaults of ROW or GLO or US-WECC are chosen for building the database
                                                         #The reason why three locations are used are because processes(like electricity) do not have RoW location but US-WECC is present.
-                                                        activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
-                                                        activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0],unit=row['unit'])    
+                                                        activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RER',database_dict)
+                                                        activity = search_index_debugger(activity_dic)    
                                                         if activity['unit'] != row['unit']:
                                                             print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                                             unit_error_flag = 1  
@@ -440,7 +458,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                                                         print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                                                     except:                                   
-                                                         print('Warning --- Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+                                                         print('Warning --- Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0],flush = True)
                                                          print('Please add technosphere flows from foreground inventory file to process bridge. If you do know the ecoinvent UUID, insert it. If not put 0. Location is not used')
                         
                     if unit_error_flag == 1:
@@ -474,7 +492,6 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
                     if emission == None:
                         print('Emission not found ' + row['flow'],flush = True)                
                     else:
-                        print('Emission found')
                         if emission['unit'] != row['unit']:
                             print('Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
                             unit_error_flag = 1   
@@ -490,6 +507,7 @@ def brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emi
 
         database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
         return process_database_dict
+        
         
 
 def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):

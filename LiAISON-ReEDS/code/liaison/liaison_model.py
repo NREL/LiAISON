@@ -9,8 +9,8 @@ import yaml
 import os
 import time
 from liaison.montecarloforeground import mc_foreground
-from liaison.lci_calculator import brightway,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
-
+from liaison.lci_calculator import brightway,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
+from liaison.search_activity_ecoinvent_for_editing import search_activity_in_ecoinvent_for_editing
 
 
 
@@ -183,8 +183,6 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
     """
     
 
-    
-    
     print('\n')
     print(updated_database,flush=True)
     print("Staring LCA runs", flush=True)
@@ -195,7 +193,7 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
     scenario = updated_database[15:]
     number = str(secrets.token_hex(8))
 
-    def lca_runner(db,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit):
+    def lca_runner(db,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename):
 
 
             lcia_result = {}
@@ -225,10 +223,13 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
             """
   
             project_name = reset_project(updated_project_name,number,lca_project,updated_database,bw)
-            if lca_activity_modification:
-               print('Activity modified already previously! Not doing again!!',flush=True)
-
-            dictionary = brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
+            
+            # This function creates a dictionary from ecoinvent for searching for activities.
+            dictionary = search_dictionary(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw)                   
+            run_filename = search_activity_in_ecoinvent_for_editing(dictionary,process_under_study,location_under_study,process_name_bridge,emission_name_bridge,run_filename,data_dir)
+            #dictionary = brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw)
+            
+            dictionary = brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw)                   
             print('Activity created and saved success',flush=True)
             if lca_flag: 
                 result_dir1,n_lcias1 = lcia_traci_run(db,dictionary[process_under_study+'@'+location_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
@@ -320,7 +321,7 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
                      'method': method     
                     })    
                 
-                lcia_df.to_csv(output_dir+results_filename+'.csv',index = False)
+                lcia_df.to_csv(output_dir+results_filename+str(r)+db+primary_process+'.csv',index = False)
 
                 save_project = False
                 if save_project == True:
@@ -346,22 +347,21 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
     
 
     elif regional_sensitivity_flag:
-        print('Region ',region)
+
         file = pd.read_csv(inventory_filename)
         file['process_location'] = region
         file['supplying_location'] = region
         print('Regional Sensitivity analysis starts')
         run_filename = os.path.join(data_dir,'sensitivity_regional'+updated_database+str(yr)+'.csv')
         file.to_csv(run_filename,index = False)  
-        r = '' 
-        location_under_study = region   
+        r = ''    
         lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
 
     else:
         
         run_filename = inventory_filename
         r = ''
-        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
+        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename)
             
     try:
         bw.projects.delete_project(bw.projects.current, delete_dir=True) 
