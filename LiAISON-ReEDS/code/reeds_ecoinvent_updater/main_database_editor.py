@@ -4,6 +4,7 @@ from reeds_ecoinvent_updater.lci_creator import reeds_db_editor
 from reeds_ecoinvent_updater.lci_modifier import reeds_lci_modifier
 from premise import *
 from premise_gwp import add_premise_gwp
+import pandas as pd
 
 
 def reset_project(base_database,base_project,project_new,bw):
@@ -109,7 +110,7 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
 
 
 
-def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,premise_editor,base_database,base_project,database_new,project_new,bw):
+def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,modification_inventory_filename_us,premise_editor,base_database,base_project,database_new,project_new,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -143,7 +144,11 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
         filename for the process foreground inventory  
 
     modification_inventory_filename: str
-        filename for the process inventory that will be modified inside ecoinvent      
+        filename for the process inventory that will be modified inside ecoinvent   
+
+    modification_inventory_filename_us: str
+         filename for the process inventory that will be modified inside ecoinvent US  
+  
     output_dir : str
        output directory for saving results       
     
@@ -154,12 +159,10 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
     -------
     None
     """
-    
 
-    
 
-    #'remove all uncertainty from the background with this command'
-    #remove_background_uncertainty(db) 
+    # remove all uncertainty from the background with this command'
+    # remove_background_uncertainty(db) 
     def reeds_editor(db_new,r,run_filename,project_new,create_new_database):
 
             """
@@ -184,22 +187,42 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
             
             
             if reeds_grid_mix_creator:
+
+                # Creates the individual state grid mix and also the market flows for stage grid mix with transmission
+                
                 print('Creating Reeds Grid mix inside ecoinvent')
                 reset_project(base_database,base_project,project_new,bw)
-                reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
+                reeds_db_editor(db_new,run_filename,bw)                   
                 print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
-                sys.exit(0)
-            
+                state_df = pd.read_csv(run_filename)
+                states = list(pd.unique(state_df['process_location']))
+                print('Creating market mixes for electricity grid for the States',flush=True)
+                for st in states:
+                    if st != "US":
+                        temp_df = pd.read_csv(modification_inventory_filename)
+                        temp_df['process_location'] = st
+                        temp_df['supplying_location'] = st
+                        temp_df.to_csv(modification_inventory_filename, index = False)
+                        reeds_db_editor(db_new,modification_inventory_filename,bw)
 
             if lca_activity_modification:
+
+                # Creates the US grid mix flow and the market flow. 
+                # market group for electricity, USA is produced by PREMISE
+                # Premise makes market group for electricity high voltage, US to connect to market group for electricity high voltage, USA. 
+                # ReEDS_US_Grid_mix is the flow created by LiAISON - ReEDS 
+                # We replace the market group for electricity high voltage, USA with ReEDS_US_Grid_mix. 
+                # Transmission gets included in the downstream processes, market group for electricity medium/low voltage, US
 
                 print('Editing existing Ecoinvent flows using lci modifier')
                 bw.projects.set_current(project_new)
                 print("Entered project " + project_new,flush = True)
                 print("Databases in this project are",flush = True)
                 print(bw.databases,flush = True) 
-                reeds_lci_modifier(db_new,modification_inventory_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)
+                reeds_db_editor(db_new,modification_inventory_filename_us,bw)
                 print('Background Activity modified and saved success',flush=True)
+
+
 
        
         

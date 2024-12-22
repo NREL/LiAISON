@@ -18,7 +18,8 @@ def search_index_creator(ei_cf_36_db):
             database ecoinvent     
         Returns
         -------
-        None
+        dic: dictionary
+            ecoinvent database in the form of a dictionary
         """
     
         problems = {}
@@ -29,20 +30,23 @@ def search_index_creator(ei_cf_36_db):
         for i in ei_cf_36_db:
             
             try:
-                p.append(dic[i['name']+'@'+i['location']])
-                problems[i['name']+'@'+i['location']] = i
+                p.append(dic[i['name']+'@'+i['location']+'@'+i['unit']])
+                problems[i['name']+'@'+i['location']+'@'+i['unit']] = i
             except:
-                 dic[i['name']+'@'+i['location']] = {}
-                 dic2[i['name']+'@'+i['location']] = i
+                 dic[i['name']+'@'+i['location']+'@'+i['unit']] = {}
+                 #dic2[i['name']+'@'+i['location']+'@'+i['unit']] = i
             
             
-            dic[i['name']+'@'+i['location']][i['code']] = i
+            
+            dic[i['name']+'@'+i['location']+'@'+i['unit']][i['code']] = i
+            dic2[i['code']] = i
+
 
         
         return dic,dic2
 
         
-def search_index_reader(p_name,p_loc,data_dict):
+def search_index_reader(p_name,p_loc,p_unit,data_dict):
     
         """
         This function returns the process based on key consisting of process name and location
@@ -65,47 +69,17 @@ def search_index_reader(p_name,p_loc,data_dict):
         None
         """
 
-        dic_key = p_name+'@'+p_loc
-        try:
-            activity_dict = data_dict[dic_key]
-            if len(activity_dict) == 1:
-                for key in activity_dict.keys():
-                    return activity_dict[key]
-            else:
-                print('\nWarning --- Issue with process dictionary length when '+dic_key+' is chosen',flush=True)
-                for key in activity_dict.keys():
-                    print('Warning --- Multiple activities found ---- ',activity_dict[key],key,flush=True)
-                print('\n')
+        dic_key = p_name+'@'+p_loc +'@'+p_unit
+        activity_dict = data_dict[dic_key]
+        if len(activity_dict) == 1:
+            for key in activity_dict.keys():
                 return activity_dict[key]
-
-        except:
-            return None
-
-def search_index_debugger(activity_dict,**kwargs):
-    
-    """
-    This function debugs the search process for multiple process names and locations
-    
-    Parameters
-    ----------          
-    p_code: str
-        code for identification of proper process when duplicate process names and location exists. 
-         
-    database_dict : 
-        database dictionary ecoinvent search index with process information
-        
-    Returns
-    -------
-    None
-    """
-    #The dictionary length should always be 1
-
-    if len(activity_dict) == 1:
-        for key in activity_dict.keys():
+        else:
+            print('\nWarning --- Issue with process dictionary length when '+dic_key+' is chosen',flush=True)
+            for key in activity_dict.keys():
+                print('Warning --- Multiple activities found ---- ',activity_dict[key],key,flush=True)
+            print('\n')
             return activity_dict[key]
-        
-    else:
-        print('Issue with dictionary length when process and location is chosen',flush=True)
 
 
 
@@ -137,9 +111,8 @@ def emissions_index_creator(bw):
    
     biosphere = bw.Database('biosphere3')
     df_em = {}
-    emission_name = []
-    emission_code = []
-    emission_category = []
+    df_em2 = {}
+
     # There may be several emissions with the same name. For that case, we store all occurences within the name key as a list. 
     for i in biosphere:
        y = i.as_dict()   
@@ -151,7 +124,9 @@ def emissions_index_creator(bw):
        except:
             df_em[y['name']] = [i]    
 
-    return df_em
+       df_em2[y['code']] = i
+    
+    return df_em,df_em2
 
 def find_emission(emission_name,emissions_dict):
 
@@ -163,7 +138,7 @@ def find_emission(emission_name,emissions_dict):
 
 
 
-def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw):
+def reeds_db_editor(db,run_filename,bw):
 
         """
         This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
@@ -176,18 +151,6 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
            
         run_filename : str
            intermediate filename with process inventory
-           
-        mc_foreground_flag : boolean
-           flag to perform monte carlo simulation
-        
-        process_name_bridge : str
-           filename for process name bridging csv             
-        
-        location_name_bridge : str
-           filename for location name bridging csv   
-    
-        eemission_name_bridge : str
-           filename for emission name bridging csv
         
         bw : module
            brightway2 module        
@@ -221,21 +184,26 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
 
             # Here we use the process name, the location name and the unit to find the exact entry in ecoinvent. It may or may not exist
             # Assumption is that process_name@location_name@unit is unique. 
-            activity = search_index_reader(process_info,location_info,database_dict)
             # Deleting the activity that was found. 
             try:
-                 if activity != None:
-                     print('Deleting ' + process_info,flush = True)
-                     activity.delete()
-                 else:
-                      pass
+                 activity = search_index_reader(process_info,location_info,unit_info,database_dict)
+                 activity.exchanges().delete()
+                 print('Found existing activity ', process_info,location_info,unit_info,flush = True)
+                 process_dict[process_info+'@'+location_info] = activity
+                 # print('Removing Activity flows',flush=True) 
+
+                 for key in process_dict:
+                    for exch in process_dict[key].exchanges():
+                            print('Deleting',exch['name'])
+                            exch.delete()
+
+                 process_dict[key].save()
+
             except:
-                print('Warning --- Issue!!!: Existing activity not deleted', flush = True)
 
-
-            print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
-            process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
-            process_dict[process_info+'@'+location_info].save()
+                print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
+                process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
+                process_dict[process_info+'@'+location_info].save()
 
         
         print('Creating Activity output flow') 
@@ -258,7 +226,7 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
             if len(inp) == 1:
                 pass
             elif len(inp) > 1:
-                print(' Warning --- Production flows for an activity more than 1!!##############')
+                print(' Warning --- Production flows for an activity more than 1!')
             else:
                 print('Warning --- No production flows!!')
 
@@ -298,51 +266,62 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
             for index,row in inp.iterrows():
                 
                     unit_error_flag = 0
-
-                    # This exception is to make sure that if flows are not found for the user provided location, other locations are searched for and linked automatically. 
-                    try :
-                        activity = search_index_reader(row['flow'],row['supplying_location'],database_dict)
+                    not_found = False
+                    print_flag = False
+                    activity = None
+                    # Then the UUID has been supplied and we can try to find using UUID
+                    try:
+                        activity = process_dict[str(row['code'])]
                         print('Complete Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                         print_flag = True
                     except:
-                        try:
-                            activity = search_index_reader(row['process'],'USA',database_dict)
+                        # This exception is to make sure that if flows are not found for the user provided location, other locations are searched for and linked automatically. 
+                        try :
+                            activity = search_index_reader(row['flow'],row['supplying_location'],row['unit'],database_dict)
+                            print('Complete Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
+                            print_flag = True
                         except:
                             try:
-                                activity = search_index_reader(row['process'],'US',database_dict)
+                                activity = search_index_reader(row['flow'],'USA',row['unit'],database_dict)
                             except:
                                 try:
-                                    activity = search_index_reader(row['process'],'RNA',database_dict)
+                                    activity = search_index_reader(row['flow'],'US',row['unit'],database_dict)
                                 except:
                                     try:
-                                        activity = search_index_reader(row['process'],'RoW',database_dict)
-                                    except: 
+                                        activity = search_index_reader(row['flow'],'RNA',row['unit'],database_dict)
+                                    except:
                                         try:
-                                            activity = search_index_reader(row['process'],'GLO',database_dict)
-                                        except:
+                                            activity = search_index_reader(row['flow'],'RoW',row['unit'],database_dict)
+                                        except: 
                                             try:
-                                                activity = search_index_reader(row['process'],'RER',database_dict)
+                                                activity = search_index_reader(row['flow'],'GLO',row['unit'],database_dict)
                                             except:
-                                                print('Warning --- Failed - Not found '+row['flow'] + ' ' + row['supplying_location'] + ' ',flush = True)
+                                                try:
+                                                    activity = search_index_reader(row['flow'],'RER',row['unit'],database_dict)
+                                                except:
+                                                    print('Warning --- Failed - Not found '+row['flow'] + ' ' + row['supplying_location'] + ' ',flush = True)
+                                                    print_flag = True
+                                                    not_found = True
+                        if print_flag == False:
+                            print('Minor Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
-                    if print_flag != True:
-                        print('Minor Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                    if not_found == False:
 
-                    if activity['unit'] != row['unit']:
-                        print('Warning --- UNIT ERROR '+row['supplying_location']+' for '+ row['flow'])
-                        print('Warning --- Correct unit should be '+activity['unit'])
-                        sys.exit('Warning --- Unit Error occured please check')
+                        if activity['unit'] != row['unit']:
+                            print('Warning --- UNIT ERROR '+row['supplying_location']+' for '+ row['flow'])
+                            print('Warning --- Correct unit should be '+activity['unit'])
+                            sys.exit('Warning --- Unit Error occured please check')
 
-                    else:
-                        process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=activity['unit'],type='technosphere').save()
-                        process_dict[key].save() 
+                        else:
+                            process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=activity['unit'],type='technosphere').save()
+                            process_dict[key].save() 
             
             print(str(time.time()-time0),' seconds needed for technosphere flows connection for process ', key)
             print('')
             print('')
 
         print('Adding Biosphere Flows',flush = True)  
-        emissions_dict = emissions_index_creator(bw)        
+        emissions_dict,emissions_code_dict = emissions_index_creator(bw)        
         for key in process_dict:
             time0=time.time()
             splited_key = key.split("@")
@@ -354,7 +333,13 @@ def reeds_db_editor(db,run_filename,process_name_bridge,emission_name_bridge,loc
             for index,row in inp.iterrows():
                 unit_error_flag = 0
                 temp=pd.DataFrame([row])
-                emission = find_emission(row['flow'],emissions_dict)
+
+                # Try find the emission using supplied UUID. If not then try name. Emission should be a list
+                try:
+                    emission =[emissions_code_dict[str(row['code'])]]
+                except:
+                    emission = find_emission(row['flow'],emissions_dict)
+                
                 if emission == None:
                     print('Warning --- Emission not found ' + row['flow'],flush = True)                
                 else:
