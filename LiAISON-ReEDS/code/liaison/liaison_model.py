@@ -9,7 +9,7 @@ import yaml
 import os
 import time
 from liaison.montecarloforeground import mc_foreground
-from liaison.lci_calculator import brightway,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
+from liaison.lci_calculator import liaison_calc,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
 from liaison.search_activity_ecoinvent_for_editing import search_activity_in_ecoinvent_for_editing
 
 
@@ -123,7 +123,7 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     correct_bigcc_copper_use(bw,updated_database)
     return project_name
 
-def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_foreground_flag,lca_flag,lca_activity_modification,regional_sensitivity_flag,region,data_dir,primary_process,process_under_study,location_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,process_name_bridge,emission_name_bridge,location_name_bridge,output_dir,bw):
+def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_foreground_flag,lca_flag,lca_activity_modification,regional_sensitivity_flag,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -161,15 +161,6 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
 
     modification_inventory_filename: str
         filename for the process inventory that will be modified inside ecoinvent      
-    
-    process_name_bridge : str
-        filename for the link between common process names and ecoinvent process names    
-    
-    emission_name_bridge : str
-        filename for the link between common emission names and ecoinvent emission names
-    
-    location_name_bridge : str
-       filename for the link between common location names and ecoinvent location names
     
     output_dir : str
        output directory for saving results       
@@ -211,7 +202,7 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
     
             Parameters
             ----------
-            db : 
+            db : str
                 ecoinvent database name under study with scenario and year        
             
             r : str
@@ -223,17 +214,14 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
             """
   
             project_name = reset_project(updated_project_name,number,lca_project,updated_database,bw)
-            
             # This function creates a dictionary from ecoinvent for searching for activities.
-            dictionary = search_dictionary(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw)                   
-            run_filename = search_activity_in_ecoinvent_for_editing(dictionary,process_under_study,location_under_study,process_name_bridge,emission_name_bridge,run_filename,data_dir)
-            #dictionary = brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw)
-            
-            dictionary = brightway(db,run_filename,mc_foreground_flag,mc_runs,process_name_bridge,emission_name_bridge,bw)                   
+            dictionary = search_dictionary(db,bw)                   
+            run_filename = search_activity_in_ecoinvent_for_editing(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
+            process_dictionary = liaison_calc(db,run_filename,bw)                   
             print('Activity created and saved success',flush=True)
             if lca_flag: 
-                result_dir1,n_lcias1 = lcia_traci_run(db,dictionary[process_under_study+'@'+location_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
-                result_dir2,n_lcias2 = lcia_recipe_run(db,dictionary[process_under_study+'@'+location_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
+                result_dir1,n_lcias1 = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
+                result_dir2,n_lcias2 = lcia_recipe_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 #result_dir3,n_lcias3 = lcia_premise_gwp_run(db,dictionary[process_under_study],1,mc_foreground_flag,mc_runs,bw)
                 result_dir3 = {}
                 n_lcias3 = 0

@@ -44,18 +44,17 @@ from reeds_ecoinvent_updater.main_database_editor import reeds_updater
 from liaison.liaison_model import main_run
 
 lca_project_name = scenario_params.get('lca_project_name')
-primary_process = scenario_params.get('process')
-process_under_study = scenario_params.get('primary_process_to_study')
-location_under_study = scenario_params.get('location')
+primary_process_under_study = scenario_params.get('primary_process_to_study')
 updated_database = scenario_params.get('updated_database')
 updated_project_name = scenario_params.get('updated_project_name')
 mc_runs = int(scenario_params.get('mc_runs'))
 functional_unit = float(scenario_params.get('functional_unit'))
 base_database = scenario_params.get('base_database')
 base_project = scenario_params.get('base_project')
-region = scenario_params.get('location')
+location_under_study = scenario_params.get('location_under_study')
 initial_year = scenario_params.get('initial_year')
-
+unit_under_study = scenario_params.get('unit')
+region = location_under_study
 
 
 creation_inventory_filename = os.path.join(args.datapath,
@@ -69,15 +68,10 @@ modification_inventory_filename = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   data_dirs.get('reeds_data'),
                                   inputs.get('modification_inventory'))
-process_name_bridge = os.path.join(args.datapath,
+modification_inventory_filename_us = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
-                                  inputs.get('process_bridge'))
-emission_name_bridge = os.path.join(args.datapath,
-                                  data_dirs.get('liaisondata'),
-                                  inputs.get('emission_bridge'))
-location_name_bridge = os.path.join(args.datapath,
-                                  data_dirs.get('liaisondata'),
-                                  inputs.get('location_bridge'))
+                                  data_dirs.get('reeds_data'),
+                                  inputs.get('modification_inventory_us'))
 ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
 
@@ -122,9 +116,6 @@ if run_database_reader:
 if run_database_editor:
     print('Running db editor', flush = True)
     reeds_updater(
-         process_name_bridge = process_name_bridge,
-         emission_name_bridge = emission_name_bridge,
-         location_name_bridge = location_name_bridge,
          initial_year=initial_year,
          results_filename=results_filename, 
          reeds_grid_mix_creator = reeds_grid_mix_creator,
@@ -133,6 +124,7 @@ if run_database_editor:
          data_dir=data_dir,
          inventory_filename = creation_inventory_filename,
          modification_inventory_filename = modification_inventory_filename,
+         modification_inventory_filename_us = modification_inventory_filename_us,
          premise_editor=premise_editor,
          base_database=base_database,
          base_project = base_project,
@@ -156,47 +148,29 @@ if remove_old_results:
     except:
         pass
 
-import random
-processes_list = ["treatment of waste glass from unsorted public collection, sorting","photovoltaic plant construction, 570kWp, multi-Si, on open ground","treatment of waste glass sheet, sorting plant","glass wool mat production","insulation spiral-seam duct production, rockwool, DN 400, 30 mm","cement production, Portland","treatment of waste glass, unsanitary landfill, wet infiltration class (500mm)","flat glass production, uncoated"] 
-random_number = random.randint(0,7)
-process_in_ecoinvent_for_lca_from_celavi = processes_list[random_number]
-process_in_ecoinvent_for_lca_from_celavi = "flat glass production, uncoated"
-import pandas as pd
-location_list = ['CA','AZ','CO','TX','WA','FL','TN','MO']
-for l in location_list:
-    location_under_study = l
-
-
+if lca_flag:
     
-    foreground_inventory_filename = pd.DataFrame()
-    primary_process = process_in_ecoinvent_for_lca_from_celavi
-    process_under_study = process_in_ecoinvent_for_lca_from_celavi
+    main_run(lca_project=lca_project_name,
+             updated_project_name=updated_project_name,
+             initial_year=initial_year,
+             results_filename=results_filename, 
+             mc_foreground_flag=mc_foreground_flag,
+             lca_flag=lca_flag,
+             lca_activity_modification=lca_activity_modification,
+             regional_sensitivity_flag=regional_sensitivity_flag,
+             region=region,
+             data_dir=data_dir,
+             primary_process=primary_process_under_study,
+             process_under_study=primary_process_under_study, 
+             location_under_study=location_under_study,
+             unit_under_study=unit_under_study,
+             updated_database=updated_database, 
+             mc_runs=mc_runs,
+             functional_unit=functional_unit,
+             inventory_filename = foreground_inventory_filename,
+             modification_inventory_filename = modification_inventory_filename,
+             output_dir= output_dir,
+             bw=bw)
 
-    if lca_flag:
-        
-        main_run(lca_project=lca_project_name,
-                 updated_project_name=updated_project_name,
-                 initial_year=initial_year,
-                 results_filename=results_filename+l, 
-                 mc_foreground_flag=mc_foreground_flag,
-                 lca_flag=lca_flag,
-                 lca_activity_modification=lca_activity_modification,
-                 regional_sensitivity_flag=regional_sensitivity_flag,
-                 region=region,
-                 data_dir=data_dir,
-                 primary_process=primary_process,
-                 process_under_study=process_in_ecoinvent_for_lca_from_celavi, 
-                 location_under_study=location_under_study,
-                 updated_database=updated_database, 
-                 mc_runs=mc_runs,
-                 functional_unit=functional_unit,
-                 inventory_filename = foreground_inventory_filename,
-                 modification_inventory_filename = modification_inventory_filename,
-                 process_name_bridge = process_name_bridge,
-                 emission_name_bridge = emission_name_bridge,
-                 location_name_bridge = location_name_bridge,
-                 output_dir= output_dir,
-                 bw=bw)
-
-    print(time.time()-tim0) 
+print(time.time()-tim0) 
           

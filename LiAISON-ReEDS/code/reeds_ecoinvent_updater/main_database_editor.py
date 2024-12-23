@@ -1,7 +1,6 @@
 import secrets
 import time
 from reeds_ecoinvent_updater.lci_creator import reeds_db_editor
-from reeds_ecoinvent_updater.lci_modifier import reeds_lci_modifier
 from premise import *
 from premise_gwp import add_premise_gwp
 import pandas as pd
@@ -110,7 +109,7 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
 
 
 
-def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,modification_inventory_filename_us,premise_editor,base_database,base_project,database_new,project_new,bw):
+def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,modification_inventory_filename_us,premise_editor,base_database,base_project,database_new,project_new,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 

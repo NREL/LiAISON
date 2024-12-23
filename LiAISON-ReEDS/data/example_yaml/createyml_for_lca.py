@@ -24,30 +24,31 @@ years = ['2024','2028','2032','2036','2040','2044','2048','2050']
 scen_names = os.listdir('../../../hipster_data/reeds_to_hipster_dev/ReEDS_postprocessing/Raw_ReEDS_Outputs/')
 scen_names=["Mid_Case","Mid_Case_100by2035","Mid_Case_95by2050"]
 
+states = ['CA','TX','CO','WY']
+
 for scenario in scen_names:
 
     for yr in years:
 
+        for st in states:
+
 
            data['scenario_parameters']['updated_database'] = 'premise_updated_ecoinvent'
            data['scenario_parameters']['updated_project_name'] = 'US' + scenario + yr
-           data['scenario_parameters']['lca_project_name'] = 'US' + 'lca_project_'+scenario + yr
+           data['scenario_parameters']['lca_project_name'] = 'US' + 'lca_project_'+scenario + yr + st
 
 
-           data['output_filenames']['results_filename'] = scenario+"_"+yr+"electricity_production"
+           data['output_filenames']['results_filename'] = scenario+"_"+yr+st+"electricity_production"
            
            data['input_filenames']['creation_inventory'] = scenario+yr+'_reeds_data_state.csv'
 
-           data['flags']['database_editor'] = True
+           data['flags']['database_editor'] = False
            data['flags']['premise_editor'] = False
-           data['flags']['create_reeds_grid_mix'] = True
-           data['flags']['modify_ecoinvent_grid_mix'] = True
+           data['flags']['create_reeds_grid_mix'] = False
+           data['flags']['modify_ecoinvent_grid_mix'] = False
+           data['flags']['regional_sensitivity'] = True
 
 
-
-           print(scenario+yr)
-
-
-
-           with open("../"+scenario+str(yr)+'.yaml', 'w') as file:
+           print(scenario+str(yr)+'_'+st)
+           with open("../"+scenario+str(yr)+'_'+st'.yaml', 'w') as file:
                yaml.dump(data, file)
