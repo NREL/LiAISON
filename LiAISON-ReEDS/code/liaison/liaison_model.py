@@ -10,7 +10,8 @@ import os
 import time
 from liaison.montecarloforeground import mc_foreground
 from liaison.lci_calculator import liaison_calc,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
-from liaison.search_activity_ecoinvent_for_editing import search_activity_in_ecoinvent_for_editing
+from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
+from liaison.edit_activity_ecoinvent import user_controlled_editing_ecoinvent_activity
 
 
 
@@ -80,6 +81,9 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     
     project : str 
         generic project name
+
+    updated_database : str
+        name of the database to be worked on
         
     bw : module
         brightway2 module loaded shortcut name
@@ -121,9 +125,9 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     correct_natural_land_transformation(bw)
     print('Correcting BIG CC copper use',flush = True)
     correct_bigcc_copper_use(bw,updated_database)
-    return project_name
+    return project_name,updated_database
 
-def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_foreground_flag,lca_flag,lca_activity_modification,regional_sensitivity_flag,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
+def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_foreground_flag,lca_flag,region_sensitivity_flag,edit_ecoinvent_user_controlled,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -132,9 +136,15 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
 
     Parameters
     ----------
-    project: str
-        project name as provided by user        
+    lca_project: str
+        project name as provided by user  
+
+    updated_project_name: str
+        updated project name for the updated databases  
     
+    year_of_study: str
+        year of analysis
+        
     results_filename : str
         filename for the result         
     
@@ -143,6 +153,12 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
 
     lca_flag : boolean 
         boolean for Life cycle analysis to operate
+
+    region_sensitivity_flag: boolean
+        boolean for regional sensitivity analysis
+
+    region: str
+        name of region for sensitivity analysis
         
     primary_process : str
        the process under LCA study  
@@ -212,13 +228,33 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
             -------
             None
             """
+
+
   
-            project_name = reset_project(updated_project_name,number,lca_project,updated_database,bw)
+            project_name,db = reset_project(updated_project_name,number,lca_project,updated_database,bw)
             # This function creates a dictionary from ecoinvent for searching for activities.
-            dictionary = search_dictionary(db,bw)                   
-            run_filename = search_activity_in_ecoinvent_for_editing(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
-            process_dictionary = liaison_calc(db,run_filename,bw)                   
-            print('Activity created and saved success',flush=True)
+            dictionary,process_dictionary = search_dictionary(db,bw)                   
+            # This function searches for the primary process under study in ecoinvent. If found we extract it. 
+            run_filename = search_activity_in_ecoinvent(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
+            
+            if type(run_filename) == str:
+                # Reading from the inventory csv files
+                print('Using the provided inventory files',flush = True)
+                print('Reading from ' + run_filename,flush = True)
+                inventory = pd.read_csv(run_filename)
+
+            else:
+                inventory = run_filename    
+            
+            # Activity may be edited according to user preferences
+            if edit_ecoinvent_user_controlled  == True:
+                
+                run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
+                print('Activity edited according to user prereferences and saved success',flush=True) 
+        
+            process_dictionary = liaison_calc(db,run_filename,bw)
+
+
             if lca_flag: 
                 result_dir1,n_lcias1 = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 result_dir2,n_lcias2 = lcia_recipe_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
@@ -334,14 +370,14 @@ def main_run(lca_project,updated_project_name,initial_year,results_filename,mc_f
         lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
     
 
-    elif regional_sensitivity_flag:
+    elif region_sensitivity_flag:
 
         file = pd.read_csv(inventory_filename)
         file['process_location'] = region
         file['supplying_location'] = region
         print('Regional Sensitivity analysis starts')
         run_filename = os.path.join(data_dir,'sensitivity_regional'+updated_database+str(yr)+'.csv')
-        file.to_csv(run_filename,index = False)  
+        file.to_csv(run_filename,index = False)
         r = ''    
         lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit)
 

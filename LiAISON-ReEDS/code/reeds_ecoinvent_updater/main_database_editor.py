@@ -109,7 +109,7 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
 
 
 
-def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,modification_inventory_filename_us,premise_editor,base_database,base_project,database_new,project_new,bw):
+def reeds_updater(year_of_study,results_filename,reeds_grid_mix_creator,data_dir,inventory_filename,modification_inventory_filename,modification_inventory_filename_us,premise_editor,base_database,base_project,database_new,project_new,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -118,7 +118,7 @@ def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activ
 
     Parameters
     ----------
-    project: str
+    year_of_study: str
         project name as provided by user        
     
     results_filename : str
@@ -162,7 +162,7 @@ def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activ
 
     # remove all uncertainty from the background with this command'
     # remove_background_uncertainty(db) 
-    def reeds_editor(db_new,r,run_filename,project_new,create_new_database):
+    def reeds_editor(db_new,r,run_filename,project_new):
 
             """
             This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -189,13 +189,12 @@ def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activ
 
                 # Creates the individual state grid mix and also the market flows for stage grid mix with transmission
                 
-                print('Creating Reeds Grid mix inside ecoinvent')
-                reset_project(base_database,base_project,project_new,bw)
+                print('Creating Reeds Grid mix inside ecoinvent')               
                 reeds_db_editor(db_new,run_filename,bw)                   
                 print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
                 state_df = pd.read_csv(run_filename)
                 states = list(pd.unique(state_df['process_location']))
-                print('Creating market mixes for electricity grid for the States',flush=True)
+                print('Creating market mixes for electricity grid for the states',flush=True)
                 for st in states:
                     if st != "US":
                         temp_df = pd.read_csv(modification_inventory_filename)
@@ -204,8 +203,6 @@ def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activ
                         temp_df.to_csv(modification_inventory_filename, index = False)
                         reeds_db_editor(db_new,modification_inventory_filename,bw)
 
-            if lca_activity_modification:
-
                 # Creates the US grid mix flow and the market flow. 
                 # market group for electricity, USA is produced by PREMISE
                 # Premise makes market group for electricity high voltage, US to connect to market group for electricity high voltage, USA. 
@@ -213,13 +210,9 @@ def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activ
                 # We replace the market group for electricity high voltage, USA with ReEDS_US_Grid_mix. 
                 # Transmission gets included in the downstream processes, market group for electricity medium/low voltage, US
 
-                print('Editing existing Ecoinvent flows using lci modifier')
-                bw.projects.set_current(project_new)
-                print("Entered project " + project_new,flush = True)
-                print("Databases in this project are",flush = True)
-                print(bw.databases,flush = True) 
+                print('Creating market mixes for electricity grid for the US grid mix',flush=True)
                 reeds_db_editor(db_new,modification_inventory_filename_us,bw)
-                print('Background Activity modified and saved success',flush=True)
+                print('Background activity modified and saved success',flush=True)
 
 
 
@@ -231,6 +224,7 @@ def reeds_updater(initial_year,results_filename,reeds_grid_mix_creator,lca_activ
     if premise_editor:
         editor(database_new,base_database,base_project,project_new,bw)
 
-    reeds_editor(database_new,r,run_filename,project_new,create_new_database)
+    reset_project(base_database,base_project,project_new,bw)
+    reeds_editor(database_new,r,run_filename,project_new)
     #bw.projects.purge_deleted_directories()
 

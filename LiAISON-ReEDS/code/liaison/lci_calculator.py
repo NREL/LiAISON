@@ -159,7 +159,7 @@ def search_dictionary(db,bw):
         
         ei_cf_36_db = bw.Database(db)
         database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
-        return database_dict
+        return database_dict,process_database_dict
 
 def liaison_calc(db,run_filename,bw):
 
@@ -187,14 +187,8 @@ def liaison_calc(db,run_filename,bw):
         print('creating inventory withing the database---',db,flush=True)
         database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
       
-        # Reading from the REEDS output csv files
-
-        if type(run_filename) == str:
-            print('Reading from ' + run_filename,flush = True)
-            inventory = pd.read_csv(run_filename)
-        else:
-            inventory = run_filename
-        inventory = inventory.sort_values(by=['process','process_location'])   
+        
+        inventory = run_filename.sort_values(by=['process','process_location'])   
         # Step 1 is to create new processes or datasets    
         # The new processes and their information should be in the filtered product dataset
         processes = inventory[inventory['type'] == 'production']

@@ -7,16 +7,15 @@ warnings.filterwarnings("ignore")
 #import the config file
 import argparse
 parser = argparse.ArgumentParser(description='Execute LIAISON model')
-parser.add_argument('--database', help='Name of database to be created.')
 parser.add_argument('--datapath', help='Path to the input and output data folder.')
 parser.add_argument('--envpath', help='Path to the environments folder.')
 parser.add_argument('--lca_config_file', help='Name of life cycle information config file in data folder.')
 args = parser.parse_args()
 tim0 = time.time()
 print('Starting the Code',flush=True)
-# YAML filenameß
+# YAML filename
 config_yaml_filename = os.path.join(args.datapath, args.lca_config_file)
-
+data_yaml_filename = os.path.join(args.datapath, 'data_dir.yaml')
 try:
     with open(config_yaml_filename, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
@@ -25,7 +24,11 @@ try:
         data_dirs = config.get('data_directories', {})
         inputs = config.get('input_filenames', {})
         outputs = config.get('output_filenames', {})
-        
+        options = config.get('additional_options', {})
+    
+    with open(data_yaml_filename, 'r') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+        data_dirs = config.get('data_directories', {})
         
 except IOError as err:
     print(f'Could not open {config_yaml_filename} for configuration. Exiting with status code 1.')
@@ -43,40 +46,53 @@ from reeds_ecoinvent_updater.main_database_reader import reader
 from reeds_ecoinvent_updater.main_database_editor import reeds_updater
 from liaison.liaison_model import main_run
 
+# scenario parameters from the yaml file
 lca_project_name = scenario_params.get('lca_project_name')
 primary_process_under_study = scenario_params.get('primary_process_to_study')
-updated_database = scenario_params.get('updated_database')
-updated_project_name = scenario_params.get('updated_project_name')
 mc_runs = int(scenario_params.get('mc_runs'))
 functional_unit = float(scenario_params.get('functional_unit'))
-base_database = scenario_params.get('base_database')
-base_project = scenario_params.get('base_project')
 location_under_study = scenario_params.get('location_under_study')
-initial_year = scenario_params.get('initial_year')
+year_of_study = scenario_params.get('year')
 unit_under_study = scenario_params.get('unit')
+reeds_yaml_data_filename = os.path.join(args.datapath,inputs.get('reeds_yaml_data'))
 region = location_under_study
 
+#Hardcoding these project names to reduce yaml file complexity
+base_database = "premise_base"
+base_project = "premise_base"
+# These modified projects and databases are used to save the large modified ecoinvent databases for future LCA calculations. 
+updated_database = "premise_updated_ecoinvent_"+str(year_of_study) # These project name is used to create a new project after major modifications to original ecoinvent. These can include premise updates or ReEDS grid mix updates
+updated_project_name = "premise_updated_ecoinvent_"+str(year_of_study) # These project name is used to create a new project after major modifications to original ecoinvent. These can include premise updates or ReEDS grid mix updates
 
+# Reading the ReEDS yaml file name
+try:
+    with open(reeds_yaml_data_filename, 'r') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+        reeds_inputs = config.get('input_filenames', {})          
+except IOError as err:
+    print(f'Could not open {reeds_yaml_data_filename} for configuration. Exiting with status code 1.')
+    exit(1)
+
+# Filenames for inventories
 creation_inventory_filename = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   data_dirs.get('reeds_data'),
-                                  inputs.get('creation_inventory'))
+                                  reeds_inputs.get('creation_inventory'))
 foreground_inventory_filename = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   inputs.get('foreground_inventory'))
 modification_inventory_filename = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   data_dirs.get('reeds_data'),
-                                  inputs.get('modification_inventory'))
+                                  reeds_inputs.get('modification_inventory'))
 modification_inventory_filename_us = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   data_dirs.get('reeds_data'),
-                                  inputs.get('modification_inventory_us'))
+                                  reeds_inputs.get('modification_inventory_us'))
 ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
 
-
-# ## Fix this
+# Fix this
 ecoinvent_file = "/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/ecoinvent/ecoinvent 3.8_cutoff_ecoSpold02/datasets"
 
                                   
@@ -85,20 +101,17 @@ output_dir = os.path.join(args.datapath,
                           data_dirs.get('output'))
 data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
-## Fix this
-creation_inventory_filename = os.path.join("/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
 
 
-run_database_reader = flags.get('database_reader')
-run_database_editor = flags.get('database_editor')
+
+run_database_reader = flags.get('ecoinvent_reader')
 uncertainty_corrections = flags.get('correct uncertainty')
-mc_foreground_flag = flags.get('mc_foreground')
+mc_foreground_flag = options.get('mc_foreground')
 lca_flag=flags.get('lca')
-lca_activity_modification=flags.get('modify_ecoinvent_grid_mix')
-regional_sensitivity_flag=flags.get('regional_sensitivity')
-create_new_database=flags.get('create_new_database')
-premise_editor= flags.get('premise_editor')
-reeds_grid_mix_creator = flags.get('create_reeds_grid_mix')
+premise_editor= flags.get('update_ecoinvent_using_premise')
+reeds_grid_mix_creator = flags.get('reeds_us_electricity_grid_mix')
+region_sensitivity_flag = options.get('region_sensitivity_flag')
+edit_ecoinvent_user_controlled = options.get('edit_ecoinvent_user_controlled')
 
 print('All input data parameters read', flush = True)
 
@@ -113,24 +126,23 @@ if run_database_reader:
            )
     
 #Running database editor for modifying base databases with IMAGE information and future scenario    
-if run_database_editor:
-    print('Running db editor', flush = True)
-    reeds_updater(
-         initial_year=initial_year,
-         results_filename=results_filename, 
-         reeds_grid_mix_creator = reeds_grid_mix_creator,
-         lca_activity_modification=lca_activity_modification,
-         create_new_database=create_new_database,
-         data_dir=data_dir,
-         inventory_filename = creation_inventory_filename,
-         modification_inventory_filename = modification_inventory_filename,
-         modification_inventory_filename_us = modification_inventory_filename_us,
-         premise_editor=premise_editor,
-         base_database=base_database,
-         base_project = base_project,
-         database_new = updated_database,
-         project_new = updated_project_name,
-         bw=bw)
+
+print('Running db editor', flush = True)
+reeds_updater(
+     year_of_study=year_of_study,
+     results_filename=results_filename, 
+     reeds_grid_mix_creator = reeds_grid_mix_creator,
+     data_dir=data_dir,
+     inventory_filename = creation_inventory_filename,
+     modification_inventory_filename = modification_inventory_filename,
+     modification_inventory_filename_us = modification_inventory_filename_us,
+     premise_editor=premise_editor,
+     base_database=base_database,
+     base_project = base_project,
+     database_new = updated_database,
+     project_new = updated_project_name,
+     bw=bw
+     )
 
 
 #Create results directory
@@ -152,12 +164,12 @@ if lca_flag:
     
     main_run(lca_project=lca_project_name,
              updated_project_name=updated_project_name,
-             initial_year=initial_year,
+             year_of_study=year_of_study,
              results_filename=results_filename, 
              mc_foreground_flag=mc_foreground_flag,
              lca_flag=lca_flag,
-             lca_activity_modification=lca_activity_modification,
-             regional_sensitivity_flag=regional_sensitivity_flag,
+             region_sensitivity_flag=region_sensitivity_flag,
+             edit_ecoinvent_user_controlled = edit_ecoinvent_user_controlled,
              region=region,
              data_dir=data_dir,
              primary_process=primary_process_under_study,
