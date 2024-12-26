@@ -7,7 +7,7 @@ input_filenames:
   foreground_inventory: na # These inventories are used for LCAs. Example of such a foreground inventory would be hydrogen production or DACs operation, the process which is under study. Foreground inventory is not required if the activity is already inside ecoinvent. 
   reeds_yaml_data: MidCase2024.yaml
 output_filenames:
-  results_filename: res_.csv
+  results_filename: res
 scenario_parameters:
   functional_unit: 1
   year: 2020

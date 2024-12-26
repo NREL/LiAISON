@@ -256,9 +256,11 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 print('Activity edited according to user prereferences and saved success',flush=True) 
             # inventory is a dataframe
             if scope == "Scope1":
+                print('Performing Scope 1 calculations',flush=True)
                 run_filename = scope1(inventory,data_dir)
 
             elif scope == "Scope2":
+                print('Performing Scope 2 calculations',flush=True)
                 run_filename = scope2(db,inventory,location_under_study,data_dir,bw)
 
             
