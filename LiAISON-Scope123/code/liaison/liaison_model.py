@@ -248,7 +248,7 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 inventory = pd.read_csv(run_filename)
 
             else:
-                inventory = run_filename    
+                inventory = run_filename
             
             # Activity may be edited according to user preferences
             if edit_ecoinvent_user_controlled  == True:
@@ -256,10 +256,11 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 #Scope 1 calculations
                 run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
                 print('Activity edited according to user prereferences and saved success',flush=True) 
-
+            # inventory is a dataframe
             if scope == "Scope1":
                 run_filename = scope1(inventory,year_of_study,data_dir)
-            else scope == "Scope2"
+
+            elif scope == "Scope2":
                 run_filename = scope2(db,inventory,year_of_study,data_dir,bw)
             
             process_dictionary = liaison_calc(db,run_filename,bw)

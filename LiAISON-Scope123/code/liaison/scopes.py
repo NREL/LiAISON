@@ -2,22 +2,17 @@ import sys
 import pandas as pd
 
 
-
-
-def scope1(process_selected_as_foreground,year_of_study,data_dir):
+def extract_process(process_selected_as_foreground):
     """
-    Scope 1 calculations
-    Parameters:
+    Extract process from the dictionary
+
+    Parameters
     ----------
-    dictionary: dictionary
-        This contains the entire ecoinvent database as a dictionary with key name as processes and locations
 
-    Returns:
+    Returns
     -------
+
     """
-
-    new_location = "USA"
-
     # These variables are used to create inventory dataframe
     process = []
     flow = []
@@ -68,7 +63,7 @@ def scope1(process_selected_as_foreground,year_of_study,data_dir):
                 #Appending 0 to flow code for technosphere since we want to change the location of these flows. 
                 #They need to be searched in the proper location
                 flow_code.append(0)
-                supplying_location.append(new_location)
+                supplying_location.append(exch['location'])
             
 
             elif exch['type'] =='biosphere':
@@ -83,7 +78,7 @@ def scope1(process_selected_as_foreground,year_of_study,data_dir):
 
             year.append(year_of_study)
             comments.append('None')
-            process_location.append(new_location)
+            process_location.append(exch['location'])
             
 
     # Creating of the inventory dataframe
@@ -102,20 +97,39 @@ def scope1(process_selected_as_foreground,year_of_study,data_dir):
     example['supplying_location'] = supplying_location
     example['code'] = flow_code
 
+    return example
+
+
+
+
+def scope1(process_selected_as_foreground,year_of_study,data_dir):
+    """
+    Scope 1 calculations
+    Parameters:
+    ----------
+    dictionary: dictionary
+        This contains the entire ecoinvent database as a dictionary with key name as processes and locations
+
+    Returns:
+    -------
+    """
+    example = extract_process(process_selected_as_foreground)
+
     example = example[example['type'] != "technosphere"]
     #Sanity check to write the dataframe. Can be deleted later
     example.to_csv(data_dir+'example_user_edited_process.csv',index=False)
     run_filename = example
 
-
     return run_filename
 
 
 
-def scope2(process_selected_as_foreground,year_of_study,data_dir):
+def scope2(db,inventory,year_of_study,data_dir,bw):
     """
     Scope 2 calculations
     """
+    example = extract_process(process_selected_as_foreground)
+    
 
     pass
 
