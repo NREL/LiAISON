@@ -20,4 +20,4 @@ additional_options:
   mc_foreground: false
   correct uncertainty: false
   region_sensitivity_flag: false
-  edit_ecoinvent_user_controlled: true # This flag is to trigger a user_defined_function which the user can use to perform any automated edits background inventory, foreground inventory and more. 
+  edit_ecoinvent_user_controlled: false # This flag is to trigger a user_defined_function which the user can use to perform any automated edits background inventory, foreground inventory and more. 

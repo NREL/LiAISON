@@ -4,12 +4,9 @@ import pandas as pd
 
 
 
-def user_controlled_editing_ecoinvent_activity_scope1(process_selected_as_foreground,year_of_study,data_dir):
+def scope1(process_selected_as_foreground,year_of_study,data_dir):
     """
-    This function searches for activities and edits the ecoinvent activity as a foreground process in the chosen location
-    It extracts every flow in the chosen foreground process, creates a dataframe from it and changes the location
-    It also changes the electricity flow name
-
+    Scope 1 calculations
     Parameters:
     ----------
     dictionary: dictionary
@@ -112,3 +109,14 @@ def user_controlled_editing_ecoinvent_activity_scope1(process_selected_as_foregr
 
 
     return run_filename
+
+
+
+def scope2(process_selected_as_foreground,year_of_study,data_dir):
+    """
+    Scope 2 calculations
+    """
+
+    pass
+
+

@@ -11,7 +11,9 @@ import time
 from liaison.montecarloforeground import mc_foreground
 from liaison.lci_calculator import liaison_calc,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
 from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
-from liaison.scopes import user_controlled_editing_ecoinvent_activity_scope1
+from liaison.edit_activity_ecoinvent import user_controlled_editing_ecoinvent_activity
+from liaison.scopes import scope1,scope2
+
 
 
 
@@ -233,8 +235,6 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
             None
             """
 
-
-  
             project_name,db = reset_project(updated_project_name,number,lca_project,updated_database,scope,bw)
             # This function creates a dictionary from ecoinvent for searching for activities.
             dictionary,process_dictionary = search_dictionary(db,bw)                   
@@ -254,9 +254,14 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
             if edit_ecoinvent_user_controlled  == True:
                 
                 #Scope 1 calculations
-                run_filename = user_controlled_editing_ecoinvent_activity_scope1(inventory,year_of_study,data_dir)
+                run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
                 print('Activity edited according to user prereferences and saved success',flush=True) 
-        
+
+            if scope == "Scope1":
+                run_filename = scope1(inventory,year_of_study,data_dir)
+            else scope == "Scope2"
+                run_filename = scope2(db,inventory,year_of_study,data_dir,bw)
+            
             process_dictionary = liaison_calc(db,run_filename,bw)
 
 
