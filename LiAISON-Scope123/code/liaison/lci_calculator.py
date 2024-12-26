@@ -466,9 +466,7 @@ def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs
                 #print('TOP EMISSIONS\n\n')
                 #print(lca.top_emissions()) 
                 c_df = pd.concat([c_df,characterized_inventory])
-
-
-        c_df.to_csv('chk.csv')        
+     
         return LCA_sol_cal_dict,len(method_key),c_df
 
 def lcia_recipe_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
