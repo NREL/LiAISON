@@ -75,7 +75,7 @@ def extract_process(process_selected_as_foreground):
                 code_emission.append(exch['input'][1])
                 flow_code.append(exch['input'][1])
 
-
+            year_of_study = 2020
             year.append(year_of_study)
             comments.append('None')
             process_location.append(exch['location'])
@@ -102,7 +102,7 @@ def extract_process(process_selected_as_foreground):
 
 
 
-def scope1(process_selected_as_foreground,year_of_study,data_dir):
+def scope1(process_selected_as_foreground,data_dir):
     """
     Scope 1 calculations
     Parameters:
@@ -129,7 +129,7 @@ def scope2(db,inventory,year_of_study,data_dir,bw):
     Scope 2 calculations
     """
     example = extract_process(process_selected_as_foreground)
-    
+
 
     pass
 
