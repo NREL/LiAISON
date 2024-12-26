@@ -149,6 +149,24 @@ def scope2(db,process_selected_as_foreground,location_under_study,data_dir,bw):
                         if exch['type'] == "technosphere":
                             # Deleting exchanges
                             exch.delete()
+
+        if ('electricity' in process['name']):
+            if (process['location'] == location_under_study) or ('CN' in process['location']):
+                for exch in process.exchanges():
+                    if exch['type'] == "technosphere":
+                        if exch['unit'] == "kilometer":
+
+                            #Deleting exchanges
+                            print('Deleting transmission exhanges for ', exch['name'],' in ' ,process['name'],flush = True)
+                            exch.delete()
+
+                        if 'sulfur hexafluoride' in exch['name']:
+
+                            #Deleting exchanges
+                            print('Deleting transformer oil exhanges for ', exch['name'],' in ' ,process['name'],flush = True)
+                            exch.delete()
+
+
             process.save()
     
     return edited_df
