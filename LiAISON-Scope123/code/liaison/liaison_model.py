@@ -401,7 +401,6 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
         r = ''
 
         scopes = ['Scope1','Scope2','total_life_cycle']
-        scopes = ['Scope1']
         for scope in scopes:
             lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename,scope)
             
