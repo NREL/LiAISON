@@ -437,7 +437,7 @@ def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs
         from collections import defaultdict
         LCA_sol_cal_dict = defaultdict(dict)
         
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
+        LCA_sol_cal_dict[str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
         
 
         mc = mc_foreground_flag
@@ -452,18 +452,24 @@ def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs
          for key in LCA_sol_cal_dict.keys():
             lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
             lca.lci()
-            
+
+
+            c_df = pd.DataFrame()
             for method in method_key:
                 lca.switch_method(method)
                 lca.lcia()
+                characterized_inventory = lca.to_dataframe()
+                characterized_inventory['method'] = method[2]   
                 LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
                 #print('TOP ACTIVITIES\n\n')
                 #print(lca.top_activities())
                 #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                 
+                #print(lca.top_emissions()) 
+                c_df = pd.concat([c_df,characterized_inventory])
 
-                
-        return LCA_sol_cal_dict,len(method_key)
+
+        c_df.to_csv('chk.csv')        
+        return LCA_sol_cal_dict,len(method_key),c_df
 
 def lcia_recipe_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
 
@@ -497,7 +503,7 @@ def lcia_recipe_run(db,primary_process,functional_unit,mc_foreground_flag,mc_run
         from collections import defaultdict
         LCA_sol_cal_dict = defaultdict(dict)
         
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
+        LCA_sol_cal_dict[str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
         
 
         mc = mc_foreground_flag

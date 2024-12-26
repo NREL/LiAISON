@@ -78,7 +78,7 @@ def extract_process(process_selected_as_foreground):
             year_of_study = 2020
             year.append(year_of_study)
             comments.append('None')
-            process_location.append(exch['location'])
+            process_location.append(process_selected_as_foreground[key]['location'])
             
 
     # Creating of the inventory dataframe
@@ -117,20 +117,41 @@ def scope1(process_selected_as_foreground,data_dir):
 
     example = example[example['type'] != "technosphere"]
     #Sanity check to write the dataframe. Can be deleted later
-    example.to_csv(data_dir+'example_user_edited_process.csv',index=False)
+    example.to_csv(data_dir+'Scope1_edited_process.csv',index=False)
     run_filename = example
 
     return run_filename
 
 
 
-def scope2(db,inventory,year_of_study,data_dir,bw):
+def scope2(db,process_selected_as_foreground,location_under_study,data_dir,bw):
     """
     Scope 2 calculations
     """
+    print('Scope 2 emissions are being calculated by deleting all flows in the primary activity other than electricity use and removing all technosphere flows of electricity production activities',flush = True)
     example = extract_process(process_selected_as_foreground)
+    product_edited_df = example[example['type'] == 'production']
+    electricity_edited_df = example[example['flow'].str.contains('electricity')]
+    edited_df = pd.concat([product_edited_df,electricity_edited_df])
 
+    #In Scope 2 all flows except electricity needs to be removed
+    #Sanity check to write the dataframe. Can be deleted later
+    edited_df.to_csv(data_dir+'Scope2_edited_process.csv',index=False)
 
-    pass
+    # Editing the database to remove all electricity production technosphere flows so that only upstream included in the calculations
+    ei_38_db = bw.Database(db)
+    for process in ei_38_db:
+        if ('electricity production' in process['name']):
+            if 'market' not in process['name']:
+                if (process['location'] == location_under_study) or ('CN' in process['location']):
+                    print(process['name'],process['location'],' deleting technosphere flows',flush=True)
+                    for exch in process.exchanges():
+                        if exch['type'] == "technosphere":
+                            # Deleting exchanges
+                            exch.delete()
+            process.save()
+    
+    return edited_df
+
 
 

@@ -20,8 +20,7 @@ def search_activity_in_ecoinvent(dictionary,process_under_study,location_under_s
 
     default_unit = unit_under_study
     state_location = location_under_study
-    print('Searching for activity to extract from Ecoinvent and changing location and processes',flush=True)
-    print('Editing activities within ecoinvent to US location and US state wise grid mix',flush=True)
+    print('Searching for activity to extract from Ecoinvent',flush=True)
     print(process_under_study+'@'+location_under_study+'@'+default_unit, 'to be searched')
     try:
         process_selected_as_foreground = dictionary[process_under_study+'@'+location_under_study+'@'+default_unit]        

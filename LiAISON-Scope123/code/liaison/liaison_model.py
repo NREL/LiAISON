@@ -100,8 +100,7 @@ def reset_project(updated_project_name,number,project,updated_database,scope,bw)
     project name : str
         Name of the project
     """
-
-    project_name = project+"_"+number
+    project_name = project+"_"+number+"_"+scope
     try:
       print('Trying to delete project',project_name)
       bw.projects.delete_project(project_name,delete_dir = True)
@@ -130,8 +129,7 @@ def reset_project(updated_project_name,number,project,updated_database,scope,bw)
     correct_natural_land_transformation(bw)
     print('Correcting BIG CC copper use',flush = True)
     correct_bigcc_copper_use(bw,updated_database)
-    copied_database = bw.Database(updated_database).copy(updated_database+scope)
-    return project_name,updated_database+scope
+    return project_name,updated_database
 
 def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_foreground_flag,lca_flag,region_sensitivity_flag,edit_ecoinvent_user_controlled,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
 
@@ -258,16 +256,20 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 print('Activity edited according to user prereferences and saved success',flush=True) 
             # inventory is a dataframe
             if scope == "Scope1":
-                run_filename = scope1(inventory,year_of_study,data_dir)
+                run_filename = scope1(inventory,data_dir)
 
             elif scope == "Scope2":
-                run_filename = scope2(db,inventory,year_of_study,data_dir,bw)
-            
-            process_dictionary = liaison_calc(db,run_filename,bw)
+                run_filename = scope2(db,inventory,location_under_study,data_dir,bw)
 
+            
+            if type(run_filename) == pd.core.frame.DataFrame:
+                process_dictionary = liaison_calc(db,run_filename,bw)
+
+            else:
+                print("Exact activity obtained and no edits required. So directly performing LCA", flush = True)
 
             if lca_flag: 
-                result_dir1,n_lcias1 = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
+                result_dir1,n_lcias1,characterized_inventory = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 result_dir2,n_lcias2 = lcia_recipe_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 #result_dir3,n_lcias3 = lcia_premise_gwp_run(db,dictionary[process_under_study],1,mc_foreground_flag,mc_runs,bw)
                 result_dir3 = {}
@@ -356,7 +358,8 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                      'method': method     
                     })    
                 
-                lcia_df.to_csv(output_dir+results_filename+scope+str(r)+db+primary_process+'.csv',index = False)
+                lcia_df.to_csv(output_dir+results_filename+scope+str(r)+yr+scenario+primary_process+'.csv',index = False)
+                characterized_inventory.to_csv(output_dir+results_filename+scope+yr+scenario+primary_process+'_characterized_inventory.csv',index=False)
 
                 save_project = False
                 if save_project == True:
@@ -397,12 +400,13 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
         run_filename = inventory_filename
         r = ''
 
+        scopes = ['Scope1','Scope2','total_life_cycle']
         scopes = ['Scope1']
         for scope in scopes:
             lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename,scope)
             
     try:
-        bw.projects.delete_project(bw.projects.current, delete_dir=True) 
+        #bw.projects.delete_project(bw.projects.current, delete_dir=True) 
         print('Deleted succesfully')
         bw.projects.purge_deleted_directories()
     except:
