@@ -143,15 +143,17 @@ def scope2(db,process_selected_as_foreground,location_under_study,data_dir,bw):
     for process in ei_38_db:
         if ('electricity production' in process['name']):
             if 'market' not in process['name']:
-                if (process['location'] == location_under_study) or ('CN' in process['location']):
-                    print(process['name'],process['location'],' deleting technosphere flows',flush=True)
+                # hardcoded location name. Needs to be edited
+                if (process['location'] == location_under_study) or ('RoW' in process['location']):
+                    # print(process['name'],process['location'],' deleting technosphere flows',flush=True)
                     for exch in process.exchanges():
                         if exch['type'] == "technosphere":
                             # Deleting exchanges
                             exch.delete()
 
         if ('electricity' in process['name']):
-            if (process['location'] == location_under_study) or ('CN' in process['location']):
+            # hardcoded location name. Needs to be edited
+            if (process['location'] == location_under_study) or ('RoW' in process['location']):
                 for exch in process.exchanges():
                     if exch['type'] == "technosphere":
                         if exch['unit'] == "kilometer":
@@ -167,7 +169,7 @@ def scope2(db,process_selected_as_foreground,location_under_study,data_dir,bw):
                             exch.delete()
 
 
-            process.save()
+        process.save()
     
     return edited_df
 

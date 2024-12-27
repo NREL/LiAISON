@@ -1,28 +1,28 @@
 lcia,value,unit,year,method
-Acidification,0.0037757787901757265,moles of H+-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-Ecotoxicity,0.0008913523220299934,"kg 2,4-D-Eq",premise_updated_ecoinvent_2020,TRACI2.1
-Eutrophication,1.7675814505311768e-06,kg N,premise_updated_ecoinvent_2020,TRACI2.1
-Global Warming,0.03606055582309341,kg CO2-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-Carcinogenics,3.6548688069227994e-05,kg benzene-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-Ozone Depletion,2.8459086624680117e-11,kg CFC-11-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-Photochemical Oxidation,3.8928626339479675e-05,kg NOx-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-Non-Carcinogenics,0.043930826366100066,kg toluene-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-"Respiratory Effects, Average",2.22042490424049e-05,kg PM2.5-Eq,premise_updated_ecoinvent_2020,TRACI2.1
-Alop,5.894979730481239e-05,square meter-year,premise_updated_ecoinvent_2020,RECIPE
-Gwp100,0.036064298043341554,kg CO2-Eq,premise_updated_ecoinvent_2020,RECIPE
-Fdp,0.0003922257674066057,kg oil-Eq,premise_updated_ecoinvent_2020,RECIPE
-Fetpinf,4.5426407587391037e-07,"kg 1,4-DCB-Eq",premise_updated_ecoinvent_2020,RECIPE
-Fep,1.2103292249027972e-07,kg P-Eq,premise_updated_ecoinvent_2020,RECIPE
-Htpinf,0.0007733038647128933,"kg 1,4-DCB-Eq",premise_updated_ecoinvent_2020,RECIPE
-Irp_He,0.0005871673787543951,kg U235-Eq,premise_updated_ecoinvent_2020,RECIPE
-Metpinf,5.26150866250519e-06,"kg 1,4-DB-Eq",premise_updated_ecoinvent_2020,RECIPE
-Mep,1.5418451674277826e-06,kg N-Eq,premise_updated_ecoinvent_2020,RECIPE
-Mdp,8.645952925359463e-06,kg Fe-Eq,premise_updated_ecoinvent_2020,RECIPE
-Nltp,3.0809968183258904e-07,square meter,premise_updated_ecoinvent_2020,RECIPE
-Odpinf,2.09884109361948e-11,kg CFC-11-Eq,premise_updated_ecoinvent_2020,RECIPE
-Pmfp,4.5668272807614874e-05,kg PM10-Eq,premise_updated_ecoinvent_2020,RECIPE
-Pofp,4.217698961243407e-05,kg NMVOC-Eq,premise_updated_ecoinvent_2020,RECIPE
-Tap100,5.48468741853919e-05,kg SO2-Eq,premise_updated_ecoinvent_2020,RECIPE
-Tetpinf,4.488319307062484e-07,"kg 1,4-DCB-Eq",premise_updated_ecoinvent_2020,RECIPE
-Ulop,8.138966987366157e-06,square meter-year,premise_updated_ecoinvent_2020,RECIPE
-Wdp,7.324403460851884e-05,m3 water-Eq,premise_updated_ecoinvent_2020,RECIPE
+Acidification,0.003775600740491231,moles of H+-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+Ecotoxicity,0.0008903763015720253,"kg 2,4-D-Eq",premise_updated_ecoinvent_2020,TRACI2.1
+Eutrophication,1.7673300263343754e-06,kg N,premise_updated_ecoinvent_2020,TRACI2.1
+Global Warming,0.03605949887107297,kg CO2-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+Carcinogenics,3.6545890056385944e-05,kg benzene-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+Ozone Depletion,2.841061140341741e-11,kg CFC-11-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+Photochemical Oxidation,3.8926295940099174e-05,kg NOx-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+Non-Carcinogenics,0.04391959257249097,kg toluene-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+"Respiratory Effects, Average",2.2202611760063284e-05,kg PM2.5-Eq,premise_updated_ecoinvent_2020,TRACI2.1
+Alop,5.8928789754625875e-05,square meter-year,premise_updated_ecoinvent_2020,RECIPE
+Gwp100,0.03606325965286338,kg CO2-Eq,premise_updated_ecoinvent_2020,RECIPE
+Fdp,0.00039198166155086705,kg oil-Eq,premise_updated_ecoinvent_2020,RECIPE
+Fetpinf,4.540009048738443e-07,"kg 1,4-DCB-Eq",premise_updated_ecoinvent_2020,RECIPE
+Fep,1.2098656633060533e-07,kg P-Eq,premise_updated_ecoinvent_2020,RECIPE
+Htpinf,0.000773218749862515,"kg 1,4-DCB-Eq",premise_updated_ecoinvent_2020,RECIPE
+Irp_He,0.000587155755892614,kg U235-Eq,premise_updated_ecoinvent_2020,RECIPE
+Metpinf,5.2608170573630595e-06,"kg 1,4-DB-Eq",premise_updated_ecoinvent_2020,RECIPE
+Mep,1.541677270012226e-06,kg N-Eq,premise_updated_ecoinvent_2020,RECIPE
+Mdp,8.555140111791054e-06,kg Fe-Eq,premise_updated_ecoinvent_2020,RECIPE
+Nltp,3.080056632536191e-07,square meter,premise_updated_ecoinvent_2020,RECIPE
+Odpinf,2.0969769176027726e-11,kg CFC-11-Eq,premise_updated_ecoinvent_2020,RECIPE
+Pmfp,4.5664135671432166e-05,kg PM10-Eq,premise_updated_ecoinvent_2020,RECIPE
+Pofp,4.217186668368054e-05,kg NMVOC-Eq,premise_updated_ecoinvent_2020,RECIPE
+Tap100,5.484389940807573e-05,kg SO2-Eq,premise_updated_ecoinvent_2020,RECIPE
+Tetpinf,4.4876580276915127e-07,"kg 1,4-DCB-Eq",premise_updated_ecoinvent_2020,RECIPE
+Ulop,8.130638069160342e-06,square meter-year,premise_updated_ecoinvent_2020,RECIPE
+Wdp,7.324024184161088e-05,m3 water-Eq,premise_updated_ecoinvent_2020,RECIPE

@@ -1,16 +1,16 @@
 process,flow,value,unit,input,year,comments,type,process_location,supplying_location,code
-"steel production, converter, unalloyed","steel production, converter, unalloyed",1.0,kilogram,False,2020,None,production,CHN,CHN,c7c94568d97346d384ab84c589e0f6a5
-"steel production, converter, unalloyed",Iron,4.115e-05,kilogram,False,2020,None,biosphere,CHN,None,8dba66e2-0f2e-4038-84ef-1e40b4f573a6
-"steel production, converter, unalloyed",Manganese,6.84105255059483e-07,kilogram,False,2020,None,biosphere,CHN,None,295060ba-3c3d-45e4-99ca-e17b1204b553
-"steel production, converter, unalloyed","Carbon dioxide, fossil",0.0627088510499116,kilogram,False,2020,None,biosphere,CHN,None,349b29d1-3e58-4c66-98b9-9d1a076efd2e
-"steel production, converter, unalloyed","Particulates, < 2.5 um",4.47437146423942e-05,kilogram,False,2020,None,biosphere,CHN,None,21e46cb8-6233-4c99-bac3-c41d2ab99498
-"steel production, converter, unalloyed",Lead,4.08166632639171e-07,kilogram,False,2020,None,biosphere,CHN,None,8e123669-94d3-41d8-9480-a79211fe7c43
-"steel production, converter, unalloyed","Heat, waste",0.204696179355145,megajoule,False,2020,None,biosphere,CHN,None,f2d84834-d0b3-42e5-b41a-f04cc80337a4
-"steel production, converter, unalloyed",Chromium,2.73861278752583e-08,kilogram,False,2020,None,biosphere,CHN,None,e142b577-e934-4085-9a07-3983d4d92afb
-"steel production, converter, unalloyed","Dioxins, measured as 2,3,7,8-tetrachlorodibenzo-p-dioxin",6.35767253010093e-14,kilogram,False,2020,None,biosphere,CHN,None,082903e4-45d8-4078-94cb-736b15279277
-"steel production, converter, unalloyed","Carbon monoxide, fossil",0.00168214149226514,kilogram,False,2020,None,biosphere,CHN,None,ba2f3f82-c93a-47a5-822a-37ec97495275
-"steel production, converter, unalloyed","Water, cooling, unspecified natural origin",0.00577581163127746,cubic meter,False,2020,None,biosphere,CHN,None,fc1c42ce-a759-49fa-b987-f1ec5e503db1
-"steel production, converter, unalloyed",Nitrogen oxides,2.12367605815953e-05,kilogram,False,2020,None,biosphere,CHN,None,c1b91234-6f24-417b-8309-46111d09c457
-"steel production, converter, unalloyed","PAH, polycyclic aromatic hydrocarbons",1e-08,kilogram,False,2020,None,biosphere,CHN,None,3e5d7d91-67d7-4afb-91dd-36fab58e4685
-"steel production, converter, unalloyed",Copper,1.38684189611773e-07,kilogram,False,2020,None,biosphere,CHN,None,ec8144d6-d123-43b1-9c17-a295422a0498
-"steel production, converter, unalloyed",Water,0.00611840858706497,cubic meter,False,2020,None,biosphere,CHN,None,075e433b-4be4-448e-9510-9a5029c1ce94
+"steel production, converter, unalloyed","steel production, converter, unalloyed",1.0,kilogram,False,2020,None,production,WAF,WAF,b959b1701dbe48668bac192cc788cbb7
+"steel production, converter, unalloyed",Iron,4.115e-05,kilogram,False,2020,None,biosphere,WAF,None,8dba66e2-0f2e-4038-84ef-1e40b4f573a6
+"steel production, converter, unalloyed",Manganese,6.84105255059483e-07,kilogram,False,2020,None,biosphere,WAF,None,295060ba-3c3d-45e4-99ca-e17b1204b553
+"steel production, converter, unalloyed","Carbon dioxide, fossil",0.0627088510499116,kilogram,False,2020,None,biosphere,WAF,None,349b29d1-3e58-4c66-98b9-9d1a076efd2e
+"steel production, converter, unalloyed","Particulates, < 2.5 um",4.47437146423942e-05,kilogram,False,2020,None,biosphere,WAF,None,21e46cb8-6233-4c99-bac3-c41d2ab99498
+"steel production, converter, unalloyed",Lead,4.08166632639171e-07,kilogram,False,2020,None,biosphere,WAF,None,8e123669-94d3-41d8-9480-a79211fe7c43
+"steel production, converter, unalloyed","Heat, waste",0.204696179355145,megajoule,False,2020,None,biosphere,WAF,None,f2d84834-d0b3-42e5-b41a-f04cc80337a4
+"steel production, converter, unalloyed",Chromium,2.73861278752583e-08,kilogram,False,2020,None,biosphere,WAF,None,e142b577-e934-4085-9a07-3983d4d92afb
+"steel production, converter, unalloyed","Dioxins, measured as 2,3,7,8-tetrachlorodibenzo-p-dioxin",6.35767253010093e-14,kilogram,False,2020,None,biosphere,WAF,None,082903e4-45d8-4078-94cb-736b15279277
+"steel production, converter, unalloyed","Carbon monoxide, fossil",0.00168214149226514,kilogram,False,2020,None,biosphere,WAF,None,ba2f3f82-c93a-47a5-822a-37ec97495275
+"steel production, converter, unalloyed","Water, cooling, unspecified natural origin",0.00577581163127746,cubic meter,False,2020,None,biosphere,WAF,None,fc1c42ce-a759-49fa-b987-f1ec5e503db1
+"steel production, converter, unalloyed",Nitrogen oxides,2.12367605815953e-05,kilogram,False,2020,None,biosphere,WAF,None,c1b91234-6f24-417b-8309-46111d09c457
+"steel production, converter, unalloyed","PAH, polycyclic aromatic hydrocarbons",1e-08,kilogram,False,2020,None,biosphere,WAF,None,3e5d7d91-67d7-4afb-91dd-36fab58e4685
+"steel production, converter, unalloyed",Copper,1.38684189611773e-07,kilogram,False,2020,None,biosphere,WAF,None,ec8144d6-d123-43b1-9c17-a295422a0498
+"steel production, converter, unalloyed",Water,0.00611840858706497,cubic meter,False,2020,None,biosphere,WAF,None,075e433b-4be4-448e-9510-9a5029c1ce94

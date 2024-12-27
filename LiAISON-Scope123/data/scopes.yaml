@@ -11,11 +11,14 @@ output_filenames:
 scenario_parameters:
   functional_unit: 1
   year: 2020
-  lca_project_name: lca_project_scopes123 # This is the project name used to perform LCA. 
-  location_under_study: CHN
+  lca_project_name: lca_project_scopes123_waf # This is the project name used to perform LCA. 
+  location_under_study: WAF
   unit: kilogram
   mc_runs: 1
-  primary_process_to_study: steel production, converter, unalloyed
+  primary_process_to_study: 
+    - steel production, electric, low-alloyed
+    - pig iron production
+    - steel production, converter, unalloyed
 additional_options:
   mc_foreground: false
   correct uncertainty: false
