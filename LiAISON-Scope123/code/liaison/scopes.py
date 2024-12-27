@@ -141,19 +141,22 @@ def scope2(db,process_selected_as_foreground,location_under_study,data_dir,bw):
     # Editing the database to remove all electricity production technosphere flows so that only upstream included in the calculations
     ei_38_db = bw.Database(db)
     for process in ei_38_db:
+
+        # This part removes the technosphere inputs to the electricity production activities
         if ('electricity production' in process['name']):
             if 'market' not in process['name']:
                 # hardcoded location name. Needs to be edited
-                if (process['location'] == location_under_study) or ('RoW' in process['location']):
-                    # print(process['name'],process['location'],' deleting technosphere flows',flush=True)
+                if (process['location'] == location_under_study) or ('CN' in process['location']):
+                    print(process['name'],process['location'],' deleting technosphere flows',flush=True)
                     for exch in process.exchanges():
                         if exch['type'] == "technosphere":
                             # Deleting exchanges
                             exch.delete()
 
+        # This part removes construction of transmission and distribution networks and transformers
         if ('electricity' in process['name']):
             # hardcoded location name. Needs to be edited
-            if (process['location'] == location_under_study) or ('RoW' in process['location']):
+            if (process['location'] == location_under_study) or ('CN' in process['location']):
                 for exch in process.exchanges():
                     if exch['type'] == "technosphere":
                         if exch['unit'] == "kilometer":
@@ -167,6 +170,31 @@ def scope2(db,process_selected_as_foreground,location_under_study,data_dir,bw):
                             #Deleting exchanges
                             print('Deleting transformer oil exhanges for ', exch['name'],' in ' ,process['name'],flush = True)
                             exch.delete()
+
+        # This part adjust transmission losses and makes them 0. Beta and may not work perfectly
+        if ('electricity' in process['name']) and ( 'market' in process['name']):
+            # hardcoded location name. Needs to be edited
+            if (process['location'] == location_under_study) or ('CN' in process['location']):
+                if process['unit'] == 'kilowatt hour':
+                    sum_total_input_electricity = 0
+                    for exch in process.exchanges():
+                        if exch['type'] == "technosphere":
+                             if exch['unit'] == "kilowatt hour":
+                                sum_total_input_electricity = sum_total_input_electricity + exch['amount']
+
+                    if sum_total_input_electricity != 1:
+                        print('Transmission losses have been found in ', process['name'],process['location'],flush = True)
+                        print('Need to adjust transmission losses',flush = True)
+                        
+                        for exch in process.exchanges():
+                            if exch['type'] == "technosphere":
+                                 if exch['unit'] == "kilowatt hour":
+                                    exch['amount'] =   exch['amount'] /  sum_total_input_electricity  
+                                    exch.save()  
+                    
+                    else:
+                        pass             
+
 
 
         process.save()

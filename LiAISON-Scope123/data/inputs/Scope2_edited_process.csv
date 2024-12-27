@@ -1,4 +1,8 @@
 process,flow,value,unit,input,year,comments,type,process_location,supplying_location,code
-"steel production, converter, unalloyed","steel production, converter, unalloyed",1.0,kilogram,False,2020,None,production,WAF,WAF,b959b1701dbe48668bac192cc788cbb7
-"steel production, converter, unalloyed","market group for electricity, medium voltage",0.04924888392553249,kilowatt hour,True,2020,None,technosphere,WAF,WAF,0
-"steel production, converter, unalloyed","market group for electricity, medium voltage",0.0007511160744674901,kilowatt hour,True,2020,None,technosphere,WAF,WAF,0
+"steel production, electric, low-alloyed","steel production, electric, low-alloyed",1.0,kilogram,False,2020,None,production,CHN,CHN,fe79c4497a3f4206be097b039b12bb6f
+"steel production, electric, low-alloyed","market group for electricity, high voltage",0.00952850697606515,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
+"steel production, electric, low-alloyed","market group for electricity, low voltage",0.00015729737779971651,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
+"steel production, electric, low-alloyed","market group for electricity, medium voltage",0.4687716347875187,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
+"steel production, electric, low-alloyed","market group for electricity, high voltage",0.001063891069400646,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
+"steel production, electric, low-alloyed","market group for electricity, low voltage",6.138707892509069e-06,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
+"steel production, electric, low-alloyed","market group for electricity, medium voltage",0.01835035986323106,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
