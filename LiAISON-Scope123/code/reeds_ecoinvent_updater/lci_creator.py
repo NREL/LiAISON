@@ -39,7 +39,7 @@ def search_index_creator(ei_cf_36_db):
             
             
             dic[i['name']+'@'+i['location']+'@'+i['unit']][i['code']] = i
-            dic2[i['name']+'@'+i['location']+'@'+i['unit']] = i
+            dic2[i['code']] = i
 
 
         
@@ -136,32 +136,9 @@ def find_emission(emission_name,emissions_dict):
                 return None
 
 
-def search_dictionary(db,bw):
 
-        """
-        This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
-        them to the background ecoinvent processes. Emissions are also linked to the processes and biosphere emissions.
-        
-        Parameters
-        ----------
-        db : str
-           ecoinvent database with scenario and year 
-        
-        bw : module
-           brightway2 module        
-           
-        Returns
-        -------
-        None
-        
-        """
-        
-        
-        ei_cf_36_db = bw.Database(db)
-        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
-        return database_dict,process_database_dict
 
-def liaison_calc(db,run_filename,bw):
+def reeds_db_editor(db,run_filename,bw):
 
         """
         This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
@@ -187,8 +164,12 @@ def liaison_calc(db,run_filename,bw):
         print('creating inventory withing the database---',db,flush=True)
         database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
       
+        # Reading from the REEDS output csv files
+        print('Reading from ' + run_filename,flush = True)
+        inventory = pd.read_csv(run_filename)
+        inventory = inventory.sort_values(by=['process','process_location'])
+
         
-        inventory = run_filename.sort_values(by=['process','process_location'])   
         # Step 1 is to create new processes or datasets    
         # The new processes and their information should be in the filtered product dataset
         processes = inventory[inventory['type'] == 'production']
@@ -394,193 +375,23 @@ def liaison_calc(db,run_filename,bw):
 
 
         database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
-        return process_database_dict
 
         
-def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
-    
-        """
-        This function performs the LCA and LCIA calculations with the TRACI method.
-        
-        Parameters
-        ----------
-        db : pd.DataFrame
-           Dataframe for matching with ecoinvent bridge name databases
-        
-        primary_process : ecoinvent process
-           Ecoinvent process with the primary process under LCA study         
- 
-        functional unit : str
-           filename for location name bridging csv            
-           
-        Returns
-        -------
-        None
-        """
+'''
+# a function to be used if checking if needed
+def check_created_activity(ei_cf_36_db2):
 
-        method_key = [[m for m in bw.methods if 'TRACI' in str(m) and 'acidification' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'ecotoxicity' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'eutrophication' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'global warming' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'carcinogenics' in str(m)][1],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'ozone depletion' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'photochemical oxidation' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'non-carcinogenics' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'respiratory effects, average' in str(m)][0]]
+    for i in ei_cf_36_db2:
+        if i['name'] == "Electricity production_Biopower_ReEDS":
+            print('Checking activity -------xxxx------')
+            print(i['name'],i['location'],'   Activity being checked',flush=True)
+            for ex in i.exchanges():
+                print(ex['name'],ex['amount'],ex['type'],'flows in new activitiy',flush=True)
 
-
-    
-        operation = primary_process
-        operation_functional_unit = {operation:functional_unit}
-        operation_result = []
-        
-        from collections import defaultdict
-        LCA_sol_cal_dict = defaultdict(dict)
-        
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
-        
-
-        mc = mc_foreground_flag
-        if mc:
-         for key in LCA_sol_cal_dict.keys():
-            for method in method_key:
-                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
-                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
-                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
-        
-        else:
-         for key in LCA_sol_cal_dict.keys():
-            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
-            lca.lci()
-            
-            for method in method_key:
-                lca.switch_method(method)
-                lca.lcia()
-                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
-                #print('TOP ACTIVITIES\n\n')
-                #print(lca.top_activities())
-                #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                 
-
-                
-        return LCA_sol_cal_dict,len(method_key)
-
-def lcia_recipe_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
-
-        method_key = [[m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'agricultural land occupation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'climate change' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'fossil depletion' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater ecotoxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater eutrophication' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'human toxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ionising radiation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine ecotoxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine eutrophication' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'metal depletion' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'natural land transformation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ozone depletion' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'particulate matter formation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'photochemical oxidant formation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial acidification' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial ecotoxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'urban land occupation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'water depletion' in str(m)][0]]
-
-
-    
-        operation = primary_process
-        
-        operation_functional_unit = {operation:functional_unit}
-        
-        operation_result = []
-        
-        from collections import defaultdict
-        LCA_sol_cal_dict = defaultdict(dict)
-        
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
-        
-
-        mc = mc_foreground_flag
-        if mc:
-         for key in LCA_sol_cal_dict.keys():
-            for method in method_key:
-
-                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
-                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
-                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
-        
-        
-        else:
-         for key in LCA_sol_cal_dict.keys():
-            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
-            lca.lci()
-
-            
-            for method in method_key:
-                lca.switch_method(method)
-                lca.lcia()
-
-
-                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
-                #print('TOP ACTIVITIES\n\n')
-                #print(lca.top_activities())
-                #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                  
-
-
-                
-        return LCA_sol_cal_dict,len(method_key)
-
-
-def lcia_premise_gwp_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
-
-        method_key = [[m for m in bw.methods if 'IPCC 2013' in str(m) and 'GTP 100a, incl. bio CO2' in str(m)][0],
-                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][0],
-                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][1],
-                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H and bio CO2' in str(m)][0]]
-    
-        operation = primary_process
-        
-        operation_functional_unit = {operation:functional_unit}
-        
-        operation_result = []
-        
-        from collections import defaultdict
-        LCA_sol_cal_dict = defaultdict(dict)
-        
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
-        
-
-        mc = mc_foreground_flag
-        if mc:
-         for key in LCA_sol_cal_dict.keys():
-            for method in method_key:
-                    print(method)
-                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
-                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
-                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
-        
-        
-        else:
-         for key in LCA_sol_cal_dict.keys():
-            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
-            lca.lci()
-            
-            for method in method_key:
-                lca.switch_method(method)
-                lca.lcia()
-                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
-                #print('TOP ACTIVITIES\n\n')
-                #print(lca.top_activities())
-                #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                
-
-        save_db = False
-        if save_db == True:
-            ei_cf_36_db = bw.Database(db)    
-            ei_cf_36_db.backup()
-            print('backed up database')
-
-                
-        return LCA_sol_cal_dict,len(method_key)
+        if 'market for biomass, used as fuel' in i['name'] and 'USA' == i['location']:
+            print('Checking activity -------xxxx------')
+            print(i['name'],i['location'],i['code'],'   Activity being checked',flush=True)
+            for ex in i.exchanges():
+                print(ex['name'],ex['amount'],ex['type'],'flows in new activitiy',flush=True)
+'''
 

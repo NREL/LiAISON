@@ -173,7 +173,7 @@ if lca_flag:
              region=region,
              data_dir=data_dir,
              primary_process=primary_process_under_study,
-             process_under_study=primary_process_under_study, 
+             process_under_study_list=primary_process_under_study, 
              location_under_study=location_under_study,
              unit_under_study=unit_under_study,
              updated_database=updated_database, 

@@ -12,6 +12,8 @@ from liaison.montecarloforeground import mc_foreground
 from liaison.lci_calculator import liaison_calc,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
 from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
 from liaison.edit_activity_ecoinvent import user_controlled_editing_ecoinvent_activity
+from liaison.scopes import scope1,scope2
+
 
 
 
@@ -63,7 +65,7 @@ def correct_bigcc_copper_use(bw,db):
                             exc.save()
 
 
-def reset_project(updated_project_name,number,project,updated_database,bw):
+def reset_project(updated_project_name,number,project,updated_database,scope,bw):
     
     """
     This function copies the project directory of a certain year and scenario, for example
@@ -84,6 +86,9 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
 
     updated_database : str
         name of the database to be worked on
+
+    scope : str
+        scope of analysis
         
     bw : module
         brightway2 module loaded shortcut name
@@ -95,8 +100,7 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     project name : str
         Name of the project
     """
-
-    project_name = project+"_"+number
+    project_name = project+"_"+number+"_"+scope
     try:
       print('Trying to delete project',project_name)
       bw.projects.delete_project(project_name,delete_dir = True)
@@ -127,7 +131,7 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     correct_bigcc_copper_use(bw,updated_database)
     return project_name,updated_database
 
-def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_foreground_flag,lca_flag,region_sensitivity_flag,edit_ecoinvent_user_controlled,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
+def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_foreground_flag,lca_flag,region_sensitivity_flag,edit_ecoinvent_user_controlled,region,data_dir,primary_process,process_under_study_list,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -200,7 +204,7 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
     scenario = updated_database[15:]
     number = str(secrets.token_hex(8))
 
-    def lca_runner(db,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename):
+    def lca_runner(db,project_name,process_under_study,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename,scope):
 
 
             lcia_result = {}
@@ -229,9 +233,7 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
             None
             """
 
-
-  
-            project_name,db = reset_project(updated_project_name,number,lca_project,updated_database,bw)
+            
             # This function creates a dictionary from ecoinvent for searching for activities.
             dictionary,process_dictionary = search_dictionary(db,bw)                   
             # This function searches for the primary process under study in ecoinvent. If found we extract it. 
@@ -244,19 +246,32 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 inventory = pd.read_csv(run_filename)
 
             else:
-                inventory = run_filename    
+                inventory = run_filename
             
             # Activity may be edited according to user preferences
             if edit_ecoinvent_user_controlled  == True:
                 
+                #Scope 1 calculations
                 run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
                 print('Activity edited according to user prereferences and saved success',flush=True) 
-        
-            process_dictionary = liaison_calc(db,run_filename,bw)
+            # inventory is a dataframe
+            if scope == "Scope1":
+                print('Performing Scope 1 calculations',flush=True)
+                run_filename = scope1(inventory,data_dir)
 
+            elif scope == "Scope2":
+                print('Performing Scope 2 calculations',flush=True)
+                run_filename = scope2(db,inventory,location_under_study,data_dir,bw)
+
+            
+            if type(run_filename) == pd.core.frame.DataFrame:
+                process_dictionary = liaison_calc(db,run_filename,bw)
+
+            else:
+                print("Exact activity obtained and no edits required. So directly performing LCA", flush = True)
 
             if lca_flag: 
-                result_dir1,n_lcias1 = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
+                result_dir1,n_lcias1,characterized_inventory = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 result_dir2,n_lcias2 = lcia_recipe_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
                 #result_dir3,n_lcias3 = lcia_premise_gwp_run(db,dictionary[process_under_study],1,mc_foreground_flag,mc_runs,bw)
                 result_dir3 = {}
@@ -345,7 +360,8 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                      'method': method     
                     })    
                 
-                lcia_df.to_csv(output_dir+results_filename+str(r)+db+primary_process+'.csv',index = False)
+                lcia_df.to_csv(output_dir+results_filename+scope+str(r)+yr+scenario+process_under_study+location_under_study+'.csv',index = False)
+                characterized_inventory.to_csv(output_dir+results_filename+scope+yr+scenario+process_under_study+location_under_study+'_characterized_inventory.csv',index=False)
 
                 save_project = False
                 if save_project == True:
@@ -385,10 +401,15 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
         
         run_filename = inventory_filename
         r = ''
-        lca_runner(updated_database,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename)
+
+        scopes = ['Scope1','Scope2','total_life_cycle']
+        for scope in scopes:
+            project_name,db = reset_project(updated_project_name,number,lca_project,updated_database,scope,bw)
+            for p_u_s in process_under_study_list:
+                lca_runner(db,project_name,p_u_s,r,mc_runs,mc_foreground_flag,lca_flag,functional_unit,run_filename,scope)
             
     try:
-        bw.projects.delete_project(bw.projects.current, delete_dir=True) 
+        #bw.projects.delete_project(bw.projects.current, delete_dir=True) 
         print('Deleted succesfully')
         bw.projects.purge_deleted_directories()
     except:
