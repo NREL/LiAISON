@@ -2,4 +2,4 @@ data_directories:
   ecoinvent_data: inputs/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/ # Ecoinvent data folder. Provided with repo
   liaisondata: inputs/ #input data folder. Provided with Repo
   output: output/ #output data folder. Provided with Repo
-  reeds_data: reeds_data/ # reeds data folder. Provided with repo
+  reeds_data: inputs/reeds_data/ # reeds data folder. Provided with repo

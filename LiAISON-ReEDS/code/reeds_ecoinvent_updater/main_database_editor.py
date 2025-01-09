@@ -41,7 +41,7 @@ def reset_project(base_database,base_project,project_new,bw):
       bw.projects.delete_project(project_name,delete_dir = True)
       print(project_name,' Project deleted',flush=True)
     except:
-      print('Project does not exist',flush=True)
+      print(project_name,' Project does not exist',flush=True)
       pass
     print('Setting base project as current for copying - ', base_project,flush=True)
     bw.projects.set_current(base_project)
@@ -198,7 +198,7 @@ def reeds_updater(year_of_study,results_filename,reeds_grid_mix_creator,data_dir
                 for st in states:
                     if st != "US":
                         temp_df = pd.read_csv(modification_inventory_filename)
-                        temp_df['process_location'] = st
+                        temp_df['process_location'] = "US-"+st
                         temp_df['supplying_location'] = st
                         temp_df.to_csv(modification_inventory_filename, index = False)
                         reeds_db_editor(db_new,modification_inventory_filename,bw)

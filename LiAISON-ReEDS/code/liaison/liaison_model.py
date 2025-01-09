@@ -127,7 +127,7 @@ def reset_project(updated_project_name,number,project,updated_database,bw):
     correct_bigcc_copper_use(bw,updated_database)
     return project_name,updated_database
 
-def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_foreground_flag,lca_flag,region_sensitivity_flag,edit_ecoinvent_user_controlled,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,modification_inventory_filename,output_dir,bw):
+def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_foreground_flag,lca_flag,region_sensitivity_flag,edit_ecoinvent_user_controlled,region,data_dir,primary_process,process_under_study,location_under_study,unit_under_study,updated_database,mc_runs,functional_unit,inventory_filename,output_dir,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -235,25 +235,27 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
             # This function creates a dictionary from ecoinvent for searching for activities.
             dictionary,process_dictionary = search_dictionary(db,bw)                   
             # This function searches for the primary process under study in ecoinvent. If found we extract it. 
-            run_filename = search_activity_in_ecoinvent(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
+            # dictionary or string
+            searched_item = search_activity_in_ecoinvent(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
             
-            if type(run_filename) == str:
+            if type(searched_item) == str:
                 # Reading from the inventory csv files
                 print('Using the provided inventory files',flush = True)
                 print('Reading from ' + run_filename,flush = True)
-                inventory = pd.read_csv(run_filename)
+                inventory = pd.read_csv(run_filename) #dataframe
+                #inventory is a dataframe
+                process_dictionary = liaison_calc(db,inventory,bw)
 
             else:
-                inventory = run_filename    
-            
-            # Activity may be edited according to user preferences
-            if edit_ecoinvent_user_controlled  == True:
-                
-                run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
-                print('Activity edited according to user prereferences and saved success',flush=True) 
-        
-            process_dictionary = liaison_calc(db,run_filename,bw)
+                inventory = searched_item  #dictionary
+                # Activity may be edited according to user preferences
+                if edit_ecoinvent_user_controlled  == True:  
 
+                    #inventory here has to be a dictionary. So if we read inventory from csv file we cannot edit it.             
+                    run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
+                    print('Activity edited according to user prereferences and saved success',flush=True)  
+                    #run_filename is a dataframe.
+                    process_dictionary = liaison_calc(db,run_filename,bw)
 
             if lca_flag: 
                 result_dir1,n_lcias1 = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
