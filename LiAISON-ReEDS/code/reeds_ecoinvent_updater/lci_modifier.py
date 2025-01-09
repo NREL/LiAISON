@@ -35,17 +35,6 @@ def search_index_creator(ei_cf_36_db):
             
             dic[i['name']+'@'+i['location']][i['code']] = i
 
-
-
-        '''    
-        filehandler = open(db+".obj","wb")
-        pickle.dump(dic,filehandler)
-        filehandler.close()
-        
-        filehandler = open("problems.obj","wb")
-        pickle.dump(problems,filehandler)
-        filehandler.close()
-        '''
         
         return dic
 
@@ -73,7 +62,7 @@ def search_index_reader(p_name,p_loc,database_dict):
         key = p_name+'@'+p_loc
         return database_dict[key]
             
-def search_index_debugger(database_dict,p_code):
+def search_index_debugger(database_dict,p_code,**kwargs):
     
         """
         This function debugs the search process for multiple process names and locations
@@ -136,7 +125,7 @@ def emission_merge(inp, emission_name_bridge):
             """
             
             emission_name = pd.read_csv(emission_name_bridge)
-            emission_bridge = inp.merge(emission_name, left_on = ['flow','comments'], right_on = ['Common_name','Common_source']).dropna()
+            emission_bridge = inp.merge(emission_name, left_on = ['flow'], right_on = ['Common_name']).dropna()
             return emission_bridge
 
  
@@ -264,14 +253,17 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
             #Getting proper_ecoinvent names
             process_info = row['process']
             location_info = row['process_location']
-            print(process_info,location_info)
+            print('To be modified -',process_info," ",location_info)
 
 
             activity_dic = search_index_reader(process_info,location_info,database_dict)
+            
+            #What if activity not found?? Add this check??
             if len(activity_dic) == 1:
                 print('One activity found. Check passed')
+                print(process_info,location_info)
             else:
-                print('Multiple activity found')
+                print('Warning: Multiple activity found')
             p_code = list(activity_dic.keys())
             activity = search_index_debugger(activity_dic,p_code[0].strip())
             
@@ -280,23 +272,25 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
 
             process_dict[process_info+'@'+location_info] = activity
 
-            #print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
-            #process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
-            #process_dict[process_info+'@'+location_info].save()
-
         
-        print('Removing Activity technosphere flow') 
+        print('Removing Activity all flows') 
 
         for key in process_dict:
+            print(key)
             for exch in process_dict[key].exchanges():
-                if exch['type'] == 'technosphere':
+                    print(exch['name'],' deleted')
                     exch.delete()
 
             process_dict[key].save()
 
+        #To check if these processes are empty. Should not print anything
         for key in process_dict:
             for exch in process_dict[key].exchanges():
-                print(exch)
+                try:
+                    print(exch['name'],exch['location'])
+                except:
+                    print(exch['name'])
+
 
         #Recreate the database dictionary so that the new created processes are listed in the inventory
         database_dict = search_index_creator(ei_cf_36_db)
@@ -319,7 +313,8 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                 
                 if process_bridge.empty or location_bridge.empty:
                     print(row['flow'] + ' ' + row['supplying_location'],flush = True)
-                    print('Failed: Did not find this activity in the bridge file\n',flush = True)
+                    print('Warning Failed: Did not find this activity in the bridge file\n',flush = True)
+                    print('This flow needs to be added in the process bridge file. The ecoinvent name should be same as the US grid mix process name of electricity created from ReEDS')
                     #Some matches may not happen
                     #These will become cutoff flows
                 else:
@@ -332,7 +327,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                         activity = search_index_debugger(activity_dic,str(process_bridge['Ecoinvent_code'][0]).strip())    
 
                         if activity['unit'] != row['unit']:
-                            print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                            print('Warning Failed UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                             unit_error_flag = 1                     
                         
                         process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
@@ -347,7 +342,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                             activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RNA',database_dict)
                             activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                             if activity['unit'] != row['unit']:
-                                print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                print('Warning Failed UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                 unit_error_flag = 1                          
                             
                             process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
@@ -362,7 +357,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                                 activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'GLO',database_dict)
                                 activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                                 if activity['unit'] != row['unit']:
-                                    print('UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                    print('Warning Failed UNIT ERROR '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                     unit_error_flag = 1  
                                 
                                 process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
@@ -376,7 +371,7 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                                     activity_dic = search_index_reader(process_bridge['Ecoinvent_name'][0],'RoW',database_dict)
                                     activity = search_index_debugger(activity_dic,process_bridge['Ecoinvent_code'][0])    
                                     if activity['unit'] != row['unit']:
-                                        print('Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
+                                        print('Warning Failed Unit error '+location_bridge['location_ecoinvent'][0]+' for '+ process_bridge['Common_name'][0])
                                         unit_error_flag = 1  
                                     
                                     process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=row['unit'],type='technosphere').save()
@@ -384,12 +379,13 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                                     print('Minor Success - Provided location '+ location_bridge['location_ecoinvent'][0]+' for '+ activity['name'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
 
                                 except:                                   
-                                         print('Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+                                         print('Warning Failed - Not found '+process_bridge['Common_name'][0] + ' ' + location_bridge['location_ecoinvent'][0] + ' '+str(process_bridge['Ecoinvent_code'][0]),flush = True)
+                                         print('This process should be same as the US grid mix process name of electricity created from ReEDS and its missing. Maybe it was not created. Please check')
 
             
                     if unit_error_flag == 1:
                         print('Correct unit should be '+activity['unit'])
-                        sys.exit('Unit Error occured please check')
+                        sys.exit('Warning Failed Unit Error occured please check')
         
 
         
@@ -410,15 +406,15 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                 emission_bridge = emission_merge(temp, emission_name_bridge) 
                 
                 if emission_bridge.empty:
-                    print(row['flow'] + ' Emission match not found from Emission Bridge!!')
+                    print(row['flow'] + ' Warning Failed Emission match not found from Emission Bridge!!')
                 
                 else:
                     emission = find_emission(emission_bridge,emissions_dict)
                     if emission == None:
-                        print('Emission not found ' + row['flow'],flush = True)                
+                        print('Warning Failed Emission not found ' + row['flow'],flush = True)                
                     else:
                         if emission['unit'] != row['unit']:
-                            print('Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
+                            print('Warning Failed Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0])
                             unit_error_flag = 1   
                         else:                                       
                             process_dict[key].new_exchange(input=emission.key,amount=row['value'], name = emission['name'],unit=emission['unit'],type='biosphere').save()
@@ -427,5 +423,15 @@ def reeds_lci_modifier(db,run_filename,process_name_bridge,emission_name_bridge,
                     
                     if unit_error_flag == 1:
                             print('Correct unit should be '+emission['unit'])
-                            sys.exit('Emission unit Error occured please check')  
+                            sys.exit('Warning Failed Emission unit Error occured please check')  
+
+
+        #Printing the modified processes for sanity check
+        print('Printing the modified processes for sanity check')
+        for key in process_dict:
+            for exch in process_dict[key].exchanges():
+                try:
+                    print(exch['name'],exch['location'])
+                except:
+                    print(exch['name'])
         

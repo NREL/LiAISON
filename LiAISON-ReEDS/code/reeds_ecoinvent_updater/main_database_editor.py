@@ -39,14 +39,15 @@ def reset_project(base_database,base_project,project_new,bw):
     project_name = project_new
     try:
       bw.projects.delete_project(project_name,delete_dir = True)
-      print('Project deleted',flush=True)
+      print(project_name,' Project deleted',flush=True)
     except:
       print('Project does not exist',flush=True)
       pass
+    print('Setting base project as current for copying - ', base_project,flush=True)
     bw.projects.set_current(base_project)
     try:
         bw.projects.copy_project(project_name,switch = False)
-        print(base_project+'_project copied successfully',flush=True)
+        print(base_project+' project copied successfully',flush=True)
     except:
         bw.projects.purge_deleted_directories()
         bw.projects.copy_project(project_name,switch = False)
@@ -65,6 +66,13 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
  
         #reset_project(base_database,base_project,updated_project_name,bw)   
         bw.projects.set_current(base_project)
+
+        try:
+            del bw.databases[updated_database]
+            print('Deleted database:, ',updated_database)
+        except:
+            print('No database to delete')
+
         time0 = time.time()
         key=updated_database
         #Name of old database and new database is same in liaison-reeds
@@ -101,7 +109,7 @@ def editor(updated_database,base_database,base_project,updated_project_name,bw):
 
 
 
-def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,premise_editor,base_database,base_project,database_new,project_new,bw):
+def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,initial_year,results_filename,reeds_grid_mix_creator,lca_activity_modification,create_new_database,data_dir,inventory_filename,modification_inventory_filename,premise_editor,base_database,base_project,database_new,project_new,bw):
 
     """
     This function defines the result arrays and then calls monte carlo analysis if required or just runs the 
@@ -171,16 +179,24 @@ def reeds_updater(process_name_bridge,emission_name_bridge,location_name_bridge,
             -------
             None
             """
-            print(project_new," Project entered for ReEDS LCI development",flush=True)
-            print(database_new,flush=True)
             print("Staring editing LCI using ReEDS", flush=True)     
-            reset_project(base_database,base_project,project_new,bw)
             
-            reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
-            print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
+            
+            
+            if reeds_grid_mix_creator:
+                print('Creating Reeds Grid mix inside ecoinvent')
+                reset_project(base_database,base_project,project_new,bw)
+                reeds_db_editor(db_new,run_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)                   
+                print('ReEDS LCI electricity generation created within ecoinvent',flush=True)
             
 
             if lca_activity_modification:
+
+                print('Editing existing Ecoinvent flows using lci modifier')
+                bw.projects.set_current(project_new)
+                print("Entered project " + project_new,flush = True)
+                print("Databases in this project are",flush = True)
+                print(bw.databases,flush = True) 
                 reeds_lci_modifier(db_new,modification_inventory_filename,process_name_bridge,emission_name_bridge,location_name_bridge,bw)
                 print('Background Activity modified and saved success',flush=True)
 

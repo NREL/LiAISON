@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-os.environ['BRIGHTWAY2_DIR'] = "/projects/liaison/env/batteries_liaison/"
+os.environ['BRIGHTWAY2_DIR'] = "/kf2/shared-projects/liaison/Soomin/env/hipster/"
 import brightway2 as bw
 bw.projects.set_current('ecoinvent_2020_SSP2-Base')
 ei_cf_36_db = bw.Database('ecoinvent_2020_SSP2-Base')

@@ -5,13 +5,13 @@
 ## Objective
 
 **Perform**
-1. Life cycle assessment calculations of standard ReEDS scenarios. 
-2. Perform life cycle assessment using predicted grid energy system based on standard ReEDS scenarios. 
+1. Life cycle assessment calculations of standard Regional Energy Deployment System (ReEDS) scenarios (https://www.nrel.gov/analysis/reeds/). 
+2. Perform prospective life cycle assessment using predicted grid energy system based on standard ReEDS scenarios every twwo years by 2050. 
 
 
 ## Requirements
 -   **Python 3.9, 3.10 or 3.11**
--   License for [ecoinvent 3](https://www.ecoinvent.org/)
+-   License for [ecoinvent 3.8](https://www.ecoinvent.org/)
 -   To use prospective life cycle assessment, LiAISON requires [premise](https://github.com/polca/premise). If you wish to use those premise, **you need to request (by [email](mailto:romain.sacchi@psi.ch)) an encryption key from the developers**
 -   [brightway2](https://brightway.dev/) 
 
@@ -50,6 +50,7 @@ folder-LiAISON repository : */LiAISON*
   - ```pip install openpyxl==3.1.2```
   - ```pip install bw2io==0.8.7```
   - ```pip install bw2analyzer==0.10```
+  - ```pip install wurst==0.3.4```
   
 
 ### Extracting Ecoinvent
@@ -120,12 +121,14 @@ We connect the Regional Energy Deployment System (ReEDS), a capacity expansion m
 
   - ```conda create -n LiAISON-ReEDS-23 python=3.9```
   - ```conda activate LiAISON-ReEDS-23```
-  - ```pip install brightway2==2.3```
-  - ```pip install pyyaml==5.4.1```
-  - ```pip install premise==1.5.7```
-  - ```pip install openpyxl==3.0.9```
+  - ```pip install brightway2==2.4.3```
+  - ```pip install pyyaml==6.0.1```
+  - ```pip install premise==1.8.1```
+  - ```pip install openpyxl==3.1.5```
   - ```pip install bw2io==0.8.7```
   - ```pip install bw2analyzer==0.10```
+  - ```pip install wurst==0.3.4```
+  - ```pip install pandas==2.2.2```
   
 
 ## Extracting Ecoinvent
@@ -147,22 +150,49 @@ LiAISON-ReEDS can be run through these following steps -
 ### Step 1:  Creation of brightway2 environment folder. 
 Create an environment folder for brightway2 environments in an address with enough disk space. Can be created in the root. Brightway2 creates an environment folder in the system path of your machine. (*Appdata* for Windows, *Library* for MAC).  The environment folder can be changed to user specified directory if needed. Create a directory if required and point to that directory path. Create an environment folder for brightway2 environments in an address with enough disk space
 
-### Step 2: Build databases / Run for the first time
+### Step 2_1: Build premise databases / Run only for the first time
 
-- For a first time run or when new scenario/year case studies are required three parameters needs to be switched to the True position in the **config_yaml file**
+- For a first time run after creation of conda environment, three parameters need to be switched to the True position in the **config_yaml file**. When database_reader:True, ecoinvent 3.8 files are copied and pasted in the project folder. With premise_editor: True, ecoinvent database is updated with IMAGE baseline 2020 scenario. It does not have much difference with the original ecoinvent and just enable to have advanced technologies adopted from premise which is required from LiAISON-ReEDS scenarios. Note that running premise changes uuid of activities, so make sure turn it off (presmise_editor: False) once you create database with premise at later step 2_3. 
 ```
-  lca: True
-  run_database_reader: True
-  run_database_editor: True 
+  premise_editor: True
+  database_reader: True
+  database_editor: True 
+  lca: False
 ```  
+
+### Step 2_2: Preparation of ReEDS input file. The required files are not in github yet, but add instruction here for later. 
+
+process_name_bridge.csv need to be created properly with premise database which generated from previous step 2_1. Every user have to process this step at least once on their own, otherwise it causes problem when matching activities. From reeds_to_hipster_dev folder, 
+
+- Run ecoinvent_explorer.py to generate ecoinvent_updated_full_p1.8.1_v2.xlsx.
+- Run hipster_matcher US/state/region .py depending on your spatial resolution. Make sure to use the newly created ecoinvent_updated_full file is used in the code. Enter all year and scenario you will want to run to make sure process_name_bridge.csv to include all required process name (Code needs to be updated for this). 
+- Run process_Bridge.py to create process_name_bridge.csv.
+- Copy scenario files in reedsdata folder to LiAISON_ReEDS/data/inputs/reeds_data
+- Check modification_inventory.csv file is in LiAISON_ReEDS/data/inputs/reeds_data (cf. rows here modify the ecoinvent data itself)
+- Copy process_name_bridge.csv and emission_name_bridge.csv to LiAISON_ReEDS/data/inputs
+- For technosphere in modification_inventory.csv, add rows to process_name_bridge.csv 
+- For technosphere for foreground inventory csv file, add rows to process_name_bridge.csv
+
+### Step 2_3: Build LiAISON-ReEDS database for scenarios / Run only for the first time
+
+- When new scenario/year database are required, three parameters needs to be switched to the True position in the **config_yaml file**. Premise_editor must be false at this step. If you mistakenly make it True and run premise, you need to repeat step 2_2 again. 
+```
+  premise_editor: False
+  database_reader: False
+  database_editor: True 
+  lca: True
+```  
+- After run it, check if you have any fail comment
 
 ### OR 
 ### Step 3: Run for life cycle assessment analysis on existing databases
 
 - Change to false for faster compilation 
 ```
-  run_database_reader: False
-  run_database_editor: False 
+  premise_editor: False
+  database_reader: False
+  database_editor: False 
+  lca: True
 ```
 
 
