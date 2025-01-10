@@ -1,0 +1,6 @@
+Steps
+
+1. Edit the yaml file according to location and process preferences
+2. Multiple processes can be put as a list to perform LCA on multiple processes
+3. The scopes.py code has the code to edit the LCI to get Scope 1 and Scope 2 compatible processes and inventories. 
+4. Scope 2 electricity edits have a hard coded location due to the complexity of electricity grid. This needs to be edited by the user according to the location of study. Explore the grid you are trying to edit and then make the necessary changes. Lines 147 and 156

@@ -7,3 +7,5 @@
 *.pyc
 *.7z
 *.bak
+/LiAISON-Scope123/export
+/LiAISON-Scope123/data/output

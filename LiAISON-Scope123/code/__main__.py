@@ -61,20 +61,39 @@ region = location_under_study
 base_database = "premise_base"
 base_project = "premise_base"
 # These modified projects and databases are used to save the large modified ecoinvent databases for future LCA calculations. 
-# We can change this but then we need to copy the premise base into the updated database name and then perform edits. Takes more time. 
-updated_database = "premise_base" # These project name is used to create a new project after major modifications to original ecoinvent. These can include premise updates or ReEDS grid mix updates
-updated_project_name = str(inputs.get('reeds_yaml_data')) # These project name is used to create a new project after major modifications to original ecoinvent. These can include premise updates or ReEDS grid mix updates
+updated_database = "premise_updated_ecoinvent_"+str(year_of_study) # These project name is used to create a new project after major modifications to original ecoinvent. These can include premise updates or ReEDS grid mix updates
+updated_project_name = "premise_updated_ecoinvent_"+str(year_of_study) # These project name is used to create a new project after major modifications to original ecoinvent. These can include premise updates or ReEDS grid mix updates
 
+# Reading the ReEDS yaml file name
+try:
+    with open(reeds_yaml_data_filename, 'r') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+        reeds_inputs = config.get('input_filenames', {})          
+except IOError as err:
+    print(f'Could not open {reeds_yaml_data_filename} for configuration. Exiting with status code 1.')
+    exit(1)
 
-
+# Filenames for inventories
+creation_inventory_filename = os.path.join(args.datapath,
+                                  data_dirs.get('liaisondata'),
+                                  data_dirs.get('reeds_data'),
+                                  reeds_inputs.get('creation_inventory'))
 foreground_inventory_filename = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   inputs.get('foreground_inventory'))
+modification_inventory_filename = os.path.join(args.datapath,
+                                  data_dirs.get('liaisondata'),
+                                  data_dirs.get('reeds_data'),
+                                  reeds_inputs.get('modification_inventory'))
+modification_inventory_filename_us = os.path.join(args.datapath,
+                                  data_dirs.get('liaisondata'),
+                                  data_dirs.get('reeds_data'),
+                                  reeds_inputs.get('modification_inventory_us'))
 ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
 
 # Fix this
-ecoinvent_file = "./"
+ecoinvent_file = "/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/ecoinvent/ecoinvent 3.8_cutoff_ecoSpold02/datasets"
 
                                   
 results_filename = outputs.get('results_filename')
@@ -83,7 +102,6 @@ output_dir = os.path.join(args.datapath,
 data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
 
-reeds_dir = os.path.join(data_dirs.get('reeds_data'))
 
 
 run_database_reader = flags.get('ecoinvent_reader')
@@ -94,30 +112,6 @@ premise_editor= flags.get('update_ecoinvent_using_premise')
 reeds_grid_mix_creator = flags.get('reeds_us_electricity_grid_mix')
 region_sensitivity_flag = options.get('region_sensitivity_flag')
 edit_ecoinvent_user_controlled = options.get('edit_ecoinvent_user_controlled')
-
-
-if reeds_grid_mix_creator:
-    # Reading the ReEDS yaml file name
-    try:
-        with open(reeds_yaml_data_filename+'.yaml', 'r') as f:
-            config = yaml.load(f, Loader=yaml.FullLoader)
-            reeds_inputs = config.get('input_filenames', {}) 
-
-            # Filenames for inventories
-            # only the reeds data is in a different folder for now. 
-            reeds_inventory_filename = os.path.join(reeds_dir,
-                                              reeds_inputs.get('reeds_inventory'))
-            modification_inventory_filename = os.path.join(reeds_dir,
-                                              reeds_inputs.get('modification_inventory'))
-            modification_inventory_filename_us = os.path.join(reeds_dir,
-                                              reeds_inputs.get('modification_inventory_us'))
-
-    except IOError as err:
-        print(f'Could not open {reeds_yaml_data_filename} for configuration. Exiting with status code 1.')
-        exit(1)
-
-
-
 
 print('All input data parameters read', flush = True)
 
@@ -132,23 +126,23 @@ if run_database_reader:
            )
     
 #Running database editor for modifying base databases with IMAGE information and future scenario    
-if reeds_grid_mix_creator:
-    print('Running db editor', flush = True)
-    reeds_updater(
-         year_of_study=year_of_study,
-         results_filename=results_filename, 
-         reeds_grid_mix_creator = reeds_grid_mix_creator,
-         data_dir=data_dir,
-         inventory_filename = reeds_inventory_filename,
-         modification_inventory_filename = modification_inventory_filename,
-         modification_inventory_filename_us = modification_inventory_filename_us,
-         premise_editor=premise_editor,
-         base_database=base_database,
-         base_project = base_project,
-         database_new = updated_database,
-         project_new = updated_project_name,
-         bw=bw
-         )
+
+print('Running db editor', flush = True)
+reeds_updater(
+     year_of_study=year_of_study,
+     results_filename=results_filename, 
+     reeds_grid_mix_creator = reeds_grid_mix_creator,
+     data_dir=data_dir,
+     inventory_filename = creation_inventory_filename,
+     modification_inventory_filename = modification_inventory_filename,
+     modification_inventory_filename_us = modification_inventory_filename_us,
+     premise_editor=premise_editor,
+     base_database=base_database,
+     base_project = base_project,
+     database_new = updated_database,
+     project_new = updated_project_name,
+     bw=bw
+     )
 
 
 #Create results directory
@@ -179,13 +173,14 @@ if lca_flag:
              region=region,
              data_dir=data_dir,
              primary_process=primary_process_under_study,
-             process_under_study=primary_process_under_study, 
+             process_under_study_list=primary_process_under_study, 
              location_under_study=location_under_study,
              unit_under_study=unit_under_study,
              updated_database=updated_database, 
              mc_runs=mc_runs,
              functional_unit=functional_unit,
              inventory_filename = foreground_inventory_filename,
+             modification_inventory_filename = modification_inventory_filename,
              output_dir= output_dir,
              bw=bw)
 

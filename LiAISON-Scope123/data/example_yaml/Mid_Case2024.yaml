@@ -1,0 +1,35 @@
+data_directories:
+  ecoinvent_data: inputs/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
+  liaisondata: inputs/
+  output: output/
+  reeds_data: reeds_data/
+flags:
+  correct uncertainty: false
+  create_reeds_grid_mix: false
+  database_editor: true
+  database_reader: false
+  lca: true
+  mc_foreground: false
+  modify_ecoinvent_grid_mix: false
+  premise_editor: false
+  regional_sensitivity: false
+input_filenames:
+  creation_inventory: Mid_Case2024_reeds_data_state.csv
+  foreground_inventory: example.csv
+  modification_inventory: modification_inventory.csv
+  modification_inventory_us: modification_inventory_us.csv
+output_filenames:
+  results_filename: Mid_Case_2024electricity_production
+scenario_parameters:
+  base_database: premise_base
+  base_project: premise_base
+  functional_unit: 1
+  initial_year: 2020
+  lca_project_name: USlca_project_Mid_Case2024
+  location: CA
+  unit: kilowatt hour
+  mc_runs: 1
+  primary_process_to_study: market group for electricity, high voltage new test
+  process: electricity
+  updated_database: premise_updated_ecoinvent_2024
+  updated_project_name: USMid_Case2024

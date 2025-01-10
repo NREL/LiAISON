@@ -1,0 +1,37 @@
+process,flow,value,unit,input,year,comments,type,process_location,supplying_location,code
+"steel production, converter, unalloyed","steel production, converter, unalloyed",1.0,kilogram,False,2020,None,production,CHN,CHN,c7c94568d97346d384ab84c589e0f6a5
+"steel production, converter, unalloyed",Iron,4.115e-05,kilogram,False,2020,None,biosphere,CHN,None,8dba66e2-0f2e-4038-84ef-1e40b4f573a6
+"steel production, converter, unalloyed",Manganese,6.84105255059483e-07,kilogram,False,2020,None,biosphere,CHN,None,295060ba-3c3d-45e4-99ca-e17b1204b553
+"steel production, converter, unalloyed","Carbon dioxide, fossil",0.0627088510499116,kilogram,False,2020,None,biosphere,CHN,None,349b29d1-3e58-4c66-98b9-9d1a076efd2e
+"steel production, converter, unalloyed","Particulates, < 2.5 um",4.47437146423942e-05,kilogram,False,2020,None,biosphere,CHN,None,21e46cb8-6233-4c99-bac3-c41d2ab99498
+"steel production, converter, unalloyed",Lead,4.08166632639171e-07,kilogram,False,2020,None,biosphere,CHN,None,8e123669-94d3-41d8-9480-a79211fe7c43
+"steel production, converter, unalloyed","Heat, waste",0.204696179355145,megajoule,False,2020,None,biosphere,CHN,None,f2d84834-d0b3-42e5-b41a-f04cc80337a4
+"steel production, converter, unalloyed",Chromium,2.73861278752583e-08,kilogram,False,2020,None,biosphere,CHN,None,e142b577-e934-4085-9a07-3983d4d92afb
+"steel production, converter, unalloyed","Dioxins, measured as 2,3,7,8-tetrachlorodibenzo-p-dioxin",6.35767253010093e-14,kilogram,False,2020,None,biosphere,CHN,None,082903e4-45d8-4078-94cb-736b15279277
+"steel production, converter, unalloyed","Carbon monoxide, fossil",0.00168214149226514,kilogram,False,2020,None,biosphere,CHN,None,ba2f3f82-c93a-47a5-822a-37ec97495275
+"steel production, converter, unalloyed","Water, cooling, unspecified natural origin",0.00577581163127746,cubic meter,False,2020,None,biosphere,CHN,None,fc1c42ce-a759-49fa-b987-f1ec5e503db1
+"steel production, converter, unalloyed",Nitrogen oxides,2.12367605815953e-05,kilogram,False,2020,None,biosphere,CHN,None,c1b91234-6f24-417b-8309-46111d09c457
+"steel production, converter, unalloyed","PAH, polycyclic aromatic hydrocarbons",1e-08,kilogram,False,2020,None,biosphere,CHN,None,3e5d7d91-67d7-4afb-91dd-36fab58e4685
+"steel production, converter, unalloyed",Copper,1.38684189611773e-07,kilogram,False,2020,None,biosphere,CHN,None,ec8144d6-d123-43b1-9c17-a295422a0498
+"steel production, converter, unalloyed",Water,0.00611840858706497,cubic meter,False,2020,None,biosphere,CHN,None,075e433b-4be4-448e-9510-9a5029c1ce94
+"steel production, converter, unalloyed",market for basic oxygen furnace dust,-0.01939599999999999,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for basic oxygen furnace secondary metallurgy slag,-0.0003008,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for basic oxygen furnace slag,-0.1048976,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for basic oxygen furnace sludge,-0.0003008,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for blast oxygen furnace converter,1.3333e-11,unit,True,2020,None,technosphere,CHN,GLO,0
+"steel production, converter, unalloyed",market for coke,0.000183215956619923,megajoule,True,2020,None,technosphere,CHN,GLO,0
+"steel production, converter, unalloyed","market for compressed air, 600 kPa gauge",0.014422205101856,cubic meter,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for dolomite,0.00442217668469038,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed","market for ferromanganese, high-coal, 74.5% Mn",0.006,kilogram,True,2020,None,technosphere,CHN,GLO,0
+"steel production, converter, unalloyed","market for inert waste, for final disposal",-0.000565685,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for iron ore concentrate,0.000622896460095897,kilogram,True,2020,None,technosphere,CHN,GLO,0
+"steel production, converter, unalloyed","market for iron scrap, sorted, pressed",0.23211055,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for mill scale,-6.63e-05,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed","market for natural gas, high pressure",0.0011474819341935226,cubic meter,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed","market for oxygen, liquid",0.0780539963102467,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed","market for quicklime, in pieces, loose",0.0448330235429198,kilogram,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed",market for wastewater from pig iron production,-0.00134164078649987,cubic meter,True,2020,None,technosphere,CHN,RoW,0
+"steel production, converter, unalloyed","market group for electricity, medium voltage",0.04924888392553249,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
+"steel production, converter, unalloyed","market group for natural gas, high pressure",5.47038581562079e-05,cubic meter,True,2020,None,technosphere,CHN,GLO,0
+"steel production, converter, unalloyed",market for pig iron,0.86462087,kilogram,True,2020,None,technosphere,CHN,CHN,0
+"steel production, converter, unalloyed","market group for electricity, medium voltage",0.00075111607446749,kilowatt hour,True,2020,None,technosphere,CHN,CHN,0
