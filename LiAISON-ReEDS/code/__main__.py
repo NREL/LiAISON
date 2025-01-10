@@ -44,18 +44,17 @@ from reeds_ecoinvent_updater.main_database_editor import reeds_updater
 from liaison.liaison_model import main_run
 
 lca_project_name = scenario_params.get('lca_project_name')
-primary_process = scenario_params.get('process')
-process_under_study = scenario_params.get('primary_process_to_study')
-location_under_study = scenario_params.get('location_primary_process_to_study')
+primary_process_under_study = scenario_params.get('primary_process_to_study')
 updated_database = scenario_params.get('updated_database')
 updated_project_name = scenario_params.get('updated_project_name')
 mc_runs = int(scenario_params.get('mc_runs'))
 functional_unit = float(scenario_params.get('functional_unit'))
 base_database = scenario_params.get('base_database')
 base_project = scenario_params.get('base_project')
-region = scenario_params.get('regions_for_sensitivity_analysis')
+location_under_study = scenario_params.get('location_under_study')
 initial_year = scenario_params.get('initial_year')
-
+unit_under_study = scenario_params.get('unit')
+region = location_under_study
 
 
 creation_inventory_filename = os.path.join(args.datapath,
@@ -69,21 +68,16 @@ modification_inventory_filename = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
                                   data_dirs.get('reeds_data'),
                                   inputs.get('modification_inventory'))
-process_name_bridge = os.path.join(args.datapath,
+modification_inventory_filename_us = os.path.join(args.datapath,
                                   data_dirs.get('liaisondata'),
-                                  inputs.get('process_bridge'))
-emission_name_bridge = os.path.join(args.datapath,
-                                  data_dirs.get('liaisondata'),
-                                  inputs.get('emission_bridge'))
-location_name_bridge = os.path.join(args.datapath,
-                                  data_dirs.get('liaisondata'),
-                                  inputs.get('location_bridge'))
+                                  data_dirs.get('reeds_data'),
+                                  inputs.get('modification_inventory_us'))
 ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
 
 
 # ## Fix this
-ecoinvent_file = "/kfs2/shared-projects/liaison/Soomin/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/"
+ecoinvent_file = "/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/ecoinvent/ecoinvent 3.8_cutoff_ecoSpold02/datasets"
 
                                   
 results_filename = outputs.get('results_filename')
@@ -92,7 +86,7 @@ output_dir = os.path.join(args.datapath,
 data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
 ## Fix this
-creation_inventory_filename = os.path.join("/kfs2/shared-projects/liaison/Soomin/hipster_data/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
+creation_inventory_filename = os.path.join("/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/hipster_hpc_files/reeds_to_hipster_dev/reedsdata/",inputs.get('creation_inventory'))
 
 
 run_database_reader = flags.get('database_reader')
@@ -122,9 +116,6 @@ if run_database_reader:
 if run_database_editor:
     print('Running db editor', flush = True)
     reeds_updater(
-         process_name_bridge = process_name_bridge,
-         emission_name_bridge = emission_name_bridge,
-         location_name_bridge = location_name_bridge,
          initial_year=initial_year,
          results_filename=results_filename, 
          reeds_grid_mix_creator = reeds_grid_mix_creator,
@@ -133,6 +124,7 @@ if run_database_editor:
          data_dir=data_dir,
          inventory_filename = creation_inventory_filename,
          modification_inventory_filename = modification_inventory_filename,
+         modification_inventory_filename_us = modification_inventory_filename_us,
          premise_editor=premise_editor,
          base_database=base_database,
          base_project = base_project,
@@ -156,7 +148,6 @@ if remove_old_results:
     except:
         pass
 
-
 if lca_flag:
     
     main_run(lca_project=lca_project_name,
@@ -169,19 +160,17 @@ if lca_flag:
              regional_sensitivity_flag=regional_sensitivity_flag,
              region=region,
              data_dir=data_dir,
-             primary_process=primary_process,
-             process_under_study=process_under_study, 
+             primary_process=primary_process_under_study,
+             process_under_study=primary_process_under_study, 
              location_under_study=location_under_study,
+             unit_under_study=unit_under_study,
              updated_database=updated_database, 
              mc_runs=mc_runs,
              functional_unit=functional_unit,
              inventory_filename = foreground_inventory_filename,
              modification_inventory_filename = modification_inventory_filename,
-             process_name_bridge = process_name_bridge,
-             emission_name_bridge = emission_name_bridge,
-             location_name_bridge = location_name_bridge,
              output_dir= output_dir,
              bw=bw)
 
 print(time.time()-tim0) 
-      
+          
