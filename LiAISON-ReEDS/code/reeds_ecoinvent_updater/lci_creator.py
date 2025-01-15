@@ -39,7 +39,7 @@ def search_index_creator(ei_cf_36_db):
             
             
             dic[i['name']+'@'+i['location']+'@'+i['unit']][i['code']] = i
-            dic2[i['code']] = i
+            dic2[str(i['code'])] = i
 
 
         
@@ -74,10 +74,11 @@ def search_index_reader(p_name,p_loc,p_unit,data_dict):
         if len(activity_dict) == 1:
             for key in activity_dict.keys():
                 return activity_dict[key]
+
         else:
-            print('\nWarning --- Issue with process dictionary length when '+dic_key+' is chosen',flush=True)
+            print('\nLength Issue: with process dictionary length '+str(len(activity_dict))+' when '+dic_key+' is chosen',flush=True)
             for key in activity_dict.keys():
-                print('Warning --- Multiple activities found ---- ',activity_dict[key],key,flush=True)
+                print('Multiple activities found ---- ',activity_dict[key],key,flush=True)
             print('\n')
             return activity_dict[key]
 
@@ -162,7 +163,7 @@ def reeds_db_editor(db,run_filename,bw):
         """ 
         ei_cf_36_db = bw.Database(db)
         print('creating inventory withing the database---',db,flush=True)
-        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
+        database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
       
         # Reading from the REEDS output csv files
         print('Reading from ' + run_filename,flush = True)
@@ -181,6 +182,7 @@ def reeds_db_editor(db,run_filename,bw):
             process_info = row['process']
             location_info = row['process_location']
             unit_info = row['unit']
+
 
             # Here we use the process name, the location name and the unit to find the exact entry in ecoinvent. It may or may not exist
             # Assumption is that process_name@location_name@unit is unique. 
@@ -246,7 +248,7 @@ def reeds_db_editor(db,run_filename,bw):
                 process_dict[key].save()
 
         #Recreate the database dictionary so that the new created processes are listed in the inventory
-        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
+        database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
         
         # Step 3 is to define the flows that are inputs to the datasets
         # Only technosphere can be inputs 
@@ -271,14 +273,14 @@ def reeds_db_editor(db,run_filename,bw):
                     activity = None
                     # Then the UUID has been supplied and we can try to find using UUID
                     try:
-                        activity = process_dict[str(row['code'])]
-                        print('Complete Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
+                        activity = database_dict_secondary[str(row['code'])]
+                        print('UUID matched - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                         print_flag = True
                     except:
                         # This exception is to make sure that if flows are not found for the user provided location, other locations are searched for and linked automatically. 
                         try :
                             activity = search_index_reader(row['flow'],row['supplying_location'],row['unit'],database_dict)
-                            print('Complete Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
+                            print('Search Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                             print_flag = True
                         except:
                             try:
@@ -374,24 +376,7 @@ def reeds_db_editor(db,run_filename,bw):
             print('')
 
 
-        database_dict,process_database_dict = search_index_creator(ei_cf_36_db)
+        database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
 
         
-'''
-# a function to be used if checking if needed
-def check_created_activity(ei_cf_36_db2):
-
-    for i in ei_cf_36_db2:
-        if i['name'] == "Electricity production_Biopower_ReEDS":
-            print('Checking activity -------xxxx------')
-            print(i['name'],i['location'],'   Activity being checked',flush=True)
-            for ex in i.exchanges():
-                print(ex['name'],ex['amount'],ex['type'],'flows in new activitiy',flush=True)
-
-        if 'market for biomass, used as fuel' in i['name'] and 'USA' == i['location']:
-            print('Checking activity -------xxxx------')
-            print(i['name'],i['location'],i['code'],'   Activity being checked',flush=True)
-            for ex in i.exchanges():
-                print(ex['name'],ex['amount'],ex['type'],'flows in new activitiy',flush=True)
-'''
 
