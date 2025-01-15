@@ -352,7 +352,7 @@ def reeds_db_editor(db,run_filename,bw):
                     
                     if len(emission) > 1:
                         # if greater than 1 we display this message
-                        print("Multiple emissions matched for ",row['flow']," but chosen emission was ",chosen_emission['name']," ",chosen_emission['categories'],flush = True)
+                        print("Issue: Multiple emissions matched for ",row['flow']," but chosen emission was ",chosen_emission['name']," ",chosen_emission['categories'],flush = True)
 
                     else:
                         pass

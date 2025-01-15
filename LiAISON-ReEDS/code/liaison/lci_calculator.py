@@ -39,6 +39,7 @@ def search_index_creator(ei_cf_36_db):
             
             
             dic[i['name']+'@'+i['location']+'@'+i['unit']][i['code']] = i
+            #This is an issue and will need to be rectified since Line 296 will fail due to the way this is setup. 
             dic2[i['name']+'@'+i['location']+'@'+i['unit']] = i
 
 
@@ -298,7 +299,7 @@ def liaison_calc(db,run_filename,bw):
                         # This exception is to make sure that if flows are not found for the user provided location, other locations are searched for and linked automatically. 
                         try :
                             activity = search_index_reader(row['flow'],row['supplying_location'],row['unit'],database_dict)
-                            print('Complete Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
+                            print('Search Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
                             print_flag = True
                         except:
                             try:
@@ -370,7 +371,7 @@ def liaison_calc(db,run_filename,bw):
                     
                     if len(emission) > 1:
                         # if greater than 1 we display this message
-                        print("Issue Multiple emissions matched for ",row['flow']," but chosen emission was ",chosen_emission['name']," ",chosen_emission['categories'],flush = True)
+                        print("Issue:in Multiple emissions matched for ",row['flow']," but chosen emission was ",chosen_emission['name']," ",chosen_emission['categories'],flush = True)
 
                     else:
                         pass
