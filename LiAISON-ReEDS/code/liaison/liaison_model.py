@@ -253,7 +253,7 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 if edit_ecoinvent_user_controlled  == True:  
 
                     #inventory here has to be a dictionary. So if we read inventory from csv file we cannot edit it.             
-                    run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
+                    run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,location_under_study,output_dir)
                     print('Activity edited according to user prereferences and saved success',flush=True)  
                     #run_filename is a dataframe.
                     process_dictionary = liaison_calc(db,run_filename,bw)
