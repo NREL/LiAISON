@@ -1,7 +1,29 @@
 import sys
 import pandas as pd
 
+def extract_process(dic_key,data_dict):
+    """
+    This functions extracts the process from the dictionary
+    Parameters
+    ---------
 
+    data_dic: dictionary
+
+    Returns
+    --------
+    extracted_dic: dictionary
+    """
+    activity_dict = data_dict[dic_key]
+    if len(activity_dict) == 1:
+        for key in activity_dict.keys():
+            return activity_dict[key]
+
+    else:
+        print('\nINFO: Process dictionary length when '+dic_key+' is chosen is '+str(len(activity_dict)),flush=True)
+        for key in activity_dict.keys():
+            print('INFO Multiple activities found ---- ',activity_dict[key],key,flush=True)
+        print('\n')
+        return activity_dict[key]
 
 def search_activity_in_ecoinvent(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir):
     """
@@ -23,24 +45,25 @@ def search_activity_in_ecoinvent(dictionary,process_under_study,location_under_s
     print('Searching for activity to extract from Ecoinvent and changing location and processes',flush=True)
     print('Editing activities within ecoinvent to US location and US state wise grid mix',flush=True)
     print(process_under_study+'@'+location_under_study+'@'+default_unit, 'to be searched')
+    process_selected_as_foreground = extract_process(process_under_study+'@'+location_under_study+'@'+default_unit,dictionary)
     try:
-        process_selected_as_foreground = dictionary[process_under_study+'@'+location_under_study+'@'+default_unit]        
+        process_selected_as_foreground = extract_process(process_under_study+'@'+location_under_study+'@'+default_unit,dictionary)    
         print('Complete success: Process found in ecoinvent in chosen location',flush=True)
     except:
             try:
                 location_under_study = 'US'
-                process_selected_as_foreground = dictionary[process_under_study+'@'+location_under_study+'@'+default_unit]
+                process_selected_as_foreground = extract_process(process_under_study+'@'+location_under_study+'@'+default_unit,dictionary)   
                 print('Minor success: Process found in ecoinvent in US',flush=True)
             
             except:
                 try:
                     location_under_study = 'RoW'
-                    process_selected_as_foreground = dictionary[process_under_study+'@'+location_under_study+'@'+default_unit]
+                    process_selected_as_foreground = extract_process(process_under_study+'@'+location_under_study+'@'+default_unit,dictionary)   
                     print('Minor success: Process found in ecoinvent in RoW',flush=True)
                 except:
                         try:
                             location_under_study = 'GLO'
-                            process_selected_as_foreground = dictionary[process_under_study+'@'+location_under_study+'@'+default_unit]
+                            process_selected_as_foreground = extract_process(process_under_study+'@'+location_under_study+'@'+default_unit,dictionary)   
                             print('Minor success: Process found in ecoinvent in GLO',flush=True)
 
                         except:
