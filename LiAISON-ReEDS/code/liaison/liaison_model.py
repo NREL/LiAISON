@@ -9,9 +9,10 @@ import yaml
 import os
 import time
 from liaison.montecarloforeground import mc_foreground
-from liaison.lci_calculator import liaison_calc,search_dictionary,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
+from liaison.lci_calculator import liaison_calc,search_dictionary,search_index_reader,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
 from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
 from liaison.edit_activity_ecoinvent import user_controlled_editing_ecoinvent_activity
+from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
 
 
 
@@ -233,10 +234,10 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
   
             project_name,db = reset_project(updated_project_name,number,lca_project,updated_database,bw)
             # This function creates a dictionary from ecoinvent for searching for activities.
-            dictionary,process_dictionary = search_dictionary(db,bw)                   
+            process_dictionary = search_dictionary(db,bw)                   
             # This function searches for the primary process under study in ecoinvent. If found we extract it. 
             # dictionary or string
-            searched_item = search_activity_in_ecoinvent(dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
+            searched_item = search_activity_in_ecoinvent(process_dictionary,process_under_study,location_under_study,unit_under_study,run_filename,data_dir)
             
             if type(searched_item) == str:
                 # Reading from the inventory csv files
@@ -252,14 +253,17 @@ def main_run(lca_project,updated_project_name,year_of_study,results_filename,mc_
                 if edit_ecoinvent_user_controlled  == True:  
 
                     #inventory here has to be a dictionary. So if we read inventory from csv file we cannot edit it.             
-                    run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,data_dir)
+                    run_filename = user_controlled_editing_ecoinvent_activity(inventory,year_of_study,location_under_study,output_dir)
                     print('Activity edited according to user prereferences and saved success',flush=True)  
                     #run_filename is a dataframe.
                     process_dictionary = liaison_calc(db,run_filename,bw)
 
             if lca_flag: 
-                result_dir1,n_lcias1 = lcia_traci_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
-                result_dir2,n_lcias2 = lcia_recipe_run(db,process_dictionary[process_under_study+'@'+location_under_study+'@'+unit_under_study],functional_unit,mc_foreground_flag,mc_runs,bw)
+
+
+                activity_lca = search_index_reader(process_under_study,location_under_study,unit_under_study,process_dictionary)
+                result_dir1,n_lcias1 = lcia_traci_run(db,activity_lca,functional_unit,mc_foreground_flag,mc_runs,bw)
+                result_dir2,n_lcias2 = lcia_recipe_run(db,activity_lca,functional_unit,mc_foreground_flag,mc_runs,bw)
                 #result_dir3,n_lcias3 = lcia_premise_gwp_run(db,dictionary[process_under_study],1,mc_foreground_flag,mc_runs,bw)
                 result_dir3 = {}
                 n_lcias3 = 0

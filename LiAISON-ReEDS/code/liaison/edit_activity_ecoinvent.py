@@ -1,10 +1,4 @@
-import sys
-import pandas as pd
-
-
-
-
-def user_controlled_editing_ecoinvent_activity(process_selected_as_foreground,year_of_study,data_dir):
+def user_controlled_editing_ecoinvent_activity(process_selected_as_foreground,year_of_study,location_under_study,data_dir):
     """
     This function searches for activities and edits the ecoinvent activity as a foreground process in the chosen location
     It extracts every flow in the chosen foreground process, creates a dataframe from it and changes the location
@@ -18,8 +12,8 @@ def user_controlled_editing_ecoinvent_activity(process_selected_as_foreground,ye
     Returns:
     -------
     """
-
-    new_location = "USA"
+    print('Editing activities within ecoinvent to US location and US state wise grid mix',flush=True)
+    new_location = location_under_study
 
     # These variables are used to create inventory dataframe
     process = []
@@ -44,13 +38,14 @@ def user_controlled_editing_ecoinvent_activity(process_selected_as_foreground,ye
 
 
     #Extracting ecoinvent database for activity and flows and creating a LiAISON friendly dataframe
-    for key in process_selected_as_foreground.keys():
-        for exch in process_selected_as_foreground[key].exchanges():
-            process.append(process_selected_as_foreground[key]['name'])            
+    for exch in process_selected_as_foreground.exchanges():
+            process.append(process_selected_as_foreground['name'])            
             value.append(exch['amount'])
             unit.append(exch['unit'])
 
             #Changing name of electricity flow
+            #Changing name of electricity flow
+            #name_of_flow = electricity_correction(exch)
             name_of_flow = exch['name']
             flow.append(name_of_flow)
 
@@ -105,9 +100,8 @@ def user_controlled_editing_ecoinvent_activity(process_selected_as_foreground,ye
     example['supplying_location'] = supplying_location
     example['code'] = flow_code
 
-    example = example[example['type'] != "technosphere"]
     #Sanity check to write the dataframe. Can be deleted later
-    example.to_csv(data_dir+'example_user_edited_process.csv',index=False)
+    example.to_csv(data_dir+process_selected_as_foreground['name']+str(year_of_study)+location_under_study+'.csv',index=False)
     run_filename = example
 
 
