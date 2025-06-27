@@ -6,7 +6,7 @@ from premise_gwp import add_premise_gwp
 import pandas as pd
 
 
-def reset_project(base_database,base_project,project_new,bw):
+def reset_project(base_project,project_new,bw):
     
     """
     This function copies the project directory of a certain year and scenario, for example
@@ -224,7 +224,7 @@ def reeds_updater(year_of_study,results_filename,reeds_grid_mix_creator,data_dir
     if premise_editor:
         editor(database_new,base_database,base_project,project_new,bw)
 
-    reset_project(base_database,base_project,project_new,bw)
+    reset_project(base_project,project_new,bw)
     reeds_editor(database_new,r,run_filename,project_new)
     #bw.projects.purge_deleted_directories()
 

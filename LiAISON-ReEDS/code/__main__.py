@@ -58,7 +58,7 @@ reeds_yaml_data_filename = os.path.join(args.datapath,inputs.get('reeds_yaml_dat
 region = location_under_study
 
 #Hardcoding these project names to reduce yaml file complexity
-base_database = "premise_base"
+base_database = "ecoinvent3.8"
 base_project = "premise_base"
 # These modified projects and databases are used to save the large modified ecoinvent databases for future LCA calculations. 
 # We can change this but then we need to copy the premise base into the updated database name and then perform edits. Takes more time. 
