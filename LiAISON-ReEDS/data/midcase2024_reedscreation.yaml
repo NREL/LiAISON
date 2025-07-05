@@ -1,6 +1,6 @@
 flags:
   reeds_us_electricity_grid_mix: true # Creates the new Grid mix from ReEDS
-  ecoinvent_reader: true # Reads base ecoinvent and saves it in the base_project and base_databases. 
+  ecoinvent_reader: false # Reads base ecoinvent and saves it in the base_project and base_databases. 
   lca: true # Perform LCA
   update_ecoinvent_using_premise: true # Modified base ecoinvent with premise supplied databases for CCS technologies
 input_filenames:

@@ -1,7 +1,9 @@
 # Please change according to your directories
-ENVPATH="/Users/tghosh/Desktop/env/env/"
-CODEDIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/code/"
-DATADIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/data/"
+
+# ENVPATH="/Users/tghosh/Desktop/env/"
+# CODEDIR="/Users/tghosh/Desktop/LiAISON-ReEDS/code/"
+# DATADIR="/Users/tghosh/Desktop/LiAISON-ReEDS/data/"
+# Please change according to your scenario
 yaml="midcase2024_reedscreation"
 
 SECONDS=0
