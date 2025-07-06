@@ -1,382 +1,265 @@
 import sys
 import pandas as pd
 import uuid
-import pickle
 import numpy as np
 import time
 
 
 def search_index_creator(ei_cf_36_db):
-    
-        """
-        This function creates a search index dictionary storing the name and location of processes as the key 
-        and the process itself as the information within the key
-        
-        Parameters
-        ----------       
-        ei_cf_36_db : ecoinvent database
-            database ecoinvent     
-        Returns
-        -------
-        dic: dictionary
-            ecoinvent database in the form of a dictionary
-        """
-    
-        problems = {}
-        p = []
-        
-        dic = {}
-        dic2 = {}
-        for i in ei_cf_36_db:
-            
-            try:
-                p.append(dic[i['name']+'@'+i['location']+'@'+i['unit']])
-                problems[i['name']+'@'+i['location']+'@'+i['unit']] = i
-            except:
-                 dic[i['name']+'@'+i['location']+'@'+i['unit']] = {}
-                 #dic2[i['name']+'@'+i['location']+'@'+i['unit']] = i
-            
-            
-            
-            dic[i['name']+'@'+i['location']+'@'+i['unit']][i['code']] = i
-            dic2[str(i['code'])] = i
+    """
+    Create dictionaries to index ecoinvent activities by process name, location, and unit.
+
+    Parameters
+    ----------
+    ei_cf_36_db : brightway2.Database
+        The ecoinvent database object from Brightway2.
+
+    Returns
+    -------
+    tuple of dict
+        - Primary dictionary with keys of the form "name@location@unit" and values as dicts of code:activity.
+        - Secondary dictionary with keys as process codes and values as activity objects.
+    """
+    dic = {}
+    dic2 = {}
+    for i in ei_cf_36_db:
+        try:
+            _ = dic[i['name'] + '@' + i['location'] + '@' + i['unit']]
+        except:
+            dic[i['name'] + '@' + i['location'] + '@' + i['unit']] = {}
+        dic[i['name'] + '@' + i['location'] + '@' + i['unit']][i['code']] = i
+        dic2[str(i['code'])] = i
+    return dic, dic2
 
 
-        
-        return dic,dic2
+def search_index_reader(p_name, p_loc, p_unit, data_dict):
+    """
+    Retrieve a specific ecoinvent activity from a pre-indexed dictionary using process metadata.
 
-        
-def search_index_reader(p_name,p_loc,p_unit,data_dict):
-    
-        """
-        This function returns the process based on key consisting of process name and location
-        
-        Parameters
-        ----------
-        p_name: str
-            process name
-            
-        p_loc: str
-            process location
+    Parameters
+    ----------
+    p_name : str
+        Name of the process.
+    p_loc : str
+        Location of the process.
+    p_unit : str
+        Unit of the process.
+    data_dict : dict
+        Dictionary from `search_index_creator`.
 
-        p_unit: str
-            process unit
-             
-        database_dict : 
-            database dictionary ecoinvent search index with process information
-        Returns
-        -------
-        None
-        """
-
-        dic_key = p_name+'@'+p_loc +'@'+p_unit
-        activity_dict = data_dict[dic_key]
-        if len(activity_dict) == 1:
-            for key in activity_dict.keys():
-                return activity_dict[key]
-
-        else:
-            print('\nLength Issue: with process dictionary length '+str(len(activity_dict))+' when '+dic_key+' is chosen',flush=True)
-            for key in activity_dict.keys():
-                print('Multiple activities found ---- ',activity_dict[key],key,flush=True)
-            print('\n')
+    Returns
+    -------
+    brightway2.Activity
+        Matching activity from ecoinvent, or last matching item if multiple found.
+    """
+    dic_key = p_name + '@' + p_loc + '@' + p_unit
+    activity_dict = data_dict[dic_key]
+    if len(activity_dict) == 1:
+        for key in activity_dict:
             return activity_dict[key]
+    else:
+        print(f'\nLength Issue: {len(activity_dict)} matches for {dic_key}')
+        for key in activity_dict:
+            print('Multiple activities found ---- ', activity_dict[key], key)
+        return activity_dict[key]
 
 
+def uncertainty_adder(eco_d, activity, exchg_name):
+    """
+    Add lognormal uncertainty to a specific exchange within an activity.
 
-#Not incorporated
-def uncertainty_adder(eco_d,activity,exchg_name):
+    Parameters
+    ----------
+    eco_d : str
+        Name of the ecoinvent database (used to extract year).
+    activity : brightway2.Activity
+        Brightway2 activity object.
+    exchg_name : str
+        Name of the exchange to modify.
+
+    Returns
+    -------
+    None
+    """
     yr = int(eco_d[10:14])
     for exchg in activity.exchanges():
         if exchg['name'] == exchg_name:
-                exchg['uncertainty type'] = 2
-                exchg['loc'] = np.log(exchg['amount'])
-                exchg['scale'] = abs(np.log(exchg['amount']))/1000*(yr-2000)*5
-                print('uncertainty added:'+str(exchg['loc'])+" - "+str(exchg['scale']))
-                exchg.save()
+            exchg['uncertainty type'] = 2
+            exchg['loc'] = np.log(exchg['amount'])
+            exchg['scale'] = abs(np.log(exchg['amount'])) / 1000 * (yr - 2000) * 5
+            print(f'Uncertainty added: loc={exchg["loc"]}, scale={exchg["scale"]}')
+            exchg.save()
 
-        
-def emissions_index_creator(bw):  
+
+def emissions_index_creator(bw):
     """
-    This function debugs create the dictionary for emissions
-    
+    Create indexed dictionaries of emissions from the biosphere database.
+
     Parameters
-    ----------          
-    bw: package
-        
+    ----------
+    bw : module
+        Brightway2 module.
+
     Returns
     -------
-    df_em: dictionary
-        Emissions dictionary from ecoinvent
+    tuple of dict
+        - Dictionary mapping emission names to lists of matching biosphere flows.
+        - Dictionary mapping emission codes to biosphere flow objects.
     """
-   
     biosphere = bw.Database('biosphere3')
     df_em = {}
     df_em2 = {}
 
-    # There may be several emissions with the same name. For that case, we store all occurences within the name key as a list. 
     for i in biosphere:
-       y = i.as_dict()   
+        y = i.as_dict()
+        df_em.setdefault(y['name'], []).append(i)
+        df_em2[y['code']] = i
 
-       try:
-            a = df_em[y['name']]
-            df_em[y['name']].append(i)
+    return df_em, df_em2
 
-       except:
-            df_em[y['name']] = [i]    
 
-       df_em2[y['code']] = i
-    
-    return df_em,df_em2
+def find_emission(emission_name, emissions_dict):
+    """
+    Look up an emission by name in the indexed dictionary.
 
-def find_emission(emission_name,emissions_dict):
+    Parameters
+    ----------
+    emission_name : str
+        Name of the emission to search.
+    emissions_dict : dict
+        Emissions dictionary created by `emissions_index_creator`.
 
+    Returns
+    -------
+    list or None
+        List of matching emissions, or None if not found.
+    """
+    return emissions_dict.get(emission_name)
+
+
+def reeds_db_editor(db, run_filename, bw):
+    """
+    Integrate ReEDS-generated inventory into a Brightway2 ecoinvent database.
+
+    This function:
+    - Creates or overwrites activities in the target database using a ReEDS inventory CSV.
+    - Adds production, technosphere, and biosphere exchanges.
+    - Links processes and emissions using string matching and UUID lookups.
+
+    Parameters
+    ----------
+    db : str
+        Name of the ecoinvent database (e.g., modified for a scenario).
+    run_filename : str
+        Path to CSV file containing ReEDS process and emissions inventory.
+    bw : module
+        Brightway2 module instance.
+
+    Returns
+    -------
+    None
+    """
+    ei_cf_36_db = bw.Database(db)
+    print('Creating inventory within the database:', db, flush=True)
+    database_dict, database_dict_secondary = search_index_creator(ei_cf_36_db)
+
+    inventory = pd.read_csv(run_filename).sort_values(by=['process', 'process_location'])
+
+    # Create new or update existing processes
+    processes = inventory[inventory['type'] == 'production']
+    process_dict = {}
+
+    for _, row in processes.iterrows():
+        key = row['process'] + '@' + row['process_location']
+        try:
+            activity = search_index_reader(row['process'], row['process_location'], row['unit'], database_dict)
+            activity.exchanges().delete()
+            process_dict[key] = activity
+        except:
+            activity = ei_cf_36_db.new_activity(code=uuid.uuid4(), name=row['process'],
+                                                unit=row['unit'], location=row['process_location'])
+            activity.save()
+            process_dict[key] = activity
+
+    # Add production flows
+    for key, activity in process_dict.items():
+        activity.exchanges().delete()
+        p_name, p_loc = key.split('@')
+        flow_data = inventory[(inventory['process'] == p_name) & 
+                              (inventory['process_location'] == p_loc) & 
+                              (inventory['type'] == 'production')]
+        for _, row in flow_data.iterrows():
+            activity.new_exchange(
+                input=activity.key, name=row['flow'], amount=row['value'],
+                unit=row['unit'], type='production', location=activity['location']
+            ).save()
+            activity['reference product'] = row['flow']
+            activity['production amount'] = row['value']
+            activity['unit'] = row['unit']
+            activity.save()
+
+    # Update dictionary with new activities
+    database_dict, database_dict_secondary = search_index_creator(ei_cf_36_db)
+
+    # Add technosphere flows
+    for key in process_dict:
+        t0 = time.time()
+        p_name, p_loc = key.split('@')
+        tech_inputs = inventory[(inventory['process'] == p_name) &
+                                (inventory['process_location'] == p_loc) &
+                                (inventory['type'] == 'technosphere')]
+        for _, row in tech_inputs.iterrows():
+            activity = None
             try:
-                return emissions_dict[emission_name]
+                activity = database_dict_secondary[str(row['code'])]
             except:
-                return None
-
-
-
-
-def reeds_db_editor(db,run_filename,bw):
-
-        """
-        This function creates the process foreground within ecoinvent databases, every process activity, emissions and links 
-        them to the background ecoinvent processes. Emissions are also linked to the processes and biosphere emissions.
-        
-        Parameters
-        ----------
-        db : str
-           ecoinvent database with scenario and year 
-           
-        run_filename : str
-           intermediate filename with process inventory
-        
-        bw : module
-           brightway2 module        
-           
-        Returns
-        -------
-        None
-        
-        """ 
-        ei_cf_36_db = bw.Database(db)
-        print('creating inventory withing the database---',db,flush=True)
-        database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
-      
-        # Reading from the REEDS output csv files
-        print('Reading from ' + run_filename,flush = True)
-        inventory = pd.read_csv(run_filename)
-        inventory = inventory.sort_values(by=['process','process_location'])
-
-        
-        # Step 1 is to create new processes or datasets    
-        # The new processes and their information should be in the filtered product dataset
-        processes = inventory[inventory['type'] == 'production']
-        process_dict = {}
-        print("Creating New activity")
-        for index,row in processes.iterrows():
-            
-            # Reading the process name from the csv file and the location. 
-            process_info = row['process']
-            location_info = row['process_location']
-            unit_info = row['unit']
-
-
-            # Here we use the process name, the location name and the unit to find the exact entry in ecoinvent. It may or may not exist
-            # Assumption is that process_name@location_name@unit is unique. 
-            # Deleting the activity that was found. 
-            try:
-                 activity = search_index_reader(process_info,location_info,unit_info,database_dict)
-                 activity.exchanges().delete()
-                 print('Found existing activity ', process_info,location_info,unit_info,flush = True)
-                 process_dict[process_info+'@'+location_info] = activity
-                 # print('Removing Activity flows',flush=True) 
-
-                 for key in process_dict:
-                    for exch in process_dict[key].exchanges():
-                            print('Deleting',exch['name'])
-                            exch.delete()
-
-                 process_dict[key].save()
-
-            except:
-
-                print('Activity Created ' + process_info + ' at ' + location_info,flush = True)
-                process_dict[process_info+'@'+location_info] = ei_cf_36_db.new_activity(code = uuid.uuid4(), name = process_info, unit = row['unit'], location = location_info)  
-                process_dict[process_info+'@'+location_info].save()
-
-        
-        print('Creating Activity output flow') 
-        # Now that we have created the processes form the input inventory, we need to add output flows to those inventories.
-        for key in process_dict:
-
-            # Deleting all the flows of the created activity if it exists. 
-            process_dict[key].exchanges().delete()
-            splited_key = key.split("@")
-            process_key_name = splited_key[0]
-            location_key_name = splited_key[1]
-            #  unit_key_name = splited_key[2]
-
-            # For the activities which have been created in ecoinvent, we are now searching for the corressponding output flow name
-            # so that they can be added to the exchange information. We need to make sure we choose the right output flow. So we are choosing
-            # by filtering on the three unique components that make every process unique. 
-            # inv = inventory[(inventory['process'] == process_key_name) & (inventory['process_location'] == location_key_name) & (inventory['unit'] == unit_key_name)]
-            inv = inventory[(inventory['process'] == process_key_name) & (inventory['process_location'] == location_key_name)]
-            inp = inv[inv['type'] == 'production']
-            if len(inp) == 1:
-                pass
-            elif len(inp) > 1:
-                print(' Warning --- Production flows for an activity more than 1!')
-            else:
-                print('Warning --- No production flows!!')
-
-            for index,row in inp.iterrows():
-
-                temp=pd.DataFrame([row])
-                #Check for production flow
-                if temp.empty:
-                    print('Warning --- No production flow found in inventory',flush = True)
-                    print(temp,flush = True)
-            
-                print(row['flow']+' Output flow created for ' + process_key_name + ' '+location_key_name,flush = True)
-                process_dict[key].new_exchange(input = process_dict[key].key, name = row['flow'], amount = row['value'], unit = row['unit'],type = 'production', location = process_dict[key]['location']).save()
-                process_dict[key]['reference product'] = row['flow']
-                process_dict[key]['production amount'] = row['value']
-                process_dict[key]['unit'] = row['unit']
-                process_dict[key].save()
-
-        #Recreate the database dictionary so that the new created processes are listed in the inventory
-        database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
-        
-        # Step 3 is to define the flows that are inputs to the datasets
-        # Only technosphere can be inputs 
-        print('Technosphere input flows')     
-        for key in process_dict:
-
-            time0=time.time()
-
-            splited_key = key.split("@")
-            process_key_name = splited_key[0]
-            location_key_name = splited_key[1]
-            # Here we first choose a certain process in the process dictionary that we are explicitly creating in LiAISON
-            # Once we choose that, we select that chosen process form our user provided inventory file and start adding the technosphere flows and then the biosphere flows.
-            inv = inventory[(inventory['process'] == process_key_name) & (inventory['process_location'] == location_key_name)]
-            inp = inv[inv['type'] == 'technosphere']
-            print('Creating technosphere exchanges for '+process_key_name+' at '+location_key_name)
-            for index,row in inp.iterrows():
-                
-                    unit_error_flag = 0
-                    not_found = False
-                    print_flag = False
-                    activity = None
-                    # Then the UUID has been supplied and we can try to find using UUID
+                for loc in [row['supplying_location'], 'USA', 'US', 'RNA', 'RoW', 'GLO', 'RER']:
                     try:
-                        activity = database_dict_secondary[str(row['code'])]
-                        print('UUID matched - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
-                        print_flag = True
+                        activity = search_index_reader(row['flow'], loc, row['unit'], database_dict)
+                        break
                     except:
-                        # This exception is to make sure that if flows are not found for the user provided location, other locations are searched for and linked automatically. 
-                        try :
-                            activity = search_index_reader(row['flow'],row['supplying_location'],row['unit'],database_dict)
-                            print('Search Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was found. Chosen location was '+activity['location'] + ' . Chosen process was ' + activity['name'] ,flush = True)
-                            print_flag = True
-                        except:
-                            try:
-                                activity = search_index_reader(row['flow'],'USA',row['unit'],database_dict)
-                            except:
-                                try:
-                                    activity = search_index_reader(row['flow'],'US',row['unit'],database_dict)
-                                except:
-                                    try:
-                                        activity = search_index_reader(row['flow'],'RNA',row['unit'],database_dict)
-                                    except:
-                                        try:
-                                            activity = search_index_reader(row['flow'],'RoW',row['unit'],database_dict)
-                                        except: 
-                                            try:
-                                                activity = search_index_reader(row['flow'],'GLO',row['unit'],database_dict)
-                                            except:
-                                                try:
-                                                    activity = search_index_reader(row['flow'],'RER',row['unit'],database_dict)
-                                                except:
-                                                    print('Warning --- Failed - Not found '+row['flow'] + ' ' + row['supplying_location'] + ' ',flush = True)
-                                                    print_flag = True
-                                                    not_found = True
-                        if print_flag == False:
-                            print('Minor Success - Provided location '+ row['supplying_location']+' for '+ row['flow'] +' was not found. Shifting to ' + activity['name']+' ' + activity['location'],flush = True)
+                        continue
+            if activity is None:
+                print(f'Warning --- Not found: {row["flow"]} @ {row["supplying_location"]}')
+                continue
 
-                    if not_found == False:
+            if activity['unit'] != row['unit']:
+                print(f'Warning --- Unit mismatch for {row["flow"]}: expected {activity["unit"]}, got {row["unit"]}')
+                sys.exit('Unit mismatch error')
 
-                        if activity['unit'] != row['unit']:
-                            print('Warning --- UNIT ERROR '+row['supplying_location']+' for '+ row['flow'])
-                            print('Warning --- Correct unit should be '+activity['unit'])
-                            sys.exit('Warning --- Unit Error occured please check')
+            process_dict[key].new_exchange(
+                input=activity.key, amount=row['value'], name=activity['name'],
+                location=activity['location'], unit=activity['unit'], type='technosphere'
+            ).save()
+            process_dict[key].save()
 
-                        else:
-                            process_dict[key].new_exchange(input=activity.key,amount=row['value'], name = activity['name'], location = activity['location'],unit=activity['unit'],type='technosphere').save()
-                            process_dict[key].save() 
-            
-            print(str(time.time()-time0),' seconds needed for technosphere flows connection for process ', key)
-            print('')
-            print('')
+        print(f'{time.time() - t0:.2f}s for technosphere connections to {key}')
 
-        print('Adding Biosphere Flows',flush = True)  
-        emissions_dict,emissions_code_dict = emissions_index_creator(bw)        
-        for key in process_dict:
-            time0=time.time()
-            splited_key = key.split("@")
-            process_key_name = splited_key[0]
-            location_key_name = splited_key[1]
-            inv = inventory[(inventory['process'] == process_key_name) & (inventory['process_location'] == location_key_name)]
-            print('Creating biosphere exchanges for '+process_key_name+' at '+location_key_name,flush = True)
-            inp = inv[inv['type'] == 'biosphere']
-            for index,row in inp.iterrows():
-                unit_error_flag = 0
-                temp=pd.DataFrame([row])
+    # Add biosphere flows
+    print('Adding Biosphere Flows', flush=True)
+    emissions_dict, emissions_code_dict = emissions_index_creator(bw)
+    for key in process_dict:
+        t0 = time.time()
+        p_name, p_loc = key.split('@')
+        bio_inputs = inventory[(inventory['process'] == p_name) &
+                               (inventory['process_location'] == p_loc) &
+                               (inventory['type'] == 'biosphere')]
+        for _, row in bio_inputs.iterrows():
+            emission = emissions_code_dict.get(str(row['code'])) or \
+                       (find_emission(row['flow'], emissions_dict) or [None])[0]
 
-                # Try find the emission using supplied UUID. If not then try name. Emission should be a list
-                try:
-                    emission =[emissions_code_dict[str(row['code'])]]
-                except:
-                    emission = find_emission(row['flow'],emissions_dict)
-                
-                if emission == None:
-                    print('Warning --- Emission not found ' + row['flow'],flush = True)                
-                else:
-                    # All emissions matching a certain user provided emission name is stored as a list in the emission dictionary
-                    # If multiple emissions match the list is more than 1. 
-                    # We need to choose one, so we choose one of them
-                    chosen_emission = emission[0]
-                    
-                    if len(emission) > 1:
-                        # if greater than 1 we display this message
-                        print("Issue: Multiple emissions matched for ",row['flow']," but chosen emission was ",chosen_emission['name']," ",chosen_emission['categories'],flush = True)
+            if not emission:
+                print(f'Warning --- Emission not found: {row["flow"]}')
+                continue
 
-                    else:
-                        pass
+            if emission['unit'] != row['unit']:
+                print(f'Warning --- Emission unit mismatch: expected {emission["unit"]}, got {row["unit"]}')
+                sys.exit('Emission unit mismatch error')
 
-                    if chosen_emission['unit'] != row['unit']:
-                        print('Warning --- Emission unit error'+row['supplying_location']+' for '+ emission_bridge['Ecoinvent_name'][0],flush = True)
-                        unit_error_flag = 1   
-                    else:                                       
-                        process_dict[key].new_exchange(input=chosen_emission.key,amount=row['value'], name = chosen_emission['name'],unit=chosen_emission['unit'],type='biosphere').save()
-                        process_dict[key].save() 
-                        #print(emission['name']+' '+emission['unit']+' found and added to as a biosphere exchange with amount '+str(row['value']),flush=True)
-                    
-                if unit_error_flag == 1:
-                        print('Warning --- Correct unit should be '+chosen_emission['unit'])
-                        sys.exit('Warning --- Emission unit Error occured please check',flush = True)        
+            process_dict[key].new_exchange(
+                input=emission.key, amount=row['value'], name=emission['name'],
+                unit=emission['unit'], type='biosphere'
+            ).save()
+            process_dict[key].save()
 
-
-            print(key)
-            print(str(time.time()-time0),' seconds needed for biosphere flows connection for process ', key)
-            print('')
-            print('')
-
-
-        database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
-
-        
-
+        print(f'{time.time() - t0:.2f}s for biosphere connections to {key}')

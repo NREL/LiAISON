@@ -82,18 +82,6 @@ def search_index_reader(p_name,p_loc,p_unit,data_dict):
             return activity_dict[key]
 
 
-
-#Not incorporated
-def uncertainty_adder(eco_d,activity,exchg_name):
-    yr = int(eco_d[10:14])
-    for exchg in activity.exchanges():
-        if exchg['name'] == exchg_name:
-                exchg['uncertainty type'] = 2
-                exchg['loc'] = np.log(exchg['amount'])
-                exchg['scale'] = abs(np.log(exchg['amount']))/1000*(yr-2000)*5
-                print('uncertainty added:'+str(exchg['loc'])+" - "+str(exchg['scale']))
-                exchg.save()
-
         
 def emissions_index_creator(bw):  
     """
@@ -128,12 +116,26 @@ def emissions_index_creator(bw):
     
     return df_em,df_em2
 
-def find_emission(emission_name,emissions_dict):
+def find_emission(emission_name, emissions_dict):
+        """
+        Retrieve emissions list by name from emissions dictionary.
 
-            try:
-                return emissions_dict[emission_name]
-            except:
-                return None
+        Parameters
+        ----------
+        emission_name : str
+            Name of the emission to look up.
+        emissions_dict : dict
+            Dictionary from `emissions_index_creator`.
+
+        Returns
+        -------
+        list or None
+            List of matching flows, or None if not found.
+        """
+        try:
+            return emissions_dict[emission_name]
+        except KeyError:
+            return None
 
 
 def search_dictionary(db,bw):
@@ -155,8 +157,6 @@ def search_dictionary(db,bw):
         None
         
         """
-        
-        
         ei_cf_36_db = bw.Database(db)
         database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
         return database_dict
@@ -234,7 +234,7 @@ def liaison_calc(db,run_filename,bw):
             splited_key = key.split("@")
             process_key_name = splited_key[0]
             location_key_name = splited_key[1]
-            #  unit_key_name = splited_key[2]
+            #unit_key_name = splited_key[2]
 
             # For the activities which have been created in ecoinvent, we are now searching for the corressponding output flow name
             # so that they can be added to the exchange information. We need to make sure we choose the right output flow. So we are choosing
@@ -397,190 +397,217 @@ def liaison_calc(db,run_filename,bw):
         return database_dict
 
         
-def lcia_traci_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
-    
-        """
-        This function performs the LCA and LCIA calculations with the TRACI method.
-        
-        Parameters
-        ----------
-        db : pd.DataFrame
-           Dataframe for matching with ecoinvent bridge name databases
-        
-        primary_process : ecoinvent process
-           Ecoinvent process with the primary process under LCA study         
- 
-        functional unit : str
-           filename for location name bridging csv            
-           
-        Returns
-        -------
-        None
-        """
+def lcia_traci_run(db, primary_process, functional_unit, mc_foreground_flag, mc_runs, bw):
+    """
+    Perform LCA and LCIA calculations using the TRACI midpoint methods.
 
-        method_key = [[m for m in bw.methods if 'TRACI' in str(m) and 'acidification' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'ecotoxicity' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'eutrophication' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'global warming' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'carcinogenics' in str(m)][1],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'ozone depletion' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'photochemical oxidation' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'non-carcinogenics' in str(m)][0],
-              [m for m in bw.methods if 'TRACI' in str(m) and 'respiratory effects, average' in str(m)][0]]
+    Parameters
+    ----------
+    db : any
+        Identifier for the study, used as a key in the results.
+    primary_process : Activity or dict
+        Brightway2 process or demand mapping for the primary process.
+    functional_unit : float or dict
+        Functional unit for the demand (amount or mapping).
+    mc_foreground_flag : bool
+        If True, perform Monte Carlo on the foreground; otherwise, deterministic LCA.
+    mc_runs : int
+        Number of Monte Carlo iterations if mc_foreground_flag is True.
+    bw : module
+        The Brightway2 module.
 
+    Returns
+    -------
+    tuple
+        - results_dict : dict
+            Mapping of study → {'functional unit': {...}, 'result': [...]}
+        - n_methods : int
+            Number of TRACI methods applied.
+    """
+    method_key = [
+        [m for m in bw.methods if 'TRACI' in str(m) and 'acidification' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'ecotoxicity' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'eutrophication' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'global warming' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'carcinogenics' in str(m)][1],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'ozone depletion' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'photochemical oxidation' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'non-carcinogenics' in str(m)][0],
+        [m for m in bw.methods if 'TRACI' in str(m) and 'respiratory effects, average' in str(m)][0]
+    ]
 
-    
-        operation = primary_process
-        operation_functional_unit = {operation:functional_unit}
-        operation_result = []
-        
-        from collections import defaultdict
-        LCA_sol_cal_dict = defaultdict(dict)
-        
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
-        
+    operation = primary_process
+    operation_functional_unit = {operation: functional_unit}
+    operation_result = []
 
-        mc = mc_foreground_flag
-        if mc:
-         for key in LCA_sol_cal_dict.keys():
+    from collections import defaultdict
+    LCA_sol_cal_dict = defaultdict(dict)
+    LCA_sol_cal_dict['hydrogen' + str(db)] = {
+        'functional unit': operation_functional_unit,
+        'result': operation_result
+    }
+
+    if mc_foreground_flag:
+        for key in LCA_sol_cal_dict:
             for method in method_key:
-                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
-                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
-                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
-        
-        else:
-         for key in LCA_sol_cal_dict.keys():
+                mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
+                mc_results = [next(mc) for _ in range(mc_runs)]
+                LCA_sol_cal_dict[key]['result'].append(
+                    (method[2].title(), mc_results, bw.methods.get(method).get('unit'))
+                )
+    else:
+        for key in LCA_sol_cal_dict:
             lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
             lca.lci()
-            
             for method in method_key:
                 lca.switch_method(method)
                 lca.lcia()
-                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
-                #print('TOP ACTIVITIES\n\n')
-                #print(lca.top_activities())
-                #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                 
+                LCA_sol_cal_dict[key]['result'].append(
+                    (method[2].title(), lca.score, bw.methods.get(method).get('unit'))
+                )
 
-                
-        return LCA_sol_cal_dict,len(method_key)
-
-def lcia_recipe_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
-
-        method_key = [[m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'agricultural land occupation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'climate change' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'fossil depletion' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater ecotoxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater eutrophication' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'human toxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ionising radiation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine ecotoxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine eutrophication' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'metal depletion' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'natural land transformation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ozone depletion' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'particulate matter formation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'photochemical oxidant formation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial acidification' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial ecotoxicity' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'urban land occupation' in str(m)][0],
-                      [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'water depletion' in str(m)][0]]
+    return LCA_sol_cal_dict, len(method_key)
 
 
-    
-        operation = primary_process
-        
-        operation_functional_unit = {operation:functional_unit}
-        
-        operation_result = []
-        
-        from collections import defaultdict
-        LCA_sol_cal_dict = defaultdict(dict)
-        
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
-        
+def lcia_recipe_run(db, primary_process, functional_unit, mc_foreground_flag, mc_runs, bw):
+    """
+    Perform LCA and LCIA calculations using ReCiPe Midpoint (H) methods.
 
-        mc = mc_foreground_flag
-        if mc:
-         for key in LCA_sol_cal_dict.keys():
+    Parameters
+    ----------
+    db : any
+        Identifier for the study.
+    primary_process : Activity or dict
+        Brightway2 process or demand mapping for the primary process.
+    functional_unit : float or dict
+        Functional unit for the demand.
+    mc_foreground_flag : bool
+        If True, perform Monte Carlo on the foreground; otherwise, deterministic LCA.
+    mc_runs : int
+        Number of Monte Carlo iterations if mc_foreground_flag is True.
+    bw : module
+        The Brightway2 module.
+
+    Returns
+    -------
+    tuple
+        - results_dict : dict
+            Mapping of study → {'functional unit': {...}, 'result': [...]}
+        - n_methods : int
+            Number of ReCiPe methods applied.
+    """
+    method_key = [
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'agricultural land occupation' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'climate change' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'fossil depletion' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater ecotoxicity' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'freshwater eutrophication' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'human toxicity' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ionising radiation' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine ecotoxicity' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'marine eutrophication' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'metal depletion' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'natural land transformation' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'ozone depletion' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'particulate matter formation' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'photochemical oxidant formation' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial acidification' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'terrestrial ecotoxicity' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'urban land occupation' in str(m)][0],
+        [m for m in bw.methods if 'ReCiPe Midpoint (H)' in str(m) and 'water depletion' in str(m)][0]
+    ]
+
+    operation = primary_process
+    operation_functional_unit = {operation: functional_unit}
+    operation_result = []
+
+    from collections import defaultdict
+    LCA_sol_cal_dict = defaultdict(dict)
+    LCA_sol_cal_dict['hydrogen' + str(db)] = {
+        'functional unit': operation_functional_unit,
+        'result': operation_result
+    }
+
+    if mc_foreground_flag:
+        for key in LCA_sol_cal_dict:
             for method in method_key:
-
-                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
-                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
-                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
-        
-        
-        else:
-         for key in LCA_sol_cal_dict.keys():
+                mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
+                mc_results = [next(mc) for _ in range(mc_runs)]
+                LCA_sol_cal_dict[key]['result'].append(
+                    (method[2].title(), mc_results, bw.methods.get(method).get('unit'))
+                )
+    else:
+        for key in LCA_sol_cal_dict:
             lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
             lca.lci()
-
-            
             for method in method_key:
                 lca.switch_method(method)
                 lca.lcia()
+                LCA_sol_cal_dict[key]['result'].append(
+                    (method[2].title(), lca.score, bw.methods.get(method).get('unit'))
+                )
+
+    return LCA_sol_cal_dict, len(method_key)
 
 
-                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
-                #print('TOP ACTIVITIES\n\n')
-                #print(lca.top_activities())
-                #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                  
+def lcia_premise_gwp_run(db, primary_process, functional_unit, mc_foreground_flag, mc_runs, bw):
+    """
+    Perform LCA and LCIA using IPCC 2013 GWP/GTP methods via PREMISE.
 
+    Parameters
+    ----------
+    db : any
+        Identifier for the study.
+    primary_process : Activity or dict
+        Brightway2 process or demand mapping for the primary process.
+    functional_unit : float or dict
+        Functional unit for the demand.
+    mc_foreground_flag : bool
+        If True, perform Monte Carlo on the foreground; otherwise, deterministic LCA.
+    mc_runs : int
+        Number of Monte Carlo iterations if mc_foreground_flag is True.
+    bw : module
+        The Brightway2 module.
 
-                
-        return LCA_sol_cal_dict,len(method_key)
+    Returns
+    -------
+    tuple
+        - results_dict : dict
+            Mapping of study → {'functional unit': {...}, 'result': [...]}
+        - n_methods : int
+            Number of IPCC methods applied.
+    """
+    method_key = [
+        [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GTP 100a, incl. bio CO2' in str(m)][0],
+        [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][0],
+        [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][1],
+        [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H and bio CO2' in str(m)][0]
+    ]
 
+    from collections import defaultdict
+    LCA_sol_cal_dict = defaultdict(dict)
+    LCA_sol_cal_dict['hydrogen' + str(db)] = {
+        'functional unit': {primary_process: functional_unit},
+        'result': []
+    }
 
-def lcia_premise_gwp_run(db,primary_process,functional_unit,mc_foreground_flag,mc_runs,bw):
-
-        method_key = [[m for m in bw.methods if 'IPCC 2013' in str(m) and 'GTP 100a, incl. bio CO2' in str(m)][0],
-                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][0],
-                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H' in str(m)][1],
-                      [m for m in bw.methods if 'IPCC 2013' in str(m) and 'GWP 100a, incl. H and bio CO2' in str(m)][0]]
-    
-        operation = primary_process
-        
-        operation_functional_unit = {operation:functional_unit}
-        
-        operation_result = []
-        
-        from collections import defaultdict
-        LCA_sol_cal_dict = defaultdict(dict)
-        
-        LCA_sol_cal_dict['hydrogen'+str(db)] = {'functional unit' : operation_functional_unit, 'result': operation_result}
-        
-
-        mc = mc_foreground_flag
-        if mc:
-         for key in LCA_sol_cal_dict.keys():
+    if mc_foreground_flag:
+        for key in LCA_sol_cal_dict:
             for method in method_key:
-                    print(method)
-                    mc = bw.MonteCarloLCA(demand=operation_functional_unit, method=method)
-                    mc_results = [next(mc) for _ in range(mc_runs)]#Obsolete Code. Needs to updated
-                    LCA_sol_cal_dict[key]['result'].append((method[2].title(), mc_results , bw.methods.get(method).get('unit')))
-        
-        
-        else:
-         for key in LCA_sol_cal_dict.keys():
-            lca = bw.LCA(LCA_sol_cal_dict[key]['functional unit'])
+                mc = bw.MonteCarloLCA(demand={primary_process: functional_unit}, method=method)
+                mc_results = [next(mc) for _ in range(mc_runs)]
+                LCA_sol_cal_dict[key]['result'].append(
+                    (method[2].title(), mc_results, bw.methods.get(method).get('unit'))
+                )
+    else:
+        for key in LCA_sol_cal_dict:
+            lca = bw.LCA({primary_process: functional_unit})
             lca.lci()
-            
             for method in method_key:
                 lca.switch_method(method)
                 lca.lcia()
-                LCA_sol_cal_dict[key]['result'].append((method[2].title(), lca.score, bw.methods.get(method).get('unit')))
-                #print('TOP ACTIVITIES\n\n')
-                #print(lca.top_activities())
-                #print('TOP EMISSIONS\n\n')
-                #print(lca.top_emissions())                
+                LCA_sol_cal_dict[key]['result'].append(
+                    (method[2].title(), lca.score, bw.methods.get(method).get('unit'))
+                )
 
-        save_db = False
-        if save_db == True:
-            ei_cf_36_db = bw.Database(db)    
-            ei_cf_36_db.backup()
-            print('backed up database')
-
-                
-        return LCA_sol_cal_dict,len(method_key)
-
+    return LCA_sol_cal_dict, len(method_key)

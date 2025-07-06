@@ -1,0 +1,28 @@
+lcia,value,unit,year,method
+Acidification,0.03906239711787287,moles of H+-Eq,premise_base,TRACI2.1
+Ecotoxicity,0.19367350865505512,"kg 2,4-D-Eq",premise_base,TRACI2.1
+Eutrophication,2.8241869648555536e-05,kg N,premise_base,TRACI2.1
+Global Warming,0.3592877650622805,kg CO2-Eq,premise_base,TRACI2.1
+Carcinogenics,0.0008898024638051326,kg benzene-Eq,premise_base,TRACI2.1
+Ozone Depletion,1.0726763096013944e-08,kg CFC-11-Eq,premise_base,TRACI2.1
+Photochemical Oxidation,0.0004117122881629287,kg NOx-Eq,premise_base,TRACI2.1
+Non-Carcinogenics,1.9435290013470894,kg toluene-Eq,premise_base,TRACI2.1
+"Respiratory Effects, Average",0.00025379748396003876,kg PM2.5-Eq,premise_base,TRACI2.1
+Alop,0.004319032242849586,square meter-year,premise_base,RECIPE
+Gwp100,0.36196308133092864,kg CO2-Eq,premise_base,RECIPE
+Fdp,0.12274029895083607,kg oil-Eq,premise_base,RECIPE
+Fetpinf,5.092715266808698e-05,"kg 1,4-DCB-Eq",premise_base,RECIPE
+Fep,1.3211091225665969e-05,kg P-Eq,premise_base,RECIPE
+Htpinf,0.016559029856961914,"kg 1,4-DCB-Eq",premise_base,RECIPE
+Irp_He,0.057975694194204015,kg U235-Eq,premise_base,RECIPE
+Metpinf,0.0001728541774661297,"kg 1,4-DB-Eq",premise_base,RECIPE
+Mep,2.267426994930254e-05,kg N-Eq,premise_base,RECIPE
+Mdp,0.006690023638207041,kg Fe-Eq,premise_base,RECIPE
+Nltp,2.1539388126110588e-05,square meter,premise_base,RECIPE
+Odpinf,1.0440697701284483e-08,kg CFC-11-Eq,premise_base,RECIPE
+Pmfp,0.0003380766896121496,kg PM10-Eq,premise_base,RECIPE
+Pofp,0.0006762494720036158,kg NMVOC-Eq,premise_base,RECIPE
+Tap100,0.0006320434171797922,kg SO2-Eq,premise_base,RECIPE
+Tetpinf,1.931423027392189e-05,"kg 1,4-DCB-Eq",premise_base,RECIPE
+Ulop,0.004161691453406144,square meter-year,premise_base,RECIPE
+Wdp,0.0024522738264211074,m3 water-Eq,premise_base,RECIPE

@@ -1,6 +1,0 @@
-data_directories:
-  reeds_data: inputs/reedsdata/
-input_filenames:
-  reeds_inventory: Mid_Case2024_reeds_data_state.csv # These inventories are not used for LCA. Its used for building large scale activity systems inside ecoinvent, such as ReEDS Grid mixes. hese inventories are used for ReEDS Grid mix operations specifically. Should be harcoded.
-  modification_inventory: modification_inventory.csv # These inventories are used for ReEDS Grid mix operations specifically. Should be harcoded. 
-  modification_inventory_us: modification_inventory_us.csv # These inventories are used for ReEDS Grid mix operations specifically. Should be harcoded.

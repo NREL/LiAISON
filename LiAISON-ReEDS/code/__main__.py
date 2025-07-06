@@ -72,18 +72,13 @@ foreground_inventory_filename = os.path.join(args.datapath,
                                   inputs.get('foreground_inventory'))
 ecoinvent_file = os.path.join(args.datapath,
                                   data_dirs.get('ecoinvent_data'))
-
-# Fix this
-ecoinvent_file = "./"
-
                                   
 results_filename = outputs.get('results_filename')
 output_dir = os.path.join(args.datapath,
                           data_dirs.get('output'))
 data_dir = os.path.join(args.datapath,
                           data_dirs.get('liaisondata'))
-
-reeds_dir = os.path.join(data_dirs.get('reeds_data'))
+reeds_dir = os.path.join(args.datapath,data_dirs.get('liaisondata'),data_dirs.get('reeds_data'))
 
 
 run_database_reader = flags.get('ecoinvent_reader')
