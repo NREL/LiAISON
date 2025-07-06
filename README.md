@@ -1,5 +1,5 @@
 # Lifecyle Analysis Integration into Scalable Opensource Numerical models (LiAISON)
-![Logo](https://github.com/NREL/LiAISON/blob/dev/images/logo.png?raw=true)
+
 
 Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs.est.2c04246. 
 ## Objective
@@ -22,6 +22,20 @@ Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs
 ## How to install this package?
 ### Root Folder 
 folder-LiAISON repository : */LiAISON*
+
+
+### Make sure these are the exact versions of the packages being used for running LiAISON - ReEDS
+```
+brightway2                2.4.3
+bw-migrations             0.2
+bw_processing             1.0
+bw2analyzer               0.10
+bw2calc                   1.8.2
+bw2data                   3.6.6
+bw2io                     0.8.7
+premise                   1.8.1
+premise-gwp               0.9.6
+```
 
 
 ### Setup
