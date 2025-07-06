@@ -1,5 +1,5 @@
 process,flow,code,value,unit,input,year,comments,type,process_location,supplying_location
-"market group for electricity, high voltage","electricity, high voltage",,1.0,kilowatt hour,False,2020,none,production,NJ,NJ
-"market group for electricity, high voltage",ReEDS_State_Grid_Mix,,1.0,kilowatt hour,True,2020,none,technosphere,NJ,NJ
-"market group for electricity, high voltage","market for sulfur hexafluoride, liquid",,5.4e-08,kilogram,True,2021,none,technosphere,NJ,NJ
-"market group for electricity, high voltage","transmission network construction, electricity, medium voltage",,1.86e-08,kilometer,True,2022,none,technosphere,NJ,NJ
+"market group for electricity, high voltage","electricity, high voltage",,1.0,kilowatt hour,False,2020,none,production,US-US-US,US-US
+"market group for electricity, high voltage",ReEDS_State_Grid_Mix,,1.0,kilowatt hour,True,2020,none,technosphere,US-US-US,US-US
+"market group for electricity, high voltage","market for sulfur hexafluoride, liquid",,5.4e-08,kilogram,True,2021,none,technosphere,US-US-US,US-US
+"market group for electricity, high voltage","transmission network construction, electricity, medium voltage",,1.86e-08,kilometer,True,2022,none,technosphere,US-US-US,US-US

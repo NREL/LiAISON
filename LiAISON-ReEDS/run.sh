@@ -1,8 +1,11 @@
+# Please change these paths to your PC address for the code to run properply
+ENVPATH="/Users/tghosh/Desktop/env"
+CODEDIR="/Users/tghosh/Desktop/LiAISON-ReEDS/code/"
+DATADIR="/Users/tghosh/Desktop/LiAISON-ReEDS/data"
 
-ENVPATH="/Users/tghosh/Desktop/env/env/"
-CODEDIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/code/"
-DATADIR="/Users/tghosh/Library/CloudStorage/OneDrive-NREL/work_NREL/liaison/LiAISON/LiAISON-ReEDS/data/"
-yaml="Mid_Case_NoNascent2050"
+# Please choose the proper name of the yaml file for scenario creation and LCA
+yaml="Mid_Case2024_reedscreation"
+
 
 SECONDS=0
 mkdir $ENVPATH
