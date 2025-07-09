@@ -4,6 +4,8 @@ additional_options:
   mc_foreground: false
   region_sensitivity_flag: false
 flags:
+  # Change to False once ecoinvent has been imported
+  # If True, ecoinvent imports from scratch and runtime is increased
   ecoinvent_reader: true
   lca: true
   reeds_us_electricity_grid_mix: true
