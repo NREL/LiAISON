@@ -63,7 +63,7 @@ Perform a complete test run through these following steps -
 - Open a terminal in the root folder. 
 - Type the following commands in the terminal
   - `chmod +x test_run.sh`
-  - `./test_run.sh`
+  - `./run.sh`
  
 ### Results
 - After running, csv result files are written in the *data/output/* file. 
