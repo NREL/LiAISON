@@ -8,7 +8,11 @@ flags:
   # If True, ecoinvent imports from scratch and runtime is increased
   ecoinvent_reader: true
   lca: true
+  # Change to False after running once
+  # Set to True when changing the ReEDS grid mix
   reeds_us_electricity_grid_mix: true
+  # Change to False after running once
+  # Set to True when changing climate scenarios
   update_ecoinvent_using_premise: true
 input_filenames:
   foreground_inventory: na
