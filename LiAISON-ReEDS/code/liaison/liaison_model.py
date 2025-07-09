@@ -8,11 +8,10 @@ import pickle
 import yaml
 import os
 import time
-from liaison.montecarloforeground import mc_foreground
 from liaison.lci_calculator import liaison_calc,search_dictionary,search_index_reader,lcia_traci_run,lcia_recipe_run, lcia_premise_gwp_run
 from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
 from liaison.edit_activity_ecoinvent import user_controlled_editing_ecoinvent_activity
-from liaison.search_activity_ecoinvent import search_activity_in_ecoinvent
+
 
 
 def reset_project(updated_project_name,number,project,updated_database,bw):
