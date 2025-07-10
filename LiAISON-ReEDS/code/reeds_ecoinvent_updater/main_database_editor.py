@@ -262,12 +262,11 @@ def reeds_updater(
             for st in states:
                 if st != "US":
                     print("US---" + st)
+                    print('Reading from ', modification_inventory_filename)
                     temp_df = pd.read_csv(modification_inventory_filename)
                     temp_df['process_location'] = "US-" + st
-                    temp_df['supplying_location'] = st
-                    print('Reading from ', modification_inventory_filename)
-                    temp_df.to_csv(modification_inventory_filename + st + ".csv", index=False)
-                    reeds_db_editor(db_new, modification_inventory_filename, bw)
+                    temp_df['supplying_location'] = st                    
+                    reeds_db_editor(db_new, temp_df, bw)
 
             print('Creating market mixes for electricity grid for the US grid mix', flush=True)
             print('Reading from ', modification_inventory_filename_us,flush=True)

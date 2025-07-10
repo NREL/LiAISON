@@ -150,7 +150,7 @@ def reeds_db_editor(db, run_filename, bw):
     ----------
     db : str
         Name of the ecoinvent database (e.g., modified for a scenario).
-    run_filename : str
+    run_filename : str or df
         Path to CSV file containing ReEDS process and emissions inventory.
     bw : module
         Brightway2 module instance.
@@ -163,7 +163,12 @@ def reeds_db_editor(db, run_filename, bw):
     print('Creating inventory within the database:', db, flush=True)
     database_dict, database_dict_secondary = search_index_creator(ei_cf_36_db)
 
-    inventory = pd.read_csv(run_filename).sort_values(by=['process', 'process_location'])
+    if isinstance(run_filename, str):
+        inventory = pd.read_csv(run_filename)
+    else:
+        inventory = run_filename
+
+    inventory = inventory.sort_values(by=['process', 'process_location'])
 
     # Create new or update existing processes
     processes = inventory[inventory['type'] == 'production']
