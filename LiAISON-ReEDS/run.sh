@@ -11,7 +11,7 @@ SECONDS=0
 mkdir $ENVPATH
 mkdir $RESDIR
 cd $CODEDIR
-python __main__.py --datapath=$DATADIR --envpath=$ENVPATH --lca_config_file=$DATADIR/$yaml.yaml
+python __main__.py --datapath=$DATADIR --envpath=$ENVPATH --lca_config_file=$yaml.yaml
 date
 
 
