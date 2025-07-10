@@ -254,24 +254,26 @@ def reeds_updater(
             reeds_db_editor(db_new, run_filename, bw)
 
             print('ReEDS LCI electricity generation created within ecoinvent', flush=True)
-            state_df = pd.read_csv(run_filename)
-            states = sorted(list(pd.unique(state_df['process_location'])))
-            print('Creating market mixes for electricity grid for the states', flush=True)
-            print(states)
+        
+        print('Creating market mixes for electricity grid for the states', flush=True)
+        state_df = pd.read_csv(run_filename)
+        states = sorted(list(pd.unique(state_df['process_location'])))
+        
+        print(states)
 
-            for st in states:
-                if st != "US":
-                    print("US---" + st)
-                    print('Reading from ', modification_inventory_filename)
-                    temp_df = pd.read_csv(modification_inventory_filename)
-                    temp_df['process_location'] = "US-" + st
-                    temp_df['supplying_location'] = st                    
-                    reeds_db_editor(db_new, temp_df, bw)
+        for st in states:
+            if st != "US":
+                print("US---" + st)
+                print('Reading from ', modification_inventory_filename)
+                temp_df = pd.read_csv(modification_inventory_filename)
+                temp_df['process_location'] = "US-" + st
+                temp_df['supplying_location'] = st                    
+                reeds_db_editor(db_new, temp_df, bw)
 
-            print('Creating market mixes for electricity grid for the US grid mix', flush=True)
-            print('Reading from ', modification_inventory_filename_us,flush=True)
-            reeds_db_editor(db_new, modification_inventory_filename_us, bw)
-            print('Background activity modified and saved successfully', flush=True)
+        print('Creating market mixes for electricity grid for the US grid mix', flush=True)
+        print('Reading from ', modification_inventory_filename_us,flush=True)
+        reeds_db_editor(db_new, modification_inventory_filename_us, bw)
+        print('Background activity modified and saved successfully', flush=True)
 
     r = ''
     run_filename = inventory_filename
