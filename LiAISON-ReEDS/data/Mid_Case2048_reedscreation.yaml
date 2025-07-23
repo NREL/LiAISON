@@ -1,0 +1,23 @@
+additional_options:
+  correct uncertainty: false
+  edit_ecoinvent_user_controlled: false
+  mc_foreground: false
+  region_sensitivity_flag: false
+flags:
+  ecoinvent_reader: false
+  lca: true
+  reeds_us_electricity_grid_mix: true
+  update_ecoinvent_using_premise: false
+input_filenames:
+  foreground_inventory: na
+  reeds_yaml_data: Mid_Case2048
+output_filenames:
+  results_filename: resultsMid_Case2048.csv
+scenario_parameters:
+  functional_unit: 1
+  lca_project_name: lca_project_Mid_Case2048
+  location_under_study: US-CO
+  mc_runs: 1
+  primary_process_to_study: market group for electricity, high voltage
+  unit: kilowatt hour
+  year: 2048

@@ -1,0 +1,6 @@
+data_directories:
+  reeds_data: /kfs2/shared-projects/liaison/hipster_data/reeds_to_hipster_dev/reedsdata/
+input_filenames:
+  modification_inventory: modification_inventory.csv
+  modification_inventory_us: modification_inventory_us.csv
+  reeds_inventory: Mid_Case2042_reeds_data_state.csv

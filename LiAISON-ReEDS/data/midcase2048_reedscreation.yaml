@@ -1,0 +1,23 @@
+flags:
+  reeds_us_electricity_grid_mix: true # Creates the new Grid mix from ReEDS
+  ecoinvent_reader: false # Reads base ecoinvent and saves it in the base_project and base_databases. 
+  lca: true # Perform LCA
+  update_ecoinvent_using_premise: false # Modified base ecoinvent with premise supplied databases for CCS technologies
+input_filenames:
+  foreground_inventory: na # These inventories are used for LCAs. Example of such a foreground inventory would be hydrogen production or DACs operation, the process which is under study. Foreground inventory is not required if the activity is already inside ecoinvent. 
+  reeds_yaml_data: MidCase2048
+output_filenames:
+  results_filename: test.csv
+scenario_parameters:
+  functional_unit: 1
+  year: 2048
+  lca_project_name: lca_project_test1 # This is the project name used to perform LCA. 
+  location_under_study: USA
+  unit: kilowatt hour
+  mc_runs: 1
+  primary_process_to_study: market group for electricity, high voltage
+additional_options:
+  mc_foreground: false
+  correct uncertainty: false
+  region_sensitivity_flag: false
+  edit_ecoinvent_user_controlled: false # This flag is to trigger a user_defined_function which the user can use to perform any automated edits background inventory, foreground inventory and more. 
