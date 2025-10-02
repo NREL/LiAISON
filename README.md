@@ -1,4 +1,4 @@
-# Lifecyle Analysis Integration into Scalable Opensource Numerical models (LiAISON)
+# Life cycle Analysis Integration into Scalable Open-source Numerical models (LiAISON)
 ![Logo](https://github.com/NREL/LiAISON/blob/dev/images/logo.png?raw=true)
 
 Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs.est.2c04246. 
