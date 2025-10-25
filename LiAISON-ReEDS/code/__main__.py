@@ -14,8 +14,8 @@ args = parser.parse_args()
 tim0 = time.time()
 print('Starting the Code',flush=True)
 # YAML filename
-config_yaml_filename = os.path.join(args.datapath, args.lca_config_file)
-data_yaml_filename = os.path.join(args.datapath, 'data_dir.yaml')
+config_yaml_filename = os.path.join(args.datapath,'yaml' ,args.lca_config_file)
+data_yaml_filename = os.path.join(args.datapath, 'yaml','data_dir.yaml')
 try:
     with open(config_yaml_filename, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
