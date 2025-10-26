@@ -6,7 +6,6 @@ from typing import Any, Union
 import pandas as pd
 import numpy as np
 import secrets
-from liaison.montecarloforeground import mc_foreground
 from liaison.lca_calculator_automated import (
     brightway,
     run_lcia_traci,
@@ -15,51 +14,11 @@ from liaison.lca_calculator_automated import (
 )
 from liaison.lca_modifier import brightway_modifier
 from premise_gwp import add_premise_gwp
+import time
 
-def correct_natural_land_transformation(bw: Any) -> None:
-    """
-    Corrects the natural land transformation method in the Brightway2 database.
-    Removes flows not related to specific land types in a whitelist.
 
-    Parameters:
-    -----------
-    bw : module
-        Brightway2 module loaded as a shortcut name.
-    """
-    lt_methods = [m for m in bw.methods if "natural land transformation" in m[1]]
-    white_list = ["forest", "gassland, natural", "sea", "ocean", "inland waterbody", "lake, natural",
-                  "river, natural", "seabed, natural", "shrub land", "snow", "unspecified", "wetland", "bare area"]
-    l_flows = [cf for lt_method in lt_methods for cf in bw.Method(lt_method).load() if any(n in bw.get_activity(cf[0])["name"] for n in white_list)]
-    for lt_method in lt_methods:
-        bw.Method(lt_method).write(l_flows)
 
-def correct_bigcc_copper_use(bw: Any, db: str) -> None:
-    """
-    Corrects the copper use in the BIGCC power plant construction exchange.
-    Modifies the amount to a specific value.
-
-    Parameters:
-    -----------
-    bw : module
-        Brightway2 module loaded as a shortcut name.
-    db : str
-        Name of the database for the scenario and year.
-    """
-    list_dbs = [db]
-    list_acts = [
-        "electricity production, at BIGCC power plant, no CCS",
-        "electricity production, at BIGCC power plant, pre, pipeline 200km, storage 1000m",
-        "electricity production, at BIGCC power plant, pre, pipeline 400km, storage 3000m",
-    ]
-    for db_name in list_dbs:
-        for ds in bw.Database(db_name):
-            if ds["name"] in list_acts:
-                for exc in ds.exchanges():
-                    if exc["name"] == "Construction, BIGCC power plant 450MW":
-                        exc["amount"] = 1.01e-11
-                        exc.save()
-
-def reset_project(updated_project_name: str, number: str, project: str, updated_database: str, bw: Any) -> str:
+def reset_project(updated_project_name: str, process_under_study: str, number: str, project: str, updated_database: str, bw: Any) -> str:
     """
     Copies the project directory of a certain year and scenario, creates a copy with a non-repeatable name.
     Deletes existing projects if they exist, then copies the project and sets it as the current project.
@@ -82,10 +41,10 @@ def reset_project(updated_project_name: str, number: str, project: str, updated_
     project_name : str
         Name of the created project.
     """
-    project_name = f"{project}{updated_project_name}{number}"
-    try:
+    project_name = f"{project}{updated_project_name}{number}" 
+    try:       
         bw.projects.delete_project(project_name, delete_dir=True)
-        pprint('Project deleted')
+        print(project_name,' Project exists and will be deleted',flush=True)
     except:
         pprint('Project does not exist')
 
@@ -93,7 +52,7 @@ def reset_project(updated_project_name: str, number: str, project: str, updated_
     pprint(f"Entered project {updated_project_name}")
     pprint("Databases in this project are")
     pprint(bw.databases, width=1)
-
+    
     try:
         bw.projects.copy_project(project_name, switch=False)
         pprint('Project copied successfully')
@@ -101,17 +60,12 @@ def reset_project(updated_project_name: str, number: str, project: str, updated_
         bw.projects.purge_deleted_directories()
         bw.projects.copy_project(project_name, switch=False)
         pprint('Project copied successfully after directory deleted')
-
+    
     bw.projects.set_current(project_name)
-    pprint(f"Current new project {project_name}")
-    pprint("Databases in this project are")
-    pprint(bw.databases, width=1)
-
-    pprint('Correcting Natural Land Transformation Recipe method')
-    correct_natural_land_transformation(bw)
-    pprint('Correcting BIG CC copper use')
-    correct_bigcc_copper_use(bw, updated_database)
-    add_premise_gwp()
+    print(f"Current new project {project_name}",flush=True)
+    print("Databases in this project are",flush=True)
+    print(bw.databases,flush=True)
+    
     return project_name
 
 def main_run(lca_project: str, updated_project_name: str, initial_year: int, results_filename: str,
@@ -172,7 +126,7 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
     bw : module
         Brightway2 module loaded as a shortcut name.
     """
-    pprint("Starting LCA runs")
+    print("Starting LCA runs",flush=True)
     pprint('\n')
 
     yr = updated_database[10:14]
@@ -180,6 +134,7 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
     number = str(secrets.token_hex(8))
     process_under_study = process_under_study.lower()
     location_under_study = location_under_study.lower()
+    primary_process = primary_process.lower()
 
 
 
@@ -208,18 +163,22 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
             bw : module
                 Brightway2 module loaded as a shortcut name.
             """
-            project_name = reset_project(updated_project_name, number, lca_project, db, bw)
+            nonlocal process_under_study
+
+            project_name = reset_project(updated_project_name, process_under_study, number, lca_project, db, bw)
 
             if lca_activity_modification:
                 dictionary_modified = brightway_modifier(db, modification_inventory_filename, mc_foreground_flag, mc_runs,
                                                          process_name_bridge, emission_name_bridge, location_name_bridge, bw)
                 pprint('Activity modified and saved success')
 
+            print('Starting lca_calculator_automated',flush=True)
+            start_time = time.perf_counter()
             dictionary = brightway(db, run_filename, mc_foreground_flag, mc_runs, process_name_bridge,
                                    emission_name_bridge, location_name_bridge, bw)
-
-            pprint('Activity created and saved success')
-
+            end_time = time.perf_counter()
+            print(f"Time taken for activity creation: {end_time - start_time} seconds",flush=True)
+            print('Activity created and saved success',flush=True)
             if lca_flag:
 
                 lcia_result = {}
@@ -229,14 +188,15 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
                 unit = []
                 year = []
                 method = []
-
+                start_time = time.perf_counter()
                 result_dir1, n_lcias1 = run_lcia_traci(db, dictionary[process_under_study+'@'+location_under_study], float(functional_unit),
                                                        mc_foreground_flag, mc_runs, bw)
                 result_dir2, n_lcias2 = run_lcia_recipe(db, dictionary[process_under_study+'@'+location_under_study], float(functional_unit),
                                                         mc_foreground_flag, mc_runs, bw)
                 result_dir3, n_lcias3 = run_lcia_premise_gwp(db, dictionary[process_under_study+'@'+location_under_study], float(functional_unit),
                                                        mc_foreground_flag, mc_runs, bw)
-
+                end_time = time.perf_counter()
+                print(f"Time taken for lca calculation: {end_time - start_time} seconds",flush=True)
                 temp1 = pd.DataFrame.from_dict(result_dir1, orient='index')
                 temp2 = pd.DataFrame.from_dict(result_dir2, orient='index')
                 temp3 = pd.DataFrame.from_dict(result_dir3, orient='index')
@@ -266,7 +226,7 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
                     'year': year,
                     'method': method
                 })
-
+                print('LCA successfully done for '+primary_process,flush=True)
                 lcia_df.to_csv(output_dir+results_filename+str(r)+db+primary_process+'.csv', index=False)
 
                 save_project = False
@@ -286,6 +246,7 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
         for r in range(0, mc_runs):
             run_filename = output_dir+'/foreground_uncertainty_lci'+str(r)+'_'+str(yr)+'.csv'
             lca_runner(updated_database, updated_project_name, lca_project,number, r, mc_runs, mc_foreground_flag, lca_flag, lca_activity_modification, bw)
+    
     elif regional_sensitivity_flag:
         file = pd.read_csv(inventory_filename)
         file['process_location'] = region
@@ -295,6 +256,7 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
         file.to_csv(run_filename, index=False)
         r = ''
         lca_runner(updated_database, updated_project_name, lca_project, number, r, mc_runs, mc_foreground_flag, lca_flag, lca_activity_modification, bw)
+    
     else:
         run_filename = inventory_filename
         r = ''
@@ -303,6 +265,6 @@ def main_run(lca_project: str, updated_project_name: str, initial_year: int, res
     try:
         bw.projects.delete_project(bw.projects.current, delete_dir=True) 
         print('LCA project with activity Deleted succesfully. To prevent deletion comment out lines 374 in liaison_model.py')
-        bw.projects.purge_deleted_directories()
+        # bw.projects.purge_deleted_directories()
     except:
         pprint('There was an issue with deletion')

@@ -6,7 +6,6 @@ import warnings
 from pprint import pprint
 from typing import Dict, Any
 import yaml
-import sys
 
 warnings.filterwarnings("ignore")
 
@@ -73,10 +72,8 @@ def remove_old_results(output_dir: str) -> None:
     try:
         for f in os.listdir(output_dir):
             os.remove(os.path.join(output_dir, f))
-            pprint(f'{output_dir} removed old results')
-    except:      
-            pprint(f'{output_dir}  old results not removed')
-            pass
+    except:
+        pass
 
 def run_database_reader(ecoinvent_file: str, base_database: str, base_project: str, bw: Any) -> None:
     """
@@ -120,7 +117,7 @@ def main() -> None:
     args = parser.parse_args()
 
     tim0 = time.time()
-    print('Starting the Code',flush=True)
+    pprint('Starting the Code')
 
     config = load_config_file(args.datapath, args.lca_config_file)
     flags = config.get('flags', {})
@@ -132,8 +129,7 @@ def main() -> None:
     set_brightway2_dir(args.envpath)
 
 
-
-    print('Importing brightway module.....',flush=True)
+    pprint('Importing brightway module.....')
     import brightway2 as bw
     from liaison.liaison_model import main_run
     from liaison.ecoinvent_explorer import extract_electricity_mix
@@ -167,6 +163,7 @@ def main() -> None:
     results_filename = outputs.get('results_filename')
     output_dir = os.path.join(args.datapath, data_dirs.get('output'))
     data_dir = os.path.join(args.datapath, data_path)
+    ecoinvent_file = "/kfs2/shared-projects/liaison/liaison/ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets"
 
     # Flags
     run_database_reader_flag = flags.get('read_base_lci_database')
@@ -178,16 +175,16 @@ def main() -> None:
     lca_activity_modification = flags.get('lca_activity_modification')
     regional_sensitivity_flag = flags.get('regional_sensitivity')
 
-    print('All input data parameters read',flush=True)
+    pprint('All input data parameters read')
 
     # Running database reader for reading ecoinvent base database
     if run_database_reader_flag:
-        print('Running db reader',flush=True)
+        pprint('Running db reader')
         run_database_reader(ecoinvent_file=ecoinvent_file, base_database=base_database, base_project=base_project, bw=bw)
 
     # Running database editor for modifying base databases with IMAGE information and future scenario
     if run_database_editor_flag:
-        print('Running db editor',flush=True)
+        pprint('Running db editor')
         run_database_editor(updated_database=updated_database, base_database=base_database, base_project=base_project,
                             updated_project_name=updated_project_name, iam_model=iam_model, iam_model_key=iam_model_key, bw=bw)
     # Copies the base project if updater is not required for LCA calculations, Stores the base database in a new project name for lca calculations. 
@@ -196,14 +193,12 @@ def main() -> None:
         updated_project_name = base_project
 
     create_directory(output_dir)
-    #remove_old_results(output_dir)
+    remove_old_results(output_dir)
 
     if lca_flag:
-        print('extracing_electricity_mix',flush=True)
         extract_electricity_mix(updated_project_name=updated_project_name, output_dir=output_dir, results_filename=results_filename,
-                       updated_database=updated_database, bw=bw)
-        print('electricity_mix_extracted',flush=True)
-        print('lca calculation starts',flush=True)
+                        updated_database=updated_database, bw=bw)
+
         main_run(lca_project=lca_project_name, updated_project_name=updated_project_name, initial_year=initial_year,
                  results_filename=results_filename, mc_foreground_flag=mc_foreground_flag, lca_flag=lca_flag,
                  lca_activity_modification=lca_activity_modification, regional_sensitivity_flag=regional_sensitivity_flag,

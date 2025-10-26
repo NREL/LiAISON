@@ -26,8 +26,7 @@ def create_search_index(ei_cf_36_db: List[Dict]) -> tuple[Dict, Dict]:
             problems[key] = entry
         except KeyError:
             dic[key] = {entry['code']: entry}
-            dic2[key] = entry
-
+            dic2[key] = entry   
     return dic, dic2
 
 
@@ -125,7 +124,8 @@ def merge_names(inp: pd.DataFrame, process_name_bridge: str, location_name_bridg
     #location_name = dataframe_editor(pd.read_csv(location_name_bridge))
 
 
-    process_bridge = inp.merge(process_name, left_on='flow', right_on='Common_name').dropna()
+    process_bridge = inp.merge(process_name, left_on='flow', right_on='Common_name')
+    process_bridge = process_bridge.dropna(subset=['flow','Common_name','Ecoinvent_name'])
     #location_bridge = inp.merge(location_name, left_on='supplying_location', right_on='location_common').dropna()
     location_bridge = inp.reset_index()
     location_bridge['location_ecoinvent'] = location_bridge['supplying_location']
@@ -208,6 +208,7 @@ def create_activity(inventory_row, database_dict, ei_cf_36_db):
     location_info = inventory_row['process_location']
     activity_dic = read_search_index(process_info, location_info, database_dict)
 
+    
     if activity_dic:
         if len(activity_dic) == 1:
             pprint({'One activity found': 'Check passed'})
@@ -224,6 +225,7 @@ def create_activity(inventory_row, database_dict, ei_cf_36_db):
                 pprint({'Issue!!!': 'Existing activity not deleted'})
     else:
         pass
+    
 
     pprint({'Activity Created': process_info, 'at': location_info})
     process_key = process_info + '@' + location_info
@@ -253,7 +255,7 @@ def create_activity_output_flow(process_key, process, inventory_row):
         pprint({'Production flows check passed'})
     elif len(inp) > 1:
         pprint({'Issue!!!': 'Production flows for an activity more than 1!!##############'})
-    else:
+    else: 
         pprint({'No production flows!!'})
 
     for index, row in inp.iterrows():
@@ -266,7 +268,11 @@ def create_activity_output_flow(process_key, process, inventory_row):
         process.new_exchange(input=process.key, name=row['flow'],
                               amount=row['value'], unit=row['unit'], type='production',
                               location=process['location']).save()
+        process['reference product'] = row['flow']
+        process['production amount'] = row['value']
+        process['unit'] = row['unit']
         process.save()
+
 
 def create_technosphere_exchanges(process_key, process, inventory_row, process_name_bridge, location_name_bridge, mc_foreground_flag, database_dict, process_database_dict):
     """
@@ -293,8 +299,8 @@ def create_technosphere_exchanges(process_key, process, inventory_row, process_n
         process_bridge, location_bridge = merge_names(temp, process_name_bridge, location_name_bridge)
 
         if process_bridge.empty or location_bridge.empty:
-            pprint(row['flow'] + ' ' + row['supplying_location'])
-            pprint('Did not find this process in the process bridge\n')
+            pprint('Failed:'+row['flow'] + ' ' + row['supplying_location']+'not found in the process bridge\n')
+
         else:
             pcode = str(process_bridge['Ecoinvent_code'][0]).strip()
             flag = 'activity found'
@@ -366,9 +372,64 @@ def create_technosphere_exchanges(process_key, process, inventory_row, process_n
                                   ' for ' + activity['name'] + ' was not found. Shifting to ' +
                                   activity['name'] + ' ' + activity['location']})
                         except:
-                            pprint({'Failed': 'Not found ' + process_bridge['Common_name'][0] + ' ' +
-                                  location_bridge['location_ecoinvent'][0].upper() + ' ' +
-                                  str(process_bridge['Ecoinvent_code'][0])})
+                            try:
+                                activity_dic = read_search_index(process_bridge['Ecoinvent_name'][0], 'USA',
+                                                                   database_dict)
+                                activity = debug_search_index(activity_dic, process_bridge['Ecoinvent_code'][0])
+                                if activity['unit'] != row['unit']:
+                                    pprint({'Unit error': location_bridge['location_ecoinvent'][0].upper() + ' for ' +
+                                            process_bridge['Common_name'][0]})
+                                    unit_error_flag = 1
+
+                                process.new_exchange(input=activity.key, amount=row['value'], name=activity['name'],
+                                                     location=activity['location'], unit=row['unit'],
+                                                     type='technosphere').save()
+                                process.save()
+                                pprint({'Minor Success': 'Provided location ' + location_bridge['location_ecoinvent'][0].upper() +
+                                      ' for ' + activity['name'] + ' was not found. Shifting to ' +
+                                      activity['name'] + ' ' + activity['location']})
+
+                            except:
+                                try:
+                                    activity_dic = read_search_index(process_bridge['Ecoinvent_name'][0], 'US-WECC',
+                                                                       database_dict)
+                                    activity = debug_search_index(activity_dic, process_bridge['Ecoinvent_code'][0])
+                                    if activity['unit'] != row['unit']:
+                                        pprint({'Unit error': location_bridge['location_ecoinvent'][0].upper() + ' for ' +
+                                                process_bridge['Common_name'][0]})
+                                        unit_error_flag = 1
+
+                                    process.new_exchange(input=activity.key, amount=row['value'], name=activity['name'],
+                                                         location=activity['location'], unit=row['unit'],
+                                                         type='technosphere').save()
+                                    process.save()
+                                    pprint({'Minor Success': 'Provided location ' + location_bridge['location_ecoinvent'][0].upper() +
+                                          ' for ' + activity['name'] + ' was not found. Shifting to ' +
+                                          activity['name'] + ' ' + activity['location']})
+                                except:
+
+                                    try:
+                                        activity_dic = read_search_index(process_bridge['Ecoinvent_name'][0], 'RER',
+                                                                           database_dict)
+                                        activity = debug_search_index(activity_dic, process_bridge['Ecoinvent_code'][0])
+                                        if activity['unit'] != row['unit']:
+                                            pprint({'Unit error': location_bridge['location_ecoinvent'][0].upper() + ' for ' +
+                                                    process_bridge['Common_name'][0]})
+                                            unit_error_flag = 1
+
+                                        process.new_exchange(input=activity.key, amount=row['value'], name=activity['name'],
+                                                             location=activity['location'], unit=row['unit'],
+                                                             type='technosphere').save()
+                                        process.save()
+                                        pprint({'Minor Success': 'Provided location ' + location_bridge['location_ecoinvent'][0].upper() +
+                                              ' for ' + activity['name'] + ' was not found. Shifting to ' +
+                                              activity['name'] + ' ' + activity['location']})
+
+                                    except:
+
+                                        pprint({'Failed: not found ' + process_bridge['Common_name'][0] + ' ' +
+                                              location_bridge['location_ecoinvent'][0].upper() + ' ' +
+                                              str(process_bridge['Ecoinvent_code'][0])})
 
 
             if flag == 'activity found':
@@ -379,7 +440,7 @@ def create_technosphere_exchanges(process_key, process, inventory_row, process_n
                 # continue
 
             if unit_error_flag == 1:
-                pprint({'Correct unit should be': activity['unit']})
+                pprint({'Failed: Correct unit should be': activity['unit']})
                 sys.exit('Unit Error occurred, please check')
 
 def create_biosphere_exchanges(process_key, process, inventory_row, emissions_dict, emission_name_bridge):
@@ -405,16 +466,16 @@ def create_biosphere_exchanges(process_key, process, inventory_row, emissions_di
         emission_bridge = merge_emissions(temp, emission_name_bridge)
 
         if emission_bridge.empty:
-            pprint(row['flow'] + ' Emission match not found from Emission Bridge!!')
+            pprint(row['flow'] + 'Failed: Emission match not found from Emission Bridge!!')
         else:
             emission = find_emission(emission_bridge, emissions_dict)
 
             if emission is None:
-                pprint('Emission not found ' + row['flow'])
+                pprint('Failed: Emission not found ' + row['flow'])
             else:
                 pprint('Emission found')
                 if emission['unit'] != row['unit']:
-                    pprint({'Emission unit error': row['supplying_location'].upper() + ' for ' +
+                    pprint({'Unit error': row['supplying_location'].upper() + ' for ' +
                           emission_bridge['Ecoinvent_name'][0]})
                     unit_error_flag = 1
                 else:
@@ -425,7 +486,7 @@ def create_biosphere_exchanges(process_key, process, inventory_row, emissions_di
                                                'amount': str(row['value'])}})
 
             if unit_error_flag == 1:
-                pprint({'Correct unit should be': emission['unit']})
+                pprint({'Failed: Correct unit should be': emission['unit']})
                 sys.exit('Emission unit Error occurred, please check')
 
 def brightway(db: str, run_filename: str, mc_foreground_flag: bool, mc_runs: int,
@@ -461,7 +522,7 @@ def brightway(db: str, run_filename: str, mc_foreground_flag: bool, mc_runs: int
     process_dict = {}
 
     # Creating new activities
-    pprint("Creating New activity")
+    print("Creating New activity",flush=True)
     for index, row in inventory[inventory['type'] == 'production'].iterrows():
         process_key, process = create_activity(row, database_dict, ei_cf_36_db)
         process_dict[process_key] = process
@@ -473,7 +534,7 @@ def brightway(db: str, run_filename: str, mc_foreground_flag: bool, mc_runs: int
     # Recreate the database dictionary so that the new created processes are listed in the inventory
     database_dict, process_database_dict = create_search_index(ei_cf_36_db)
     # Define the flows that are inputs to the datasets (technosphere)
-    pprint('Technosphere input flows')
+    print('Technosphere input flows',flush=True)
     for key in process_dict:
         create_technosphere_exchanges(key, process_dict[key], inventory, process_name_bridge, location_name_bridge, mc_foreground_flag,database_dict, process_database_dict)
 
@@ -684,4 +745,6 @@ def run_lcia_premise_gwp(
         print('Backed up database')
 
     return lca_sol_cal_dict, len(method_key)
+
+
 

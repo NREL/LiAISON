@@ -7,9 +7,9 @@ flags:
   mc_foreground: false
   lca: true
   lca_activity_modification: false
-  update_base_database_with_future_information: false
+  update_base_database_with_future_information: true
   read_base_lci_database: false
-  use_base_database_for_lca: true
+  use_base_database_for_lca: false
   regional_sensitivity: false
 input_filenames:
   emission_bridge: emission_name_bridge.csv
@@ -32,6 +32,6 @@ scenario_parameters:
   model_key: tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=
   primary_process_to_study: example
   process: example
-  updated_database: ecoinvent3.8
-  updated_project_name: ecoinvent_3.8
-
+  updated_database: ecoinvent_2030_SSP2-RCP26
+  updated_project_name: ecoinvent_2030_SSP2-RCP26_image
+  
