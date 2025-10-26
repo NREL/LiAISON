@@ -14,14 +14,14 @@ import pandas as pd
 import yaml
 import os
 
-with open('Mid_Case_NoNascent2050.yaml', 'r') as file:
+with open('midcase2048_reedscreation.yaml', 'r') as file:
     data = yaml.safe_load(file)
 
 years = ['2024','2028','2032','2036','2040','2044','2048','2050']
 #years = ['2022','2036','2050']
 #years = ['2022']
 
-scen_names = os.listdir('../../../hipster_data/reeds_to_hipster_dev/ReEDS_postprocessing/Raw_ReEDS_Outputs/')
+scen_names = os.listdir('/kfs2/shared-projects/liaison/tj/liaison_reeds_data/reeds_to_hipster_dev/ReEDS_postprocessing/Raw_ReEDS_Outputs')
 scen_names=["Mid_Case","Mid_Case_100by2035","Mid_Case_95by2050"]
 
 for scenario in scen_names:
@@ -37,17 +37,19 @@ for scenario in scen_names:
            data['output_filenames']['results_filename'] = scenario+"_"+yr+"electricity_production"
            
            data['input_filenames']['creation_inventory'] = scenario+yr+'_reeds_data_state.csv'
+           data['input_filenames']['reeds_yaml_data'] = scenario+yr
 
            data['flags']['database_editor'] = True
-           data['flags']['premise_editor'] = False
+           data['flags']['premise_editor'] = True
            data['flags']['create_reeds_grid_mix'] = True
            data['flags']['modify_ecoinvent_grid_mix'] = True
 
 
 
-           print(scenario+yr)
+
+           print(scenario+yr+'_reedscreation')
 
 
 
-           with open("../"+scenario+str(yr)+'.yaml', 'w') as file:
+           with open("../yaml/"+scenario+str(yr)+'_reedscreation.yaml', 'w') as file:
                yaml.dump(data, file)

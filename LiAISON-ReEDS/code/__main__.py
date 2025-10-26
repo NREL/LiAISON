@@ -14,9 +14,12 @@ args = parser.parse_args()
 tim0 = time.time()
 print('Starting the Code',flush=True)
 # YAML filename
-config_yaml_filename = os.path.join(args.datapath, args.lca_config_file)
-data_yaml_filename = os.path.join(args.datapath, 'data_dir.yaml')
+config_yaml_filename = os.path.join(args.datapath,'yaml' ,args.lca_config_file)
+data_yaml_filename = os.path.join(args.datapath, 'yaml','data_dir.yaml')
+
+
 try:
+    print(config_yaml_filename,flush=True)
     with open(config_yaml_filename, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         flags = config.get('flags', {})
@@ -25,13 +28,17 @@ try:
         inputs = config.get('input_filenames', {})
         outputs = config.get('output_filenames', {})
         options = config.get('additional_options', {})
-    
+except IOError as err:
+    print(f'Could not open {config_yaml_filename} for configuration. Exiting with status code 1.',flush=True)
+    exit(1)
+try:   
+    print(data_yaml_filename,flush=True)
     with open(data_yaml_filename, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
         data_dirs = config.get('data_directories', {})
         
 except IOError as err:
-    print(f'Could not open {config_yaml_filename} for configuration. Exiting with status code 1.')
+    print(f'Could not open {data_yaml_filename} for configuration. Exiting with status code 1.',flush=True)
     exit(1)
 
 
@@ -42,6 +49,7 @@ os.environ['BRIGHTWAY2_DIR']= str(brwtway2)
 print('Importing brightway module.....',flush=True)
 import brightway2 as bw
 print('Imported',flush= True)
+
 from reeds_ecoinvent_updater.main_database_reader import reader
 from reeds_ecoinvent_updater.main_database_editor import reeds_updater
 from liaison.liaison_model import main_run
@@ -54,7 +62,7 @@ functional_unit = float(scenario_params.get('functional_unit'))
 location_under_study = scenario_params.get('location_under_study')
 year_of_study = scenario_params.get('year')
 unit_under_study = scenario_params.get('unit')
-reeds_yaml_data_filename = os.path.join(args.datapath,inputs.get('reeds_yaml_data'))
+reeds_yaml_data_filename = os.path.join(args.datapath,'yaml',inputs.get('reeds_yaml_data'))
 region = location_under_study
 
 #Hardcoding these project names to reduce yaml file complexity
@@ -95,6 +103,7 @@ if reeds_grid_mix_creator:
     # Reading the ReEDS yaml file name
     try:
         with open(reeds_yaml_data_filename+'.yaml', 'r') as f:
+            print(reeds_yaml_data_filename,flush=True)
             config = yaml.load(f, Loader=yaml.FullLoader)
             reeds_inputs = config.get('input_filenames', {}) 
 
@@ -108,7 +117,7 @@ if reeds_grid_mix_creator:
                                               reeds_inputs.get('modification_inventory_us'))
 
     except IOError as err:
-        print(f'Could not open {reeds_yaml_data_filename} for configuration. Exiting with status code 1.')
+        print(f'Could not open {reeds_yaml_data_filename} for configuration. Exiting with status code 1.',flush=True)
         exit(1)
 
 
