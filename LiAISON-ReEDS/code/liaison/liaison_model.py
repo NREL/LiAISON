@@ -204,17 +204,27 @@ def main_run(
             run_filename,
             data_dir
         )
+        #searched is a string if it was not found. 
+        #searched is an activity dictionary if found. 
         if isinstance(searched, str):
             print(f"Reading inventory CSV: {run_filename}", flush=True)
             df_inventory = pd.read_csv(run_filename)
             process_dict = liaison_calc(db, df_inventory, bw)
+            # if is a string then it was not found and we need to read the csv file that has the information about the foreground process
+            #Then do LCA. 
         else:
+            #If it is found, then we might have an option to edit the process that has been found. 
             if edit_ecoinvent_user_controlled:
+                # If we edit the activity then a dataframe is returned. 
                 run_filename = user_controlled_editing_ecoinvent_activity(
                     searched, year_of_study, location_under_study, output_dir
                 )
                 print("Activity edited and saved.", flush=True)
-            process_dict = liaison_calc(db, run_filename, bw)
+                # This is a dataframe 
+                process_dict = liaison_calc(db, run_filename, bw)
+            else:
+                #Nothing to do since this activity is there in the database and will be chosen in the ecoinvent dictionary during LCA
+                pass
 
         if not lca_flag:
             return None

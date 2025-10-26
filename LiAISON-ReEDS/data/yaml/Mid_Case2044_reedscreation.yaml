@@ -4,20 +4,27 @@ additional_options:
   mc_foreground: false
   region_sensitivity_flag: false
 flags:
+  create_reeds_grid_mix: true
+  database_editor: true
   ecoinvent_reader: false
   lca: true
+  modify_ecoinvent_grid_mix: true
+  premise_editor: true
   reeds_us_electricity_grid_mix: true
   update_ecoinvent_using_premise: false
 input_filenames:
+  creation_inventory: Mid_Case2044_reeds_data_state.csv
   foreground_inventory: na
   reeds_yaml_data: Mid_Case2044
 output_filenames:
-  results_filename: resultsMid_Case2044.csv
+  results_filename: Mid_Case_2044electricity_production
 scenario_parameters:
   functional_unit: 1
-  lca_project_name: lca_project_Mid_Case2044
+  lca_project_name: USlca_project_Mid_Case2044
   location_under_study: US-CO
   mc_runs: 1
   primary_process_to_study: market group for electricity, high voltage
   unit: kilowatt hour
-  year: 2044
+  updated_database: premise_updated_ecoinvent
+  updated_project_name: USMid_Case2044
+  year: 2048

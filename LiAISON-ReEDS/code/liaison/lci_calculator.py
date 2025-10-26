@@ -186,6 +186,13 @@ def liaison_calc(db,run_filename,bw):
         ei_cf_36_db = bw.Database(db)
         print('creating inventory withing the database---',db,flush=True)
         database_dict,database_dict_secondary = search_index_creator(ei_cf_36_db)
+        
+        if isinstance(run_filename, str):
+            inventory = pd.read_csv(run_filename)
+        else:
+            inventory = run_filename
+
+        inventory = inventory.sort_values(by=['process', 'process_location'])
       
         
         inventory = run_filename.sort_values(by=['process','process_location'])   
