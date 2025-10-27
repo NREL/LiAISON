@@ -755,11 +755,6 @@ For premise-related questions or to request a model encryption key, contact the 
 
 This work was supported by the U.S. Department of Energy's Office of Energy Efficiency and Renewable Energy (EERE).
 
-## Version History
-
-- **v2.3** (Current): Updated to premise 2.3.0.dev1, improved process search, added regional sensitivity
-- **v2.0**: Added prospective LCA support via premise integration
-- **v1.0**: Initial release with automated LCA capabilities
 
 ---
 
