@@ -15,7 +15,7 @@ LiAISON is a Python framework for performing automated, scalable life cycle asse
 
 ## Methodology
 
-![LiAISON Framework](https://github.com/NREL/LiAISON/blob/dev/images/image2.png?raw=true)
+![LiAISON Framework](https://github.com/NREL/LiAISON/blob/main/images/image2.png?raw=true)
 
 The LiAISON framework consists of three modular components:
 
@@ -30,7 +30,7 @@ This modular design enables:
 
 ### Prospective Life Cycle Assessment
 
-![Prospective LCA](https://github.com/NREL/LiAISON/blob/dev/images/image4.png?raw=true)
+![Prospective LCA](https://github.com/NREL/LiAISON/blob/main/images/image4.png?raw=true)
 
 Prospective LCA updates the background database with future projections of:
 - Electricity generation mixes
