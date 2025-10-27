@@ -1,4 +1,4 @@
-# Lifecyle Analysis Integration into Scalable Opensource Numerical models (LiAISON)
+# Life cycle Analysis Integration into Scalable Open-source Numerical models (LiAISON)
 ![Logo](https://github.com/NREL/LiAISON/blob/dev/images/logo.png?raw=true)
 
 Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs.est.2c04246. 
@@ -16,7 +16,7 @@ Scientific publication available here: https://pubs.acs.org/doi/full/10.1021/acs
 ## Requirements
 -   **Python 3.9, 3.10 or 3.11**
 -   License for [ecoinvent 3](https://www.ecoinvent.org/)
--   To use prospective life cycle assessment, LiAISON requires [premise](https://github.com/polca/premise). If you wish to use those premise, **you need to request (by [email](mailto:romain.sacchi@psi.ch)) an encryption key from the developers**
+-   To use prospective life cycle assessment, LiAISON requires [premise](https://github.com/polca/premise). To know more about premise, email [email](romain.sacchi@psi.ch)).
 -   [brightway2](https://brightway.dev/) 
 
 ## How to install this package?
@@ -42,22 +42,31 @@ folder-LiAISON repository : */LiAISON*
 
 - If you have problems with installation of premise, please try 
 - ```conda install conda-forge::premise=1.8.1```
+
 #### If environment building does not work from yaml file
 
+- There are two ways of installing the environment manually. Windows, Macx64, and Mac Arm64 processors will all have different requirements and challenges for manual installation.
+- Its recommend to follow the conda route (Windows/Macx64 processor) and pip route(Mac Arm64 processor)
+- Sometimes installation with conda-forge will result in installation problems downstream. For example, installing brightway2 with conda forge will result in premise installation problem
+- Kindly contact the developer for help with installation. 
+
+**Conda installation route**
 - Type following commands
+  - ```conda config --set channel_priority false```
 
   - ```conda create -n liaison-24 python=3.10```
   - ```conda activate liaison-24```
-  - ```pip install brightway2==2.4.3```
-  - ```pip install pyyaml==5.4.1```
-  - ```pip install premise==1.8.1``` or  ```conda install conda-forge::premise=1.8.1```
-  - ```pip install openpyxl==3.1.2```
+  - ```conda install conda-forge::brightway2==2.4.3``` or ```pip install brightway2==2.4.3```
+  - ```conda install anaconda::pyyaml=5.4.1``` or ```pip install pyyaml==5.4.1```
+  - ```conda install conda-forge::premise=1.8.1``` or ```pip install premise==1.8.1```
+  - ```conda install conda-forge::openpyxl=3.1.2``` or ```pip install openpyxl=3.1.2```
+  - ```conda install cmutel::bw2analyzer=0.10``` or ```pip install bw2analyzer=0.10```
   - ```pip install bw2io==0.8.7```
-  - ```pip install bw2analyzer==0.10```
-  
+  - ```pip install wurst==0.3.5```
+
 
 ### Extracting Ecoinvent
-- Download **ecoinvent version 3.8 allocation cutoff by substitution** from the website. The filename is ```ecoinvent 3.8_cutoff_ecoSpold02.7z``` and is around 61MB in size.
+- Download **ecoinvent version 3.8 Allocation cut-off by classification** from the website. The filename is ```ecoinvent 3.8_cutoff_ecoSpold02.7z``` and is around 61MB in size.
 - Extract required ecoinvent database from ```ecoinvent 3.8_cutoff_ecoSpold02.7z``` into a folder in */data/inputs/ecoinvent.*
 - Rename the extracted folder name to *ecoinvent_3.8_cutoff_ecoSpold02.7z*. Add an underscore between ecoinvent and 3.8.
 
