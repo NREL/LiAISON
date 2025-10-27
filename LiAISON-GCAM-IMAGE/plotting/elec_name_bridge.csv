@@ -1,0 +1,72 @@
+elec_type,group_elec
+"electricity production, at BIGCC power plant, pre, pipeline 200km, storage 1000m",BECCS
+"electricity production, at biomass-fired IGCC power plant, pre, pipeline 200km, storage 1000m",BECCS
+"electricity production, at co-generation power plant/wood, post, pipeline 200km, storage 1000m",BECCS
+"electricity production, at co-generation power plant/wood, post, pipeline 400km, storage 3000m",BECCS
+"electricity production, at co-generation wood-fired power plant, post, pipeline 200km, storage 1000m",BECCS
+"electricity production, at wood burning power plant 20 MW, truck 25km, post, pipeline 200km, storage 1000m",BECCS
+"electricity production, at BIGCC power plant, no CCS",Biopower
+"electricity production, at wood burning power plant",Biopower
+"electricity production, at wood burning power plant 20 MW, truck 25km, no CCS",Biopower
+"heat and power co-generation, wood chips, 6667 kW, state-of-the-art 2014",Biopower
+"electricity production, at biomass-fired IGCC power plant",Biopower
+"electricity production, at hard coal-fired IGCC power plant",Coal + Oil
+"electricity production, at lignite-fired IGCC power plant",Coal + Oil
+"electricity production, at power plant/hard coal, IGCC, no CCS",Coal + Oil
+"electricity production, at power plant/lignite, IGCC, no CCS",Coal + Oil
+"electricity production, hard coal",Coal + Oil
+"electricity production, lignite",Coal + Oil
+"electricity production, oil",Coal + Oil
+"heat and power co-generation, hard coal",Coal + Oil
+"heat and power co-generation, lignite",Coal + Oil
+"heat and power co-generation, oil",Coal + Oil
+"electricity production, at co-generation oil-fired power plant, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/hard coal, oxy, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/hard coal, oxy, pipeline 400km, storage 3000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/hard coal, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/hard coal, post, pipeline 400km, storage 1000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/hard coal, post, pipeline 400km, storage 3000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/oil, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at co-generation power plant/oil, pre, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at hard coal-fired IGCC power plant, pre, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at lignite-fired IGCC power plant, pre, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at power plant/hard coal, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at power plant/hard coal, pre, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at power plant/lignite, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at power plant/lignite, pre, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at hard coal-fired power plant, oxy, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at hard coal-fired power plant, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at lignite-fired power plant, oxy, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at lignite-fired power plant, post, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, at oil-fired power plant, combined cycle, oxy, pipeline 200km, storage 1000m",Coal/Oil + CCS
+"electricity production, deep geothermal",Geothermal
+"electricity production, hydro, reservoir, alpine region",Hydro
+"electricity production, hydro, reservoir, non-alpine region",Hydro
+"electricity production, hydro, run-of-river",Hydro
+"electricity production, hydro, reservoir, tropical region",Hydro
+"market group for electricity, high voltage","market group for electricity, high voltage"
+"electricity production, natural gas, combined cycle power plant",Natural Gas
+"electricity production, natural gas, conventional power plant",Natural Gas
+"electricity production, natural gas, subcritical, steam cycle",Natural Gas
+"heat and power co-generation, natural gas, combined cycle power plant, 400MW electrical",Natural Gas
+"heat and power co-generation, natural gas, conventional power plant, 100MW electrical",Natural Gas
+"electricity production, at co-generation natural gas-fired power plant, post, pipeline 200km, storage 1000m",NG + CCS
+"electricity production, at co-generation power plant/natural gas, post, pipeline 200km, storage 1000m",NG + CCS
+"electricity production, at co-generation power plant/natural gas, pre, pipeline 200km, storage 1000m",NG + CCS
+"electricity production, at natural gas-fired combined cycle power plant, post, pipeline 200km, storage 1000m",NG + CCS
+"electricity production, at power plant/natural gas, post, pipeline 200km, storage 1000m",NG + CCS
+"electricity production, at power plant/natural gas, post, pipeline 400km, storage 1000m",NG + CCS
+"electricity production, at power plant/natural gas, post, pipeline 400km, storage 3000m",NG + CCS
+"electricity production, at power plant/natural gas, pre, pipeline 200km, storage 1000m",NG + CCS
+"electricity production, at power plant/natural gas, pre, pipeline 400km, storage 3000m",NG + CCS
+"electricity production, nuclear, boiling water reactor",Nuclear
+"electricity production, nuclear, pressure water reactor",Nuclear
+"electricity production, nuclear, pressure water reactor, heavy water moderated",Nuclear
+"electricity production, photovoltaic, commercial",Solar
+"electricity production, photovoltaic, residential",Solar
+"electricity production, solar thermal parabolic trough, 50 MW",Solar
+"electricity production, solar tower power plant, 20 MW",Solar
+"electricity production, wind, <1MW turbine, onshore",Wind
+"electricity production, wind, >3MW turbine, onshore",Wind
+"electricity production, wind, 1-3MW turbine, offshore",Wind
+"electricity production, wind, 1-3MW turbine, onshore",Wind

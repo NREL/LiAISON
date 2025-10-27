@@ -1,0 +1,41 @@
+﻿process,flow,value,unit,input,year,comments,type,location
+PEWE electrolysis stack production,"transport, freight, sea, transoceanic ship",9.89,ton kilometer,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,"transport, freight, lorry 16-32 metric ton, EURO5",55.6,ton kilometer,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,"transport, freight train",111,ton kilometer,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,Titanium,0.000201,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,Aluminum,0.00198,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,"market for steel, chromium steel 18/8, hot rolled",0.000053,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,Copper,0.00242,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,tetrafluoroethylene,0.000185976,kilogram,TRUE,2020,57.4 wt% TFE in Nafion used as proxy,technosphere,US
+PEWE electrolysis stack production,sulfuric acid,0.000138024,kilogram,TRUE,2020,42.6 wt% sulphuric acid in Nafion used as proxy for PFSA,technosphere,US
+PEWE electrolysis stack production,Activated carbon,0.000389,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,Iridium,0.0179,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,Platinum,0.000394,kilogram,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,PEWE electrolysis stack 1 MW,1,unit,FALSE,2020,none,production,US
+PEWE electrolysis stack production,"market group for electricity, low voltage",3611.5,kilowatt hour,TRUE,2020,none,technosphere,US
+PEWE electrolysis stack production,"heat production, natural gas, at industrial furnace low-NOx >100kW",2181.6,megajoule,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction","transport, freight, lorry 16-32 metric ton, EURO5",188,ton kilometer,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction","transport, freight train",375,ton kilometer,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction",low alloyed steel,4800,kilogram,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction",high alloyed steel,1900,kilogram,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction",Aluminum,100,kilogram,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction",copper,100,kilogram,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction",plastic,300,kilogram,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction",electronic parts,1100,kilogram,TRUE,2020,"power, control",technosphere,US
+"PEWE electrolysis plant, construction",silica gel,200,kilogram,TRUE,2020,"adosrbent, lubricant",technosphere,US
+"PEWE electrolysis plant, construction",concrete,2.33,cubic meter,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction","PEWE electrolysis plant, balance",1,unit,FALSE,2020,none,production,US
+"PEWE electrolysis plant, construction","market group for electricity, low voltage",1440,kilowatt hour,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction","market group for electricity, medium voltage",7242,kilowatt hour,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction","heat production, natural gas, at industrial furnace low-NOx >100kW",12726,megajoule,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, construction","heat production, light fuel oil, at boiler 100kW condensing, non-modulating",10800,megajoule,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, operation","Water production and supply, deioninzed",9,kilogram,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, operation","market group for electricity, medium voltage",55,kilowatt hour,TRUE,2020,none,technosphere,US
+"PEWE electrolysis plant, operation",PEWE electrolysis stack 1 MW,8.97E-07,unit,TRUE,2020,"8760 h per year, 7 years lifetime",technosphere,US
+"PEWE electrolysis plant, operation","PEWE electrolysis plant, balance",3.18E-07,unit,TRUE,2020,"8760 h per year, 20 years lifetime",technosphere,US
+"PEWE electrolysis plant, operation","hydrogen, from proton exchange water electrolysis",1,kilogram,FALSE,2020,none,production,US
+"PEWE electrolysis plant, operation",oxygen,12,kilogram,FALSE,2020,none,biosphere,US
+"ammonia, from haber-bosch",market for natural gas,0.035,cubic meter,TRUE,2020,heating silica gel,technosphere,US
+"ammonia, from haber-bosch","hydrogen, from proton exchange water electrolysis",0.177,kilogram,TRUE,2020,none,technosphere,US
+"ammonia, from haber-bosch","nitrogen, from air separation",0.823,kilogram,TRUE,2020,none,technosphere,US
+"ammonia, from haber-bosch",ammonia,1,kilogram,FALSE,2020,none,production,US
