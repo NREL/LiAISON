@@ -8,7 +8,7 @@ flags:
   lca: true
   lca_activity_modification: false
   update_base_database_with_future_information: true
-  read_base_lci_database: false
+  read_base_lci_database: true
   use_base_database_for_lca: false
   regional_sensitivity: false
 input_filenames:
@@ -27,11 +27,12 @@ scenario_parameters:
   initial_year: 2020
   lca_project_name: lca_project_ecoinvent
   location: US
+  unit: kilowatt hour
   mc_runs: 1
   model: image
   model_key: tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=
   primary_process_to_study: example
   process: example
-  updated_database: ecoinvent_2030_SSP2-RCP26
-  updated_project_name: ecoinvent_2030_SSP2-RCP26_image
+  updated_database: ecoinvent_2030_SSP2-L
+  updated_project_name: ecoinvent_2030_SSP2-L_image
   

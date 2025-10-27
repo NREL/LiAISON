@@ -1,7 +1,6 @@
 data_directories:
   ecoinvent_data: ecoinvent/ecoinvent_3.8_cutoff_ecoSpold02/datasets/
   liaisondata: inputs/
-  other_databases: other_databases/
   output: output/
 flags:
   correct uncertainty: false
@@ -9,15 +8,15 @@ flags:
   lca: true
   lca_activity_modification: false
   update_base_database_with_future_information: true
-  read_base_lci_database: false
+  read_base_lci_database: true
   use_base_database_for_lca: false
   regional_sensitivity: false
 input_filenames:
-  creation_inventory: example.csv
   emission_bridge: emission_name_bridge.csv
-  foreground_inventory: example.csv
+  creation_inventory: N/A
+  foreground_inventory: example1.csv
+  modification_inventory: N/A
   location_bridge: location_bridge.csv
-  modification_inventory: modification_inventory.csv
   process_bridge: process_name_bridge.csv
 output_filenames:
   results_filename: lcia_results
@@ -26,12 +25,14 @@ scenario_parameters:
   base_project: base_project_ecoinvent38
   functional_unit: 1
   initial_year: 2020
-  lca_project_name: lca_project_ecoinvent_2020_SSP2-Base_image
+  lca_project_name: lca_project_ecoinvent
   location: US
+  unit: kilowatt hour
   mc_runs: 1
   model: image
   model_key: tUePmX_S5B8ieZkkM7WUU2CnO8SmShwmAeWK9x2rTFo=
   primary_process_to_study: example
   process: example
-  updated_database: ecoinvent_2020_SSP2-Base
-  updated_project_name: ecoinvent_2020_SSP2-Base_image
+  updated_database: ecoinvent_2030_SSP2-L
+  updated_project_name: ecoinvent_2030_SSP2-L_image
+  

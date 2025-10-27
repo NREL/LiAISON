@@ -154,6 +154,7 @@ def main() -> None:
     iam_model = scenario_params.get('model')
     iam_model_key = scenario_params.get('model_key')
     functional_unit = scenario_params.get('functional_unit')
+    unit_under_study = scenario_params.get('unit')
 
     # File paths
     data_path = os.path.join(args.datapath, data_dirs.get('liaisondata'))
@@ -204,15 +205,29 @@ def main() -> None:
                        updated_database=updated_database, bw=bw)
         print('electricity_mix_extracted',flush=True)
         print('lca calculation starts',flush=True)
-        main_run(lca_project=lca_project_name, updated_project_name=updated_project_name, initial_year=initial_year,
-                 results_filename=results_filename, mc_foreground_flag=mc_foreground_flag, lca_flag=lca_flag,
-                 lca_activity_modification=lca_activity_modification, regional_sensitivity_flag=regional_sensitivity_flag,
-                 region=region, data_dir=data_dir, primary_process=primary_process,
-                 process_under_study=process_under_study, location_under_study=location_under_study,functional_unit=functional_unit,
-                 updated_database=updated_database, mc_runs=mc_runs, inventory_filename=foreground_inventory_filename,
-                 modification_inventory_filename=modification_inventory_filename, process_name_bridge=process_name_bridge,
-                 emission_name_bridge=emission_name_bridge, location_name_bridge=location_name_bridge,
-                 output_dir=output_dir, bw=bw)
+        main_run(
+                lca_project=lca_project_name,
+                updated_project_name=updated_project_name,
+                year_of_study=str(initial_year),                      # renamed from initial_year
+                results_filename=results_filename,
+                mc_foreground_flag=mc_foreground_flag,
+                lca_flag=lca_flag,
+                region_sensitivity_flag=regional_sensitivity_flag,    # renamed from regional_sensitivity_flag
+                edit_ecoinvent_user_controlled=lca_activity_modification,  # renamed from lca_activity_modification
+                region=region,
+                data_dir=data_dir,
+                primary_process=primary_process,
+                process_under_study=process_under_study,
+                location_under_study=location_under_study,
+                unit_under_study=unit_under_study,                    # required in old definition
+                updated_database=updated_database,
+                mc_runs=mc_runs,
+                functional_unit=functional_unit,
+                inventory_filename=foreground_inventory_filename,
+                output_dir=output_dir,
+                bw=bw
+            )
+
 
     pprint(time.time() - tim0)
 

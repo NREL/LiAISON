@@ -96,9 +96,9 @@ def reset_project(base_database, base_project, project_new, bw):
     project_name = project_new
     try:
         bw.projects.delete_project(project_name, delete_dir=True)
-        pprint('Project deleted')
+        pprint(f'Project deleted {project_name}')
     except:
-        pprint('Project does not exist')
+        pprint(f'Project does not exist {project_name}')
         pass
 
     bw.projects.set_current(base_project)

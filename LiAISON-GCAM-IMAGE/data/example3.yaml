@@ -27,6 +27,7 @@ scenario_parameters:
   initial_year: 2020
   lca_project_name: lca_project_ecoinvent
   location: US
+  unit: kilowatt hour
   mc_runs: 1
   model: gcam
   model_key: no_key
